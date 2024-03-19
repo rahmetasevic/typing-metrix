@@ -1,0 +1,11 @@
+.display-modes {
+	background: #ccc;
+	border: 1px solid#333;
+	margin-bottom: 1em;
+	
+	ul {
+		display: inline-flex;
+		list-style: none;
+		gap: 2em;
+	}
+}

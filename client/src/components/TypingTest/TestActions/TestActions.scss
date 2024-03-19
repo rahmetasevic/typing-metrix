@@ -1,0 +1,19 @@
+.test-actions {
+	display: flex;
+	color: #FFF;
+	font-size: 36px;
+	gap: 0.5rem;
+
+	button {
+		display: inline-flex;
+		background-color: transparent;
+		border: none;
+		color: #FFF;
+    	font-size: 36px;
+	}
+
+	button:hover {
+		color: #6ad6e0;
+		cursor: pointer;
+	}
+}
