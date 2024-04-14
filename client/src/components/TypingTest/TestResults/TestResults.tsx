@@ -1,32 +1,35 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 
-import { useTestStore } from '../../../stores/TestStore';
+import { useTestStore } from "@stores/TestStore";
 
-import '../TestResults/TestResults.scss';
+import "./TestResults.scss";
 
 export const TestResults = () => {
 	const time = useTestStore((state) => state.time);
 	const activeFilter = useTestStore((state) => state.activeFilter);
-	
+	const results = useTestStore((state) => state.results);
+	const wordsLeft = useTestStore((state) => state.wordsLeft);
+	const testContent = useTestStore((state) => state.testContent);
 
 	return (
-		<div className='results'>
-			<div className='results__time'>
-				{time}
-				<span>{activeFilter.name + ' left'}</span>
+		<div className="results">
+			<div className="results__time">
+				{activeFilter.name !== "Time"
+					? wordsLeft + "/" + testContent.length
+					: time}
+				<span>{activeFilter.name + " left"}</span>
 			</div>
-			<div className='results__wpm'>
-				17
+			<div className="results__wpm">
+				{results.grossWPM + "/" + results.netWPM}
 				<span>WPM</span>
 			</div>
-			<div className='results__acc'>
-				92%
-				<span>Accuracy</span>
+			<div className="results__acc">
+				{results.accuracy}%<span>Accuracy</span>
 			</div>
-			<div className='results__errors'>
-				5
+			<div className="results__errors">
+				{results.errors}
 				<span>Errors</span>
 			</div>
 		</div>
-	)
-}
+	);
+};

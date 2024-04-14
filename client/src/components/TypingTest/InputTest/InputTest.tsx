@@ -1,123 +1,209 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
-import { useTestStore } from '../../../stores/TestStore';
-import { useCountdown } from '../../../hooks/useCountdown';
+import { useTestStore } from "@stores/TestStore";
+import { useTimeCount } from "@hooks/useTimeCount";
 
-import './InputTest.scss';
-
-type Accuracy = {
-	correct: number,
-	incorrect: number
-}
+import "./InputTest.scss";
 
 export const InputTest = () => {
 	// const [text, setText] = useState<string[]>(generateText(Number(props.value)));
 	// const [currWord, setCurrWord] = useState<Content>({text: '', index: -1});
 	// const [currChar, setCurrChar] = useState<Content>({text: '', index: -1});
-	const [userInput, setUserInput] = useState<string>('');
-	const [accuracy, setAccuracy] = useState<Accuracy>({correct: 0, incorrect: -1});
-	const { startTimer } = useCountdown();
+	// const [totalChars, setTotalChars] = useState<number>(0);
+	// const [timeTaken, setTimeTaken] = useState<number>(0);
+	// const [correct, setCorrect] = useState<number>(0);
+	// const [incorrect, setIncorrect] = useState<number>(0);
 
-	const { testContent, setWord, setChar, currWord, currChar, isStarted, setIsStarted, setTime } = useTestStore();
+	const [userInput, setUserInput] = useState<string>("");
+	const [startCountdown, startTimer] = useTimeCount();
 
-	// useEffect(() => {
-	// 	// setText(generateText(Number(props.value)));
-	// 	// setCurrWord({text: text[0], index: 0});
-	// }, [props]);
-	
+	const [typedWord, setTypedWord] = useState<string>("");
+	const [typeHistory, setTypeHistory] = useState<string[]>([]);
+	// const [isTestStarted, actions] = useCountdown();
+
+	const {
+		time,
+		testContent,
+		setWord,
+		setChar,
+		currWord,
+		currChar,
+		activity,
+		setActivity,
+		activeFilter,
+		wordsLeft,
+		setWordsLeft,
+		resetTest,
+		setResults,
+		totalChars,
+		correctChars,
+		setCorrectChars,
+		incorrectChars,
+		setIncorrectChars,
+		setTotalChars,
+	} = useTestStore();
+
 	useEffect(() => {
-		// setCurrWord({text: text[0], index: 0});
-		// setCurrChar({text: text[0][0], index: -1});
-		// resetTest();
-		document.querySelectorAll('.active-char').forEach(e => e.classList.remove('active-char'));
-		setUserInput('');
-	}, [testContent]);
-	
+		setUserInput("");
+		if (activity.status !== "STARTED") {
+			setWord(testContent[0], 0);
+			setChar(testContent[0][0], -1);
+		}
+		// if (activity.status === "COMPLETED") calcTestResults();
+	}, [testContent, activity.status]);
+
 	useEffect(() => {
-		setUserInput('');
-		checkMatch();
+		if (activity.status === "STARTED") checkMatch();
 	}, [currChar]);
 
-	// useEffect(() => {
-	// 	const interval = setInterval(() => {
-	// 		setCountdown(countdown - 1);
-	// 	}, 1000)
+	function detectKey(e: React.KeyboardEvent<HTMLInputElement>): void {
+		const key = e.key.trim();
+		const nextWord = testContent[currWord.index + 1];
+		// console.log(nextWord, activity);
 
-	// 	return () => {
-	// 		clearInterval(interval)
-	// 	}
-	// });
+		// if (!nextWord || activity.status === "COMPLETED") {
+		// 	// setActivity({ status: "COMPLETED" });
+		// 	// resetTest();
+		// 	return;
+		// }
 
-	function detectKey({key}: {key: any}): void {
-		if(!isStarted) { 
-			setIsStarted(true);
-			startTimer();
-		}
-		if(key === ' ') {
-			// setCurrWord({text: text[currWord.index + 1], index: currWord.index + 1})
-			// setCurrChar({text: key, index: -1});
-			
-			setWord(testContent[currWord.index + 1], currWord.index + 1);
+		// if (!testContent[currWord.index]) {
+		// 	resetTest();
+		// 	return;
+		// }
+
+		if (key === "Tab" || key === "Enter") {
+			e.preventDefault();
+			// open command menu & pause the test
+			setActivity({ status: "STOPPED" });
+			alert("Test is paused!");
+			return;
+		} else if (key === "") {
+			setTypeHistory([...typeHistory, userInput]);
+			setWordsLeft(wordsLeft + 1);
+			setWord(nextWord, currWord.index + 1);
 			setChar(key, -1);
-			setUserInput('');
-
+			setUserInput("");
+			if (!nextWord) {
+				setActivity({ status: "COMPLETED" });
+				return;
+			}
+			calcTestResults();
 			scrollContent();
-		} else {
-			// setCurrChar({text: key, index: currChar.index + 1});
+		} else if (key.length === 1) {
 			setChar(key, currChar.index + 1);
+			if (activity.status !== "STARTED") {
+				// setIsStarted(true);
+				setActivity({ status: "STARTED" });
+				activeFilter.name !== "Time" ? startTimer() : startCountdown();
+			}
 		}
+		setTotalChars(totalChars + 1);
+	}
+
+	function calcTestResults(): void {
+		const minutesTaken = (time / 60000) * 1000;
+		const accuracy = Math.round((correctChars / totalChars) * 100);
+		const grossWPM = Math.round(totalChars / 5 / minutesTaken);
+		const netWPM = Math.round(
+			Math.abs(totalChars / 5 - incorrectChars) / minutesTaken
+		);
+
+		console.log("time", time);
+		console.log("filter", activeFilter);
+		console.log("c - i => ", correctChars, incorrectChars);
+		console.log("totalC", totalChars);
+		console.log("grossWPM", grossWPM);
+		console.log("netWPM", netWPM);
+
+		setResults({
+			grossWPM: Number.isFinite(grossWPM) ? grossWPM : 0,
+			netWPM: Number.isFinite(netWPM) ? netWPM : 0,
+			accuracy,
+			errors: incorrectChars,
+		});
 	}
 
 	function checkMatch(): void {
-		document.querySelector(`.word-${currWord.index}-char-${currChar.index}`)?.classList.add('active-char');
-		// if(currChar.text === currWord.text[currChar.index]) {
-		// 	setScore({...score, positive: score.positive + 1});
-		// 	// ====> needs to be set after creating user preferences
-		// 	// document.querySelector(`.word-${currWord.index}-char-${currChar.index}`)?.classList.add('correct-char');
-		// } else {
-		// 	setScore({...score, negative: score.negative + 1});
-		// 	// ====> needs to be set after creating user preferences
-		// 	// document.querySelector(`.word-${currWord.index}-char-${currChar.index}`)?.classList.add('incorrect-char');
-		// }
+		document
+			.querySelector(`.word-${currWord.index}-char-${currChar.index}`)
+			?.classList.add("active-char");
+
+		// on first try there is an error in currword and currchar!!
+		// console.log(currChar, currWord);
+		if (
+			currChar.text === currWord.text[currChar.index] ||
+			currChar.text === ""
+		) {
+			setCorrectChars(correctChars + 1);
+			// setCorrect(correct + 1);
+			// ====> needs to be set after creating user preferences
+			// document.querySelector(`.word-${currWord.index}-char-${currChar.index}`)?.classList.add('correct-char');
+		} else {
+			setIncorrectChars(incorrectChars + 1);
+			// setIncorrect(incorrect + 1);
+			// ====> needs to be set after creating user preferences
+			// document.querySelector(`.word-${currWord.index}-char-${currChar.index}`)?.classList.add('incorrect-char');
+		}
 	}
 
-	function resetTest(): void {
-		document.querySelectorAll('.active-char').forEach(e => e.classList.remove('active-char'));
-		// setCurrWord({text: text[0], index: 0});
-		// setCurrChar({text: text[0][0], index: -1});
-		
-		setWord(testContent[0], 0);
-		setChar(testContent[0][0], -1);
+	function getWordClass(x: number): string | undefined {
+		return x === currWord.index ? "current-word" : undefined;
 	}
 
-	function getWordClass(x: number): string {
-		return x === currWord.index ? 'current-word' : '';
-	}
-
-	function scrollContent() {
+	function scrollContent(): void {
 		setTimeout(() => {
-			const el: HTMLDivElement = (document.querySelector('.text__content') as HTMLDivElement);
-			const spn: HTMLSpanElement = (document.querySelector('.current-word') as HTMLSpanElement);
-			if(el.getBoundingClientRect().top + 10 !== spn.getBoundingClientRect().top) {
-				(document.querySelector('.text__content') as HTMLDivElement).scrollTop += (spn.getBoundingClientRect().top - el.getBoundingClientRect().top);
+			const el: HTMLDivElement = document.querySelector(
+				".text__content"
+			) as HTMLDivElement;
+			const spn: HTMLSpanElement = document.querySelector(
+				".current-word"
+			) as HTMLSpanElement;
+			if (
+				el.getBoundingClientRect().top + 10 !==
+					spn.getBoundingClientRect().top &&
+				activity.status === "STARTED"
+			) {
+				(
+					document.querySelector(".text__content") as HTMLDivElement
+				).scrollTop +=
+					spn.getBoundingClientRect().top -
+					el.getBoundingClientRect().top;
 			}
 		}, 50);
 	}
 
 	return (
-		<div className="typing-test">
-			<div className='text'>
-				<div className='text__content'>
-					{testContent.map((word, ix) => 
+		<div
+			className="typing-test"
+			style={{
+				display: activity.status !== "COMPLETED" ? "flex" : "none",
+			}}
+		>
+			<div className="text">
+				<div className="text__content">
+					{testContent.map((word, ix) => (
 						<span className={getWordClass(ix)} key={ix}>
-							{word.split('').map((char, iy) => 
-								<span className={`word-${ix}-char-${iy}`} key={iy}>{char}</span>
-							)}{' '}
+							{word.split("").map((char, iy) => (
+								<span
+									className={`word-${ix}-char-${iy}`}
+									key={iy}
+								>
+									{char}
+								</span>
+							))}{" "}
 						</span>
-					)}
+					))}
 				</div>
 			</div>
-			<input className='input-box' type="text" spellCheck="false" onChange={e => setUserInput(e.target.value)} value={userInput} onKeyDown={detectKey}/>
+			<input
+				className="input-box"
+				type="text"
+				spellCheck="false"
+				onChange={(e) => setUserInput(e.target.value)}
+				value={userInput}
+				onKeyDown={detectKey}
+			/>
 		</div>
-	)
+	);
 };
