@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { generate, count } from "random-words";
 
-import '../styles/Home.scss';
+import "../styles/Home.scss";
 
 type Content = {
-	text: string,
-	index: number
-}
+	text: string;
+	index: number;
+};
 
 type Scores = {
-	positive: number,
-	negative: number
-}
+	positive: number;
+	negative: number;
+};
 
 export const Home: React.FC = () => {
 	const [words, setWords] = useState<string[]>([]);
-	const [currChar, setCurrChar] = useState<Content>({text: '', index: -1});
-	const [currWord, setCurrWord] = useState<Content>({text: '', index: -1});
-	const [userInput, setUserInput] = useState<string>('');
-	const [score, setScore] = useState<Scores>({positive: 0, negative: -1});
+	const [currChar, setCurrChar] = useState<Content>({ text: "", index: -1 });
+	const [currWord, setCurrWord] = useState<Content>({ text: "", index: -1 });
+	const [userInput, setUserInput] = useState<string>("");
+	const [score, setScore] = useState<Scores>({ positive: 0, negative: -1 });
 	const [wordsCount, setWordsCount] = useState<number>(25);
 	const [showFilter, setShowFilter] = useState<boolean>(false);
 
@@ -27,35 +27,42 @@ export const Home: React.FC = () => {
 	}, [wordsCount]);
 
 	useEffect(() => {
-		setCurrWord({text: words[0], index: 0});
+		setCurrWord({ text: words[0], index: 0 });
 	}, [words]);
 
 	useEffect(() => {
 		checkMatch();
-	}, [currChar])
+	}, [currChar]);
 
-	function detectKey({key}: {key: string}): void {
-		if(key === ' ') {
-			setCurrWord({text: words[currWord.index + 1], index: currWord.index + 1})
-			setCurrChar({text: key, index: -1});
-			setUserInput('');
+	function detectKey({ key }: { key: string }): void {
+		if (key === " ") {
+			setCurrWord({
+				text: words[currWord.index + 1],
+				index: currWord.index + 1,
+			});
+			setCurrChar({ text: key, index: -1 });
+			setUserInput("");
 		} else {
-			setCurrChar({text: key, index: currChar.index + 1});
+			setCurrChar({ text: key, index: currChar.index + 1 });
 		}
 	}
 
 	function checkMatch(): void {
-		if(currChar.text === currWord.text[currChar.index]) {
-			setScore({...score, positive: score.positive + 1});
-			document.querySelector(`.word-${currWord.index}-char-${currChar.index}`)?.classList.add("correct-char")
+		if (currChar.text === currWord.text[currChar.index]) {
+			setScore({ ...score, positive: score.positive + 1 });
+			document
+				.querySelector(`.word-${currWord.index}-char-${currChar.index}`)
+				?.classList.add("correct-char");
 		} else {
-			setScore({...score, negative: score.negative + 1});
-			document.querySelector(`.word-${currWord.index}-char-${currChar.index}`)?.classList.add("incorrect-char")
+			setScore({ ...score, negative: score.negative + 1 });
+			document
+				.querySelector(`.word-${currWord.index}-char-${currChar.index}`)
+				?.classList.add("incorrect-char");
 		}
 	}
 
 	function getWordClass(x: number): string {
-		return x === currWord.index ? 'active-word' : '';
+		return x === currWord.index ? "active-word" : "";
 	}
 
 	function handleClick(e: React.MouseEvent<HTMLDivElement>): void {
@@ -70,7 +77,7 @@ export const Home: React.FC = () => {
 
 	return (
 		<div className="home">
-			<div className='filters'>
+			{/* <div className='filters'>
 				<div className="words">
 					<div className='filter' onClick={handleFilterClick}>Words</div>
 					<div className='words-filter' onClick={handleClick} style={showFilter ? {} : { display: 'none' }}>
@@ -104,7 +111,7 @@ export const Home: React.FC = () => {
 			</div>
 			{/* <span>Positive: {score.positive}</span>
 			<br />
-			<span>Negative: {score.negative}</span> */}
+                // <span>Negative: {score.negative}</span> */}
 		</div>
-	)
+	);
 };

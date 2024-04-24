@@ -1,5 +1,8 @@
+import { useState } from "react";
+
 import { Header } from "@components/Header/Header";
-import { TestDisplay } from "@components/TypingTest/TestDisplay/TestDisplay";
+import { TestDisplay } from "@components/Typing-Test/Display/TestDisplay";
+import { SetupModal } from "@components/Typing-Test/Setup/SetupModal";
 
 import "./styles/App.scss";
 

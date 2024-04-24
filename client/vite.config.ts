@@ -23,12 +23,16 @@ export default defineConfig({
 				replacement: path.resolve(__dirname, "src/lib"),
 			},
 			{
-				find: "@stores",
-				replacement: path.resolve(__dirname, "src/stores"),
+				find: "@store",
+				replacement: path.resolve(__dirname, "src/store"),
 			},
 			{
 				find: "@types",
 				replacement: path.resolve(__dirname, "src/types"),
+			},
+			{
+				find: "@constants",
+				replacement: path.resolve(__dirname, "src/constants"),
 			}
 		]
 	},
