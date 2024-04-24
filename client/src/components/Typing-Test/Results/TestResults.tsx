@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { useTestStore } from "@stores/TestStore";
+import { useTestStore } from "@store/TestStore";
 
 import "./TestResults.scss";
 

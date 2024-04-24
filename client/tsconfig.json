@@ -10,7 +10,8 @@
 			"@components/*": ["components/*"],
 			"@hooks/*": ["hooks/*"],
 			"@lib/*": ["lib/*"],
-			"@stores/*": ["stores/*"],
+			"@store/*": ["store/*"],
+			"@constants/*": ["constants/*"],
 			"types/*": ["./types/*"]
 		},
 		/* Bundler mode */

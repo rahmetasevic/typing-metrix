@@ -1,11 +1,10 @@
-import React, { useState, useEffect, lazy } from "react";
+import React, { useState, useEffect } from "react";
 
-import { TestResults } from "@components/TypingTest/TestResults/TestResults";
-import { TestActions } from "@components/TypingTest/TestActions/TestActions";
-import { InputTest } from "@components/TypingTest/InputTest/InputTest";
-
-import { useTestStore } from "@stores/TestStore";
-import { FilterOption } from "../../../constants";
+import { TestResults } from "@components/Typing-Test/Results/TestResults";
+import { TestActions } from "@components/Typing-Test/Actions/TestActions";
+import { InputTest } from "@components/Typing-Test/Modes/InputTest/InputTest";
+import { useTestStore } from "@store/TestStore";
+import { SetupModal } from "../Setup/SetupModal";
 
 import "./TestDisplay.scss";
 // figure out how to dynamically import display components
@@ -22,6 +21,7 @@ export const TestDisplay = () => {
 	// const setTime = useTestStore((state) => state.setTime);
 	// const setTestContent = useTestStore((state) => state.setTestContent);
 	// const setActiveFilter = useTestStore((state) => state.setActiveFilter);
+	const [showSetup, setShowSetup] = useState<boolean>(false);
 
 	const [
 		testContent,
@@ -39,6 +39,7 @@ export const TestDisplay = () => {
 		state.setActiveFilter,
 	]);
 
+	// rewrite this in onApply
 	useEffect(() => {
 		let generateCount;
 		// activeFilter.name === "Time"
@@ -62,43 +63,47 @@ export const TestDisplay = () => {
 	// 	setDisplayMode(displayValue);
 	// }
 
-	function handleFilterOption(
-		e: React.MouseEvent<HTMLDivElement | HTMLSpanElement>
-	): void {
-		const optionName: string = (e.target as HTMLDivElement).textContent!;
-		if (
-			optionName === "Words" ||
-			optionName === "Quotes" ||
-			optionName === "Time"
-		)
-			setActiveFilter({
-				name: optionName,
-				options: FilterOption[optionName],
-				value: FilterOption[optionName][0],
-			});
-	}
+	// function handleFilterOption(
+	// 	e: React.MouseEvent<HTMLDivElement | HTMLSpanElement>
+	// ): void {
+	// 	const optionName: string = (e.target as HTMLDivElement).textContent!;
+	// 	if (
+	// 		optionName === "Words" ||
+	// 		optionName === "Quotes" ||
+	// 		optionName === "Time"
+	// 	)
+	// 		setActiveFilter({
+	// 			name: optionName,
+	// 			options: FilterOption[optionName],
+	// 			value: FilterOption[optionName][0],
+	// 		});
+	// }
 
-	function handleFilterValue(e: React.MouseEvent<HTMLDivElement>): void {
-		const optionValue: string | undefined = (e.target as HTMLDivElement)
-			.dataset?.option;
-		if (optionValue)
-			setActiveFilter({
-				name: activeFilter.name,
-				options: [...activeFilter.options],
-				value: optionValue,
-			});
-	}
+	// function handleFilterValue(e: React.MouseEvent<HTMLDivElement>): void {
+	// 	const optionValue: string | undefined = (e.target as HTMLDivElement)
+	// 		.dataset?.option;
+	// 	if (optionValue)
+	// 		setActiveFilter({
+	// 			name: activeFilter.name,
+	// 			options: [...activeFilter.options],
+	// 			value: optionValue,
+	// 		});
+	// }
+
+	function handleTestSetup(e: React.MouseEvent<HTMLElement>): void {}
 
 	return (
 		<div className="home">
-			{activity.status === "PENDING" ? (
+			<SetupModal visible={showSetup} close={() => setShowSetup(false)} />
+			{activity === "PENDING" ? (
 				<div className="test-config">
 					<div className="typing">
 						<div
-							className="typing__options"
-							onClick={handleFilterOption}
+							className="typing__setup  typing--highlighted"
+							onClick={() => setShowSetup(!showSetup)}
 						>
-							<div className="typing__filter-option typing__filter--highlighted">
+							Setup
+							{/* <div className="typing__filter-option typing__filter--highlighted">
 								Words
 							</div>
 							<span style={{ color: "black", fontSize: "16px" }}>
@@ -112,9 +117,9 @@ export const TestDisplay = () => {
 							</span>
 							<div className="typing__filter-option typing__filter--highlighted">
 								Quotes
-							</div>
+							</div> */}
 						</div>
-						<div
+						{/* <div
 							className="typing__values"
 							onClick={handleFilterValue}
 						>
@@ -139,17 +144,21 @@ export const TestDisplay = () => {
 									) : null}
 								</div>
 							))}
-						</div>
+						</div> */}
 						<div className="typing__config">
-							<div className="typing__custom typing__filter--highlighted">
-								Custom
+							<div className="typing__config__value">
+								{activeFilter.name}
 							</div>
 							<span style={{ color: "black", fontSize: "16px" }}>
 								|
 							</span>
-							<div className="typing__settings typing__filter--highlighted">
-								Settings
+							<div className="typing__config__value">
+								{activeFilter.value}
 							</div>
+							<span style={{ color: "black", fontSize: "16px" }}>
+								|
+							</span>
+							<div className="typing__config__value">icon</div>
 						</div>
 					</div>
 				</div>

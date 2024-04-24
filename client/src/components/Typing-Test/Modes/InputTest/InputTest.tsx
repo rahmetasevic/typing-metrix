@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { useTestStore } from "@stores/TestStore";
+import { useTestStore } from "@store/TestStore";
 import { useTimeCount } from "@hooks/useTimeCount";
 
 import "./InputTest.scss";
@@ -45,15 +45,15 @@ export const InputTest = () => {
 
 	useEffect(() => {
 		setUserInput("");
-		if (activity.status !== "STARTED") {
+		if (activity !== "STARTED") {
 			setWord(testContent[0], 0);
 			setChar(testContent[0][0], -1);
 		}
 		// if (activity.status === "COMPLETED") calcTestResults();
-	}, [testContent, activity.status]);
+	}, [testContent, activity]);
 
 	useEffect(() => {
-		if (activity.status === "STARTED") checkMatch();
+		if (activity === "STARTED") checkMatch();
 	}, [currChar]);
 
 	function detectKey(e: React.KeyboardEvent<HTMLInputElement>): void {
@@ -62,7 +62,7 @@ export const InputTest = () => {
 		// console.log(nextWord, activity);
 
 		// if (!nextWord || activity.status === "COMPLETED") {
-		// 	// setActivity({ status: "COMPLETED" });
+		// 	// setActivity({ "COMPLETED" });
 		// 	// resetTest();
 		// 	return;
 		// }
@@ -75,7 +75,7 @@ export const InputTest = () => {
 		if (key === "Tab" || key === "Enter") {
 			e.preventDefault();
 			// open command menu & pause the test
-			setActivity({ status: "STOPPED" });
+			setActivity("STOPPED");
 			alert("Test is paused!");
 			return;
 		} else if (key === "") {
@@ -85,16 +85,16 @@ export const InputTest = () => {
 			setChar(key, -1);
 			setUserInput("");
 			if (!nextWord) {
-				setActivity({ status: "COMPLETED" });
+				setActivity("COMPLETED");
 				return;
 			}
 			calcTestResults();
 			scrollContent();
 		} else if (key.length === 1) {
 			setChar(key, currChar.index + 1);
-			if (activity.status !== "STARTED") {
+			if (activity !== "STARTED") {
 				// setIsStarted(true);
-				setActivity({ status: "STARTED" });
+				setActivity("STARTED");
 				activeFilter.name !== "Time" ? startTimer() : startCountdown();
 			}
 		}
@@ -162,7 +162,7 @@ export const InputTest = () => {
 			if (
 				el.getBoundingClientRect().top + 10 !==
 					spn.getBoundingClientRect().top &&
-				activity.status === "STARTED"
+				activity === "STARTED"
 			) {
 				(
 					document.querySelector(".text__content") as HTMLDivElement
@@ -177,7 +177,7 @@ export const InputTest = () => {
 		<div
 			className="typing-test"
 			style={{
-				display: activity.status !== "COMPLETED" ? "flex" : "none",
+				display: activity !== "COMPLETED" ? "flex" : "none",
 			}}
 		>
 			<div className="text">

@@ -1,12 +1,18 @@
 import { create } from 'zustand';
 
 import { generateTestContent } from '@lib/generate-text';
-import { FilterOption } from '../constants';
+import { FilterOption } from '@constants/index';
 import { FilterProps } from 'types/index';
 
 type TestAccuracy = {
 	correct: number,
 	incorrect: number
+}
+
+type SelectedFilterProps = {
+	name: string,
+	value: string,
+	options?: string[]
 }
 
 type TextContent = {
@@ -21,13 +27,11 @@ type TestMetrics = {
 	errors: number
 }
 
-type TestStatus = {
-	status: "PENDING" | "STARTED" | "STOPPED" | "COMPLETED"
-}
-
+type TestStatus = "PENDING" | "STARTED" | "STOPPED" | "COMPLETED";
 type TestState = {
 	activity: TestStatus,
 	activeFilter: FilterProps,
+	selectedFilter: SelectedFilterProps
 	testContent: string[],
 	currWord: TextContent,
 	currChar: TextContent,
@@ -46,6 +50,7 @@ type TestActions = {
 	setTime: (seconds: number) => void,
 	setActivity: (status: TestStatus) => void,
 	setActiveFilter: (filter: FilterProps) => void,
+	setSelectedFilter: (filter: SelectedFilterProps) => void,
 	setTotalChars: (count: number) => void,
 	setCorrectChars: (count: number) => void,
 	setIncorrectChars: (count: number) => void,
@@ -56,8 +61,9 @@ type TestActions = {
 }
 
 const initialState: TestState = {
-	activity: { status: 'PENDING' },
+	activity: 'PENDING',
 	activeFilter: { name: 'Words', options: FilterOption['Words'], value: FilterOption['Words'][0] },
+	selectedFilter: { name: 'Words', value: '10' },
 	testContent: generateTestContent(Number(FilterOption['Words'][0])),
 	currWord: { text: '', index: -1 },
 	currChar: { text: '', index: 0 },
@@ -106,12 +112,19 @@ export const useTestStore = create<TestState & TestActions>()((set, get) => ({
 	setActiveFilter: (filter: FilterProps) => {
 		set({ activeFilter: filter })
 	},
+	setSelectedFilter: (filter: SelectedFilterProps) => {
+		set({ selectedFilter: filter })
+	},
 	setWordsLeft: (count: number) => {
 		set({ wordsLeft: count })
 	},
 	setResults: (result: TestMetrics) => {
 		set({ results: result })
 	},
+	// applyConfig: (cfc: Config) => {
+	// set(config: cfg)
+	// set({ ...initialState }, activeFilter)
+	// },
 	redoTest: () => {
 		document.querySelectorAll('.active-char').forEach(e => e.classList.remove('active-char'));
 

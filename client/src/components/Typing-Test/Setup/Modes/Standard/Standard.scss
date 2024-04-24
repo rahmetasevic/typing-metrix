@@ -1,0 +1,34 @@
+.standard-mode {
+	display: grid;
+	gap: 1rem;
+
+	.filter-values {
+		display: flex;
+		justify-content: center;
+		gap: 1rem;
+	}
+
+	.filter,
+	.filter__value {
+		padding: 1rem;
+		// background-color: #364348;
+		border-radius: 15px;
+		color: #fff;
+		border: 2px solid #ccc;
+
+		&:hover {
+			background-color: #000;
+			cursor: pointer;
+		}
+
+		&--highlighted {
+			background-color: #000;
+		}
+	}
+}
+
+.filters {
+	display: flex;
+	gap: 1rem;
+	justify-content: center;
+}
