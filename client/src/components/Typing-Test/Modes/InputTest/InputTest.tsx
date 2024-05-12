@@ -6,20 +6,11 @@ import { useTimeCount } from "@hooks/useTimeCount";
 import "./InputTest.scss";
 
 export const InputTest = () => {
-	// const [text, setText] = useState<string[]>(generateText(Number(props.value)));
-	// const [currWord, setCurrWord] = useState<Content>({text: '', index: -1});
-	// const [currChar, setCurrChar] = useState<Content>({text: '', index: -1});
-	// const [totalChars, setTotalChars] = useState<number>(0);
-	// const [timeTaken, setTimeTaken] = useState<number>(0);
-	// const [correct, setCorrect] = useState<number>(0);
-	// const [incorrect, setIncorrect] = useState<number>(0);
-
 	const [userInput, setUserInput] = useState<string>("");
 	const [startCountdown, startTimer] = useTimeCount();
 
 	const [typedWord, setTypedWord] = useState<string>("");
 	const [typeHistory, setTypeHistory] = useState<string[]>([]);
-	// const [isTestStarted, actions] = useCountdown();
 
 	const {
 		time,
@@ -33,7 +24,6 @@ export const InputTest = () => {
 		activeFilter,
 		wordsLeft,
 		setWordsLeft,
-		resetTest,
 		setResults,
 		totalChars,
 		correctChars,

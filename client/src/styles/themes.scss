@@ -1,0 +1,49 @@
+:root,
+[data-theme="dark"] {
+    --bg-primary: #1a1a1a;
+    --primary: #f2f2f2;
+    --secondary: #808080;
+    --alternate: #262626;
+    --font-primary: #f2f2f2;
+    --error-primary: #bf0000;
+}
+[data-theme="light"] {
+    --bg-primary: #f2f2f2;
+    --primary: #1a1a1a;
+    --secondary: #767676;
+    --alternate: #c2c2c2;
+    --font-primary: #1a1a1a;
+    --error-primary: #dd1c1c;
+}
+[data-theme="catppuccin"] {
+    --bg-primary: #1e1e2e;
+    --primary: #cba6f7;
+    --secondary: #7f849c;
+    --alternate: #181825;
+    --font-primary: #cdd6f4;
+    --error-primary: #f38ba8;
+}
+[data-theme="sonokai"] {
+    --bg-primary: #222327;
+    --primary: #ff6077;
+    --secondary: #595f6f;
+    --alternate: #33353f;
+    --font-primary: #e2e2e3;
+    --error-primary: #fc5d7c;
+}
+[data-theme="koopa beach"] {
+    --bg-primary: #fffffe;
+    --primary: #ff9d00;
+    --secondary: #565b6e;
+    --alternate: #bae8e8;
+    --font-primary: #272343;
+    --error-primary: #dd3322;
+}
+[data-theme="arc"] {
+    --bg-primary: #383c4a;
+    --primary: #5294e2;
+    --secondary: #d3dae3;
+    --alternate: #404552;
+    --font-primary: #f5f6f7;
+    --error-primary: #fc4138;
+}

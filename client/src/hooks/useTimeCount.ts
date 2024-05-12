@@ -22,17 +22,17 @@ export const useTimeCount = () => {
 
 	useEffect(() => {
 		stopTime();
-	}, [activity.status]);
+	}, [activity]);
 
 	useEffect(() => {
-		if (!timeConfig.type || !timeConfig.start || activity.status === 'COMPLETED') return;
+		if (!timeConfig.type || !timeConfig.start || activity === 'COMPLETED') return;
 		if (timeConfig.type === 'COUNTDOWN' && time < 1) {
-			setActivity({ status: 'COMPLETED' });
+			setActivity('COMPLETED');
 			return;
 		}
 
 		const interval = setInterval(() => {
-			if (activity.status !== 'STOPPED') {
+			if (activity !== 'STOPPED') {
 				setTime(timeConfig?.type === 'COUNTDOWN' ? time - 1 : time + 1);
 			}
 		}, 1000);
@@ -45,11 +45,11 @@ export const useTimeCount = () => {
 	function stopTime(): void {
 		console.log('timer ended!');
 
-		if (activity.status === 'PENDING') {
+		if (activity === 'PENDING') {
 			setTimeConfig({ start: false })
 		}
 
-		if (activity.status === 'COMPLETED') {
+		if (activity === 'COMPLETED') {
 			setTime(timeConfig?.type === 'COUNTDOWN' ? Number(activeFilter.value) : 0);
 		}
 	}

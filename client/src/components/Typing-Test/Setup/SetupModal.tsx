@@ -3,6 +3,7 @@ import { IoCloseSharp } from "react-icons/io5";
 
 import { Button } from "@components/Common/Button";
 import { useTestStore } from "@store/TestStore";
+import { ModalProps } from "types/index";
 
 import "./SetupModal.scss";
 
@@ -17,12 +18,7 @@ const Custom = lazy(() =>
 	}))
 );
 
-type SetupProps = {
-	visible: boolean;
-	close: () => void;
-};
-
-export const SetupModal = (props: SetupProps) => {
+export const SetupModal = (props: ModalProps) => {
 	const { visible, close } = props;
 	const [setupMode, setSetupMode] = useState<string>("standard");
 	const [activeFilter, selectedFilter, setActiveFilter] = useTestStore(
