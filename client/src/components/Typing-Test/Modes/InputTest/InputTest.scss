@@ -1,50 +1,51 @@
 .typing-test {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .text {
-	background-color: #3D3D3D;
-	color: #888787;
-	padding: 1rem;
-	border-radius: 0.7rem;
-	width: 25em;
-	height: 9em;
-	font-size: 24px;
+    background-color: var(--alternate);
+    color: var(--secondary);
+    padding: 1rem;
+    border-radius: 0.7rem;
+    width: 25em;
+    height: 9em;
+    font-size: 24px;
 
-	&__content {
-		overflow: hidden;
-		height: 9rem;
-		line-height: 3rem;
-		scroll-behavior: smooth;
-	}
+    &__content {
+        overflow: hidden;
+        height: 14vh;
+        font-size: 1em;
+        line-height: 2.4rem;
+        scroll-behavior: smooth;
+    }
 }
 
 .input-box {
-	position: absolute;
-	border: none;
-	outline: none;
-	border-radius: 0.5rem;
-	background-color: #1D1F27;
-	bottom: 5%;
-	height: 4rem;
-	width: 18rem;
-	text-align: center;
-	font-size: 24px;
-	letter-spacing: 2px;
-	color: #FFF;
+    position: absolute;
+    border: none;
+    outline: none;
+    border-radius: 0.5rem;
+    background-color: var(--bg-primary);
+    bottom: 5%;
+    height: 3.5rem;
+    width: 18rem;
+    text-align: center;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: var(--font-primary);
 
-	&:focus {
-		border-color: transparent;
-		border: none;
-		box-shadow: 0 0 0 3px #000;
-	}
+    &:focus {
+        border-color: transparent;
+        border: none;
+        box-shadow: 0 0 0 2px var(--secondary);
+    }
 }
 
 .active-char {
-	color:  #FFF;
+    color: var(--primary);
 }
 
 // ====> needs to be set after creating user preferences

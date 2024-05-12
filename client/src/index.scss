@@ -1,12 +1,16 @@
-// ideas for bg-colors #343b48, EDF1FF, #232429, 1D1F27, #2a2b2e
-$primary-color: #1D1F27;
+// ideas for bg-colors #343b48; EDF1FF, #232429, 1D1F27, #2a2b2e
+// $primary-color: #1d1f27;
+@import url("./styles/themes.scss");
 
 * {
 	padding: 0;
 	margin: 0;
+	box-sizing: border-box;
 }
 
 body {
-	background-color: $primary-color;
+	background-color: var(--bg-primary);
 	font-family: Cambria, Georgia, serif !important;
+	// transition: all 0.5s ease-in-out;
+	// transition: background-color 0.5s ease-in-out;
 }

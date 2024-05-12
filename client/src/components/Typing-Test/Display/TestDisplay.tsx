@@ -103,48 +103,7 @@ export const TestDisplay = () => {
 							onClick={() => setShowSetup(!showSetup)}
 						>
 							Setup
-							{/* <div className="typing__filter-option typing__filter--highlighted">
-								Words
-							</div>
-							<span style={{ color: "black", fontSize: "16px" }}>
-								|
-							</span>
-							<div className="typing__filter-option typing__filter--highlighted">
-								Time
-							</div>
-							<span style={{ color: "black", fontSize: "16px" }}>
-								|
-							</span>
-							<div className="typing__filter-option typing__filter--highlighted">
-								Quotes
-							</div> */}
 						</div>
-						{/* <div
-							className="typing__values"
-							onClick={handleFilterValue}
-						>
-							{activeFilter.options.map((option, ix) => (
-								<div
-									className="typing__filter-value typing__filter--highlighted"
-									key={ix}
-									data-option={option}
-								>
-									{option}
-									{ix !== activeFilter.options.length - 1 ? (
-										<span
-											style={{
-												color: "black",
-												fontSize: "16px",
-											}}
-											key={`dash-${ix}`}
-										>
-											{" "}
-											|
-										</span>
-									) : null}
-								</div>
-							))}
-						</div> */}
 						<div className="typing__config">
 							<div className="typing__config__value">
 								{activeFilter.name}

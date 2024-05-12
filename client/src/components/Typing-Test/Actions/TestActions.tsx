@@ -8,28 +8,18 @@ import { useTestStore } from "@store/TestStore";
 import "./TestActions.scss";
 
 export const TestActions = () => {
-	const [redoTest, resetTest] = useTestStore(
-		useShallow((state) => [state.redoTest, state.resetTest])
-	);
+    const [redoTest, resetTest] = useTestStore(
+        useShallow((state) => [state.redoTest, state.resetTest])
+    );
 
-	return (
-		<div className="test-actions">
-			{/* <Button
-				className="redo-button"
-				icon={<TbArrowBarToLeft />}
-				onClick={redoTest}
-			/>
-			<Button
-				className="restart-button"
-				icon={<MdRestartAlt />}
-				onClick={resetTest}
-			/> */}
-			<Button className="redo-button" onClick={redoTest}>
-				<TbArrowBarToLeft />
-			</Button>
-			<Button className="restart-button" onClick={resetTest}>
-				<MdRestartAlt />
-			</Button>
-		</div>
-	);
+    return (
+        <div className="test-actions">
+            <Button className="redo-button" onClick={redoTest}>
+                <TbArrowBarToLeft />
+            </Button>
+            <Button className="restart-button" onClick={resetTest}>
+                <MdRestartAlt />
+            </Button>
+        </div>
+    );
 };

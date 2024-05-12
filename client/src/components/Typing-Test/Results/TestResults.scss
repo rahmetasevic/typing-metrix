@@ -1,22 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&display=swap");
 
 .results {
-	display: flex;
-	// padding: 1rem;
-	gap: 3rem;
-	height: 3rem;
+    display: flex;
+    // padding: 1rem;
+    gap: 3rem;
+    height: 3rem;
 
-	&__time, &__wpm, &__acc, &__errors {
-		display: flex;
-		flex-direction: column;
-		line-height: 1;
-		text-align: center;
-		font-size: 24px;
-		color: #6ad6e0;
-		// font-family: "Covered By Your Grace", cursive;
-		
-		span {
-			color: #FFF;
-		}
-	}
+    &__time,
+    &__wpm,
+    &__acc,
+    &__errors {
+        display: flex;
+        flex-direction: column;
+        line-height: 1;
+        text-align: center;
+        font-size: 24px;
+        color: var(--primary);
+        // font-family: "Covered By Your Grace", cursive;
+
+        span {
+            color: var(--secondary);
+        }
+    }
 }

@@ -1,34 +1,36 @@
 .standard-mode {
-	display: grid;
-	gap: 1rem;
+    display: grid;
+    gap: 1rem;
 
-	.filter-values {
-		display: flex;
-		justify-content: center;
-		gap: 1rem;
-	}
+    .filter-values {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
 
-	.filter,
-	.filter__value {
-		padding: 1rem;
-		// background-color: #364348;
-		border-radius: 15px;
-		color: #fff;
-		border: 2px solid #ccc;
+    .filter,
+    .filter__value {
+        padding: 1rem;
+        background-color: var(--alternate);
+        border-radius: 15px;
+        color: var(--font-primary);
+        border: 2px solid var(--secondary);
 
-		&:hover {
-			background-color: #000;
-			cursor: pointer;
-		}
+        &:hover {
+            background-color: var(--font-primary);
+            color: var(--bg-primary);
+            cursor: pointer;
+        }
 
-		&--highlighted {
-			background-color: #000;
-		}
-	}
+        &--highlighted {
+            background-color: var(--primary);
+            color: var(--bg-primary);
+        }
+    }
 }
 
 .filters {
-	display: flex;
-	gap: 1rem;
-	justify-content: center;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
 }
