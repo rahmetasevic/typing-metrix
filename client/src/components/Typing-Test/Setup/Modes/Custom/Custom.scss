@@ -1,0 +1,56 @@
+.custom {
+	display: grid;
+	gap: 1rem;
+
+	&__actions {
+		display: flex;
+		gap: 1rem;
+
+		button {
+			display: flex;
+			align-items: center;
+			gap: 0.3rem;
+			background-color: var(--alternate);
+			color: var(--font-primary);
+			cursor: pointer;
+			outline: 0;
+			border: none;
+			padding: 0.5rem;
+			border-radius: 10px;
+			font-size: 16px;
+			transition: background 0.2s ease, color 0.2s ease,
+				box-shadow 0.2s ease;
+
+			&:hover {
+				background-color: var(--font-primary);
+				color: var(--bg-primary);
+			}
+		}
+	}
+
+	&__text {
+		&__area {
+			background: var(--alternate);
+			padding: 1rem;
+			border-radius: 10px;
+			border: none;
+			outline: none;
+			font-size: 1rem;
+			font-family: var(--font);
+			width: 100%;
+			resize: vertical;
+			min-height: 30vh;
+			color: var(--font-primary);
+
+			&:focus {
+				// border-color: transparent;
+				// border: none;
+				box-shadow: 0 0 0 2px var(--font-primary);
+			}
+		}
+	}
+
+	&__recents {
+		color: var(--font-primary);
+	}
+}

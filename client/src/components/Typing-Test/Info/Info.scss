@@ -1,0 +1,26 @@
+.info {
+	&__section {
+		display: flex;
+		align-items: center;
+		color: var(--font-primary);
+		font-size: 18px;
+		padding: 0.5rem;
+		border-radius: 15px;
+		gap: 1rem;
+		background-color: var(--alternate);
+
+		button {
+			display: inline-flex;
+			background-color: transparent;
+			border: none;
+			color: var(--secondary);
+			font-size: 24px;
+			transition: 0.2s;
+		}
+
+		button:hover {
+			color: var(--font-primary);
+			cursor: pointer;
+		}
+	}
+}

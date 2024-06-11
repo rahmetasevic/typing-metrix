@@ -78,7 +78,7 @@ export const InputTest = () => {
 				setActivity("COMPLETED");
 				return;
 			}
-			calcTestResults();
+			calcTestMetrics();
 			scrollContent();
 		} else if (key.length === 1) {
 			setChar(key, currChar.index + 1);
@@ -91,7 +91,7 @@ export const InputTest = () => {
 		setTotalChars(totalChars + 1);
 	}
 
-	function calcTestResults(): void {
+	function calcTestMetrics(): void {
 		const minutesTaken = (time / 60000) * 1000;
 		const accuracy = Math.round((correctChars / totalChars) * 100);
 		const grossWPM = Math.round(totalChars / 5 / minutesTaken);
@@ -167,7 +167,7 @@ export const InputTest = () => {
 		<div
 			className="typing-test"
 			style={{
-				display: activity !== "COMPLETED" ? "flex" : "none",
+				opacity: activity !== "COMPLETED" ? 1 : 0,
 			}}
 		>
 			<div className="text">

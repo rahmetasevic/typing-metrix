@@ -1,36 +1,54 @@
 .standard-mode {
-    display: grid;
-    gap: 1rem;
+	display: grid;
+	gap: 1rem;
 
-    .filter-values {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-    }
+	.filters {
+		display: grid;
+		gap: 1rem;
+		grid-template-columns: repeat(3, 1fr);
+	}
 
-    .filter,
-    .filter__value {
-        padding: 1rem;
-        background-color: var(--alternate);
-        border-radius: 15px;
-        color: var(--font-primary);
-        border: 2px solid var(--secondary);
+	.filter-values {
+		display: flex;
+		justify-content: center;
+		gap: 0.75rem;
+		color: var(--secondary);
+	}
 
-        &:hover {
-            background-color: var(--font-primary);
-            color: var(--bg-primary);
-            cursor: pointer;
-        }
+	.filter {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.5rem;
+		gap: 0.3rem;
+		// background-color: var(--alternate);
+		border-radius: 10px;
+		color: var(--secondary);
+		border: 2px solid var(--secondary);
 
-        &--highlighted {
-            background-color: var(--primary);
-            color: var(--bg-primary);
-        }
-    }
-}
+		&:hover {
+			color: var(--primary);
+			border: 2px solid var(--primary);
+			cursor: pointer;
+		}
 
-.filters {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
+		&--highlighted {
+			color: var(--primary);
+			border: 2px solid var(--primary);
+		}
+
+		&__value {
+			font-size: 28px;
+			font-weight: bold;
+
+			&:hover {
+				cursor: pointer;
+				color: var(--primary);
+			}
+
+			&--highlighted {
+				color: var(--primary);
+			}
+		}
+	}
 }
