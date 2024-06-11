@@ -8,18 +8,21 @@ import { useTestStore } from "@store/TestStore";
 import "./TestActions.scss";
 
 export const TestActions = () => {
-    const [redoTest, resetTest] = useTestStore(
-        useShallow((state) => [state.redoTest, state.resetTest])
-    );
+	const [activity, redoTest, resetTest] = useTestStore(
+		useShallow((state) => [state.activity, state.redoTest, state.resetTest])
+	);
 
-    return (
-        <div className="test-actions">
-            <Button className="redo-button" onClick={redoTest}>
-                <TbArrowBarToLeft />
-            </Button>
-            <Button className="restart-button" onClick={resetTest}>
-                <MdRestartAlt />
-            </Button>
-        </div>
-    );
+	return (
+		<div
+			className="test-actions"
+			style={{ opacity: activity === "COMPLETED" ? 1 : 0 }}
+		>
+			<Button className="redo-button" onClick={redoTest}>
+				<TbArrowBarToLeft />
+			</Button>
+			<Button className="restart-button" onClick={resetTest}>
+				<MdRestartAlt />
+			</Button>
+		</div>
+	);
 };

@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
+import { useForm, useFormContext } from "react-hook-form";
 
-import { FilterOption } from "@constants/index";
+import { FilterOption, SetupMode } from "@constants/index";
 import { useTestStore } from "@store/TestStore";
 
 import "./Standard.scss";
 
 export const Standard = () => {
-	const [selectedFilter, setSelectedFilter] = useTestStore(
-		useShallow((state) => [state.selectedFilter, state.setSelectedFilter])
-	);
+	const [filterName, setFilterName] = useState<string>("Words");
 
-	// const [selectedFilter, setSelectedFilter] =
-	// 	useState<keyof typeof FilterOption>("Words");
-	// const [filterValue, setFilterValue] = useState<string>("");
+	// const { register, setValue } = useForm();
+	const { register, formState, setValue, getValues } = useFormContext();
 
 	function handleFilterSelect(e: React.MouseEvent<HTMLDivElement>): void {
-		const val = (e.target as HTMLDivElement).dataset.value;
+		const filterName = (e.currentTarget as HTMLDivElement).dataset.value;
 
-		if (val) {
+		if (filterName) {
 			document
 				.querySelectorAll(".filter")
 				.forEach((x) => x.classList.remove("filter--highlighted"));
@@ -27,41 +25,61 @@ export const Standard = () => {
 				.querySelectorAll(".filter__value")
 				.forEach((x) => x.classList.remove("filter--highlighted"));
 			(e.target as HTMLDivElement).classList.add("filter--highlighted");
-			// setFilterValue(val);
-			// setSelectedFilter(val);
-			setSelectedFilter({ name: val, value: "" });
+			document
+				.querySelectorAll(".filter__value")
+				.forEach((x) =>
+					x.classList.remove("filter__value--highlighted")
+				);
+
+			setFilterName(filterName);
 		}
 	}
 
 	function handleFilterValue(e: React.MouseEvent<HTMLDivElement>): void {
-		const val = (e.target as HTMLDivElement).dataset.value;
+		const filterValue = (e.currentTarget as HTMLDivElement).dataset.value;
 
-		if (val) {
+		if (filterValue) {
 			document
 				.querySelectorAll(".filter__value")
-				.forEach((x) => x.classList.remove("filter--highlighted"));
-			(e.target as HTMLDivElement).classList.add("filter--highlighted");
-			// setFilterValue(val);
-			setSelectedFilter({ ...selectedFilter, value: val });
+				.forEach((x) =>
+					x.classList.remove("filter__value--highlighted")
+				);
+			(e.target as HTMLDivElement).classList.add(
+				"filter__value--highlighted"
+			);
+
+			setValue("filter", {
+				name: filterName,
+				value: filterValue,
+			});
 		}
 	}
 
 	return (
 		<div className="standard-mode">
-			<div className="filters" onClick={handleFilterSelect}>
-				{Object.keys(FilterOption).map((key, i) => (
-					<div
-						className={`filter filter__${key.toLowerCase()}`}
-						key={i}
-						data-value={key}
-					>
-						{key}
-					</div>
-				))}
+			<div className="filters">
+				{Object.keys(FilterOption).map((key, i) => {
+					const Icon = FilterOption[key].icon;
+					return (
+						<div
+							className={`filter filter__${key.toLowerCase()}`}
+							key={i}
+							data-value={key}
+							onClick={handleFilterSelect}
+						>
+							<Icon /> {key}
+						</div>
+					);
+				})}
 			</div>
-			<div className="filter-values" onClick={handleFilterValue}>
-				{FilterOption[selectedFilter.name].map((value, i) => (
-					<div className="filter__value" key={i} data-value={value}>
+			<div className="filter-values">
+				{FilterOption[filterName].values.map((value, i) => (
+					<div
+						className="filter__value"
+						key={i}
+						data-value={value}
+						onClick={handleFilterValue}
+					>
 						{value}
 					</div>
 				))}

@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { IoMdSettings } from "react-icons/io";
+import { HiMiniCommandLine } from "react-icons/hi2";
 
-import { TestResults } from "@components/Typing-Test/Results/TestResults";
+import { TestMetrics } from "@components/Typing-Test/Results/TestMetrics";
 import { TestActions } from "@components/Typing-Test/Actions/TestActions";
 import { InputTest } from "@components/Typing-Test/Modes/InputTest/InputTest";
 import { useTestStore } from "@store/TestStore";
 import { SetupModal } from "../Setup/SetupModal";
+import { Button } from "@components/Common/Button";
+import { Info } from "@components/Typing-Test/Info/Info";
 
 import "./TestDisplay.scss";
 // figure out how to dynamically import display components
@@ -24,16 +28,20 @@ export const TestDisplay = () => {
 	const [showSetup, setShowSetup] = useState<boolean>(false);
 
 	const [
+		mode,
 		testContent,
 		activity,
 		activeFilter,
+		selectedFilter,
 		setTime,
 		setTestContent,
 		setActiveFilter,
 	] = useTestStore((state) => [
+		state.mode,
 		state.testContent,
 		state.activity,
 		state.activeFilter,
+		state.selectedFilter,
 		state.setTime,
 		state.setTestContent,
 		state.setActiveFilter,
@@ -52,6 +60,7 @@ export const TestDisplay = () => {
 			generateCount = Number(activeFilter.value);
 			setTime(0);
 		}
+
 		setTestContent(generateCount);
 	}, [activeFilter]);
 
@@ -98,13 +107,25 @@ export const TestDisplay = () => {
 			{activity === "PENDING" ? (
 				<div className="test-config">
 					<div className="typing">
-						<div
-							className="typing__setup  typing--highlighted"
-							onClick={() => setShowSetup(!showSetup)}
-						>
-							Setup
+						<div className="typing__setup  typing--highlighted">
+							<Button
+								className="typing__setup__btn"
+								type="button"
+								onClick={() => setShowSetup(!showSetup)}
+							>
+								<IoMdSettings />
+								Setup
+							</Button>
+							<Button
+								className="typing__setup__btn"
+								type="button"
+							>
+								<HiMiniCommandLine />
+								Controls
+							</Button>
 						</div>
-						<div className="typing__config">
+						<Info />
+						{/* <div className="typing__config">
 							<div className="typing__config__value">
 								{activeFilter.name}
 							</div>
@@ -118,13 +139,14 @@ export const TestDisplay = () => {
 								|
 							</span>
 							<div className="typing__config__value">icon</div>
-						</div>
+						</div> */}
 					</div>
 				</div>
 			) : (
-				<TestResults />
+				<TestMetrics />
 			)}
 			<InputTest />
+			{/* {activity === "PENDING" && <Info />} */}
 			<TestActions />
 		</div>
 	);

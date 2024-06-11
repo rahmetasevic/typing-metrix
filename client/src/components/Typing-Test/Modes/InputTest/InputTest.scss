@@ -1,51 +1,52 @@
 .typing-test {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .text {
-    background-color: var(--alternate);
-    color: var(--secondary);
-    padding: 1rem;
-    border-radius: 0.7rem;
-    width: 25em;
-    height: 9em;
-    font-size: 24px;
+	background-color: var(--alternate);
+	color: var(--secondary);
+	padding: 1rem;
+	border-radius: 15px;
+	width: 45vw;
+	height: 26vh;
 
-    &__content {
-        overflow: hidden;
-        height: 14vh;
-        font-size: 1em;
-        line-height: 2.4rem;
-        scroll-behavior: smooth;
-    }
+	&__content {
+		overflow: hidden;
+		height: 15vh;
+		text-align: center;
+		font-size: 28px;
+		line-height: 2.5rem;
+		scroll-behavior: smooth;
+	}
 }
 
 .input-box {
-    position: absolute;
-    border: none;
-    outline: none;
-    border-radius: 0.5rem;
-    background-color: var(--bg-primary);
-    bottom: 5%;
-    height: 3.5rem;
-    width: 18rem;
-    text-align: center;
-    font-size: 24px;
-    letter-spacing: 2px;
-    color: var(--font-primary);
+	position: absolute;
+	border: none;
+	outline: none;
+	border-radius: 15px;
+	background-color: var(--bg-primary);
+	bottom: 5%;
+	height: 7vh;
+	width: 20vw;
+	text-align: center;
+	font-size: 24px;
+	letter-spacing: 2px;
+	color: var(--font-primary);
+	font-family: inherit;
 
-    &:focus {
-        border-color: transparent;
-        border: none;
-        box-shadow: 0 0 0 2px var(--secondary);
-    }
+	&:focus {
+		border-color: transparent;
+		border: none;
+		box-shadow: 0 0 0 2px var(--secondary);
+	}
 }
 
 .active-char {
-    color: var(--primary);
+	color: var(--primary);
 }
 
 // ====> needs to be set after creating user preferences
