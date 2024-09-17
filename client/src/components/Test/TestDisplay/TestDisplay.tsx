@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { IoMdSettings } from "react-icons/io";
 import { HiMiniCommandLine } from "react-icons/hi2";
 
-import { TestMetrics } from "@components/Typing-Test/Results/TestMetrics";
-import { TestActions } from "@components/Typing-Test/Actions/TestActions";
-import { InputTest } from "@components/Typing-Test/Modes/InputTest/InputTest";
+import { TestResult } from "@components/Test/TestResult";
+import { TestActions } from "@components/Test/TestActions";
+import { InputTest } from "@components/Test/TestMode/InputTest";
+import { TestSetup } from "@components/Test/TestSetup";
+import { Button } from "@components/Shared/Button";
+import { TestInfo } from "@components/Test/TestInfo";
 import { useTestStore } from "@store/TestStore";
-import { SetupModal } from "../Setup/SetupModal";
-import { Button } from "@components/Common/Button";
-import { Info } from "@components/Typing-Test/Info/Info";
 
 import "./TestDisplay.scss";
 // figure out how to dynamically import display components
@@ -26,7 +26,6 @@ export const TestDisplay = () => {
 	// const setTestContent = useTestStore((state) => state.setTestContent);
 	// const setActiveFilter = useTestStore((state) => state.setActiveFilter);
 	const [showSetup, setShowSetup] = useState<boolean>(false);
-
 	const [
 		mode,
 		testContent,
@@ -103,7 +102,7 @@ export const TestDisplay = () => {
 
 	return (
 		<div className="home">
-			<SetupModal visible={showSetup} close={() => setShowSetup(false)} />
+			<TestSetup visible={showSetup} close={() => setShowSetup(false)} />
 			{activity === "PENDING" ? (
 				<div className="test-config">
 					<div className="typing">
@@ -124,7 +123,7 @@ export const TestDisplay = () => {
 								Controls
 							</Button>
 						</div>
-						<Info />
+						<TestInfo />
 						{/* <div className="typing__config">
 							<div className="typing__config__value">
 								{activeFilter.name}
@@ -143,7 +142,7 @@ export const TestDisplay = () => {
 					</div>
 				</div>
 			) : (
-				<TestMetrics />
+				<TestResult />
 			)}
 			<InputTest />
 			{/* {activity === "PENDING" && <Info />} */}

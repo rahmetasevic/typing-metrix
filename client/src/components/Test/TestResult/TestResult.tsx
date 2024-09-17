@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 
 import { useTestStore } from "@store/TestStore";
 
-import "./TestMetrics.scss";
+import "./TestResult.scss";
 
-export const TestMetrics = () => {
+export const TestResult = () => {
 	const time = useTestStore((state) => state.time);
 	const activeFilter = useTestStore((state) => state.activeFilter);
 	const results = useTestStore((state) => state.results);

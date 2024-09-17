@@ -1,13 +1,13 @@
 import React from "react";
 import { MdRestartAlt } from "react-icons/md";
 
-import { Button } from "@components/Common/Button";
+import { Button } from "@components/Shared/Button";
 import { FilterOption } from "@constants/index";
 import { useTestStore } from "@store/TestStore";
 
-import "./Info.scss";
+import "./TestInfo.scss";
 
-export const Info = () => {
+export const TestInfo = () => {
 	const [activeFilter, resetTest] = useTestStore((state) => [
 		state.activeFilter,
 		state.resetTest,
