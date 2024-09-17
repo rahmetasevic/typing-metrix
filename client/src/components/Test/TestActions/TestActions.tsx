@@ -2,7 +2,7 @@ import { MdRestartAlt } from "react-icons/md";
 import { TbArrowBarToLeft } from "react-icons/tb";
 import { useShallow } from "zustand/react/shallow";
 
-import { Button } from "@components/Common/Button";
+import { Button } from "@components/Shared/Button";
 import { useTestStore } from "@store/TestStore";
 
 import "./TestActions.scss";

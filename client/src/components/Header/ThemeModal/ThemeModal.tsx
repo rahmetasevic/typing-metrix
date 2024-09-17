@@ -3,7 +3,7 @@ import { IoMdStar } from "react-icons/io";
 import { MdCheck } from "react-icons/md";
 
 import { themes } from "@assets/styles/themes/themes";
-import { Button } from "@components/Common/Button";
+import { Button } from "@components/Shared/Button";
 import { ModalProps } from "types/index";
 
 import "./ThemeModal.scss";

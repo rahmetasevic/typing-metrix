@@ -2,11 +2,12 @@ import React, { Suspense, lazy, useEffect, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { useForm, FormProvider, useFormContext } from "react-hook-form";
 
-import { Button } from "@components/Common/Button";
+import { Button } from "@components/Shared/Button";
 import { useTestStore } from "@store/TestStore";
 import { ModalProps } from "types/index";
 
-import "./SetupModal.scss";
+import "./TestSetup.scss";
+
 import { SetupMode } from "@constants/index";
 
 const Standard = lazy(() =>
@@ -20,7 +21,7 @@ const Custom = lazy(() =>
 	}))
 );
 
-export const SetupModal = (props: ModalProps) => {
+export const TestSetup = (props: ModalProps) => {
 	const methods = useForm();
 	const { visible, close } = props;
 	const [setupMode, setSetupMode] = useState<string>("standard");

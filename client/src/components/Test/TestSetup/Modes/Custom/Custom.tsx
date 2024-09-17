@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { CiBookmark } from "react-icons/ci";
 import { RiUploadLine } from "react-icons/ri";
 import { CgRemove } from "react-icons/cg";
+import { useFormContext } from "react-hook-form";
 
-import { Button } from "@components/Common/Button";
+import { Button } from "@components/Shared/Button";
 
 import "./Custom.scss";
-import { useFormContext } from "react-hook-form";
 
 export const Custom = () => {
 	const { register } = useFormContext();

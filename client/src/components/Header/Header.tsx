@@ -3,8 +3,8 @@ import { GiKeyboard } from "react-icons/gi";
 import { IoIosLogIn } from "react-icons/io";
 import { IoMdColorFill } from "react-icons/io";
 
-import { Button } from "@components/Common/Button";
-import { ThemeModal } from "@components/Header/ThemeModal/ThemeModal";
+import { Button } from "@components/Shared/Button";
+import { ThemeModal } from "@components/Header/ThemeModal";
 
 import "./Header.scss";
 
