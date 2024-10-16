@@ -96,7 +96,7 @@ export const InputTest = () => {
 		const accuracy = Math.round((correctChars / totalChars) * 100);
 		const grossWPM = Math.round(totalChars / 5 / minutesTaken);
 		const netWPM = Math.round(
-			Math.abs(totalChars / 5 - incorrectChars) / minutesTaken
+			Math.abs(totalChars / 5 - incorrectChars) / minutesTaken,
 		);
 
 		console.log("time", time);
@@ -144,10 +144,10 @@ export const InputTest = () => {
 	function scrollContent(): void {
 		setTimeout(() => {
 			const el: HTMLDivElement = document.querySelector(
-				".text__content"
+				".text__content",
 			) as HTMLDivElement;
 			const spn: HTMLSpanElement = document.querySelector(
-				".current-word"
+				".current-word",
 			) as HTMLSpanElement;
 			if (
 				el.getBoundingClientRect().top + 10 !==

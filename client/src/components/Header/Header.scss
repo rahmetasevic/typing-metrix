@@ -4,51 +4,51 @@
 // $secondary-color: #fffafa;
 
 #header {
-    padding: 0 5rem;
-    .navigation {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        color: var(--secondary);
+	padding: 0 5rem;
+	.navigation {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		color: var(--secondary);
 
-        &__settings {
-            display: flex;
-            gap: 1rem;
-            font-size: 36px;
+		&__settings {
+			display: flex;
+			gap: 1rem;
+			font-size: 36px;
 
-            & > * {
-                color: var(--secondary);
-                cursor: pointer;
-                background-color: transparent;
-                border: none;
-                outline: none;
-                font-size: 36px;
-                transition: 0.3s;
+			& > * {
+				color: var(--secondary);
+				cursor: pointer;
+				background-color: transparent;
+				border: none;
+				outline: none;
+				font-size: 36px;
+				transition: 0.3s;
 
-                &:hover {
-                    // box-shadow: 0 0 20px rgba(237, 241, 255, 1);
-                    // background-color: rgb(215, 220, 236);
-                    // color: #fff;
-                    color: var(--font-primary);
-                }
-            }
-        }
+				&:hover {
+					// box-shadow: 0 0 20px rgba(237, 241, 255, 1);
+					// background-color: rgb(215, 220, 236);
+					// color: #fff;
+					color: var(--font-primary);
+				}
+			}
+		}
 
-        &__logo {
-            font-family: "Bungee Shade";
-            font-size: 3em;
-            // color ideas #e70000, #51cfdb, #6ad6e0
-            color: var(--primary);
-        }
+		&__logo {
+			font-family: "Bungee Shade";
+			font-size: 3em;
+			// color ideas #e70000, #51cfdb, #6ad6e0
+			color: var(--primary);
+		}
 
-        &__home {
-            font-size: 36px;
-            color: var(--secondary);
-            transition: 0.3s;
+		&__home {
+			font-size: 36px;
+			color: var(--secondary);
+			transition: 0.3s;
 
-            &:hover {
-                color: var(--font-primary);
-            }
-        }
-    }
+			&:hover {
+				color: var(--font-primary);
+			}
+		}
+	}
 }
