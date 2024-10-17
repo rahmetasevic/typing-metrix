@@ -28,7 +28,7 @@ export const Standard = () => {
 			document
 				.querySelectorAll(".filter__value")
 				.forEach((x) =>
-					x.classList.remove("filter__value--highlighted")
+					x.classList.remove("filter__value--highlighted"),
 				);
 
 			setFilterName(filterName);
@@ -42,10 +42,10 @@ export const Standard = () => {
 			document
 				.querySelectorAll(".filter__value")
 				.forEach((x) =>
-					x.classList.remove("filter__value--highlighted")
+					x.classList.remove("filter__value--highlighted"),
 				);
 			(e.target as HTMLDivElement).classList.add(
-				"filter__value--highlighted"
+				"filter__value--highlighted",
 			);
 
 			setValue("filter", {

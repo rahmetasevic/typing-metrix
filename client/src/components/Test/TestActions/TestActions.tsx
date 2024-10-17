@@ -9,7 +9,11 @@ import "./TestActions.scss";
 
 export const TestActions = () => {
 	const [activity, redoTest, resetTest] = useTestStore(
-		useShallow((state) => [state.activity, state.redoTest, state.resetTest])
+		useShallow((state) => [
+			state.activity,
+			state.redoTest,
+			state.resetTest,
+		]),
 	);
 
 	return (

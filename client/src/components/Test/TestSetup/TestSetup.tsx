@@ -13,12 +13,12 @@ import { SetupMode } from "@constants/index";
 const Standard = lazy(() =>
 	import("./Modes/Standard/Standard").then(({ Standard }) => ({
 		default: Standard,
-	}))
+	})),
 );
 const Custom = lazy(() =>
 	import("./Modes/Custom/Custom").then(({ Custom }) => ({
 		default: Custom,
-	}))
+	})),
 );
 
 export const TestSetup = (props: ModalProps) => {
@@ -54,7 +54,7 @@ export const TestSetup = (props: ModalProps) => {
 				.querySelectorAll(".setup__modal__mode")
 				.forEach((x) => x.classList.remove("setup__mode--highlighted"));
 			(e.target as HTMLDivElement).classList.add(
-				"setup__mode--highlighted"
+				"setup__mode--highlighted",
 			);
 
 			setSetupMode(val.toLowerCase());
