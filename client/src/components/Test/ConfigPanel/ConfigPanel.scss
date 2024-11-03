@@ -1,0 +1,48 @@
+.panel {
+	display: flex;
+	gap: 0.5rem;
+
+	&__filters,
+	&__rules,
+	&__appearance {
+		display: flex;
+		align-items: center;
+		color: var(--font-primary);
+		padding: 0.5rem;
+		border-radius: 10px;
+		gap: 0.2rem;
+		background-color: var(--alternate);
+
+		&__titles {
+			display: flex;
+		}
+	}
+
+	.filter__value--highlighted,
+	.filter--highlighted {
+		color: var(--primary);
+	}
+
+	.splitter {
+		height: 100%;
+		width: 0.3em;
+		background: var(--bg-primary);
+		transition: 0.25s;
+		border: none;
+		border-radius: 10px;
+	}
+
+	button {
+		display: inline-flex;
+		background-color: transparent;
+		border: none;
+		color: var(--secondary);
+		font-size: 18px;
+		transition: 0.2s;
+	}
+
+	button:hover {
+		color: var(--font-primary);
+		cursor: pointer;
+	}
+}
