@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { GiKeyboard } from "react-icons/gi";
+import { CgKeyboard } from "react-icons/cg";
 import { IoIosLogIn } from "react-icons/io";
 import { IoMdColorFill } from "react-icons/io";
+import { IoSettings } from "react-icons/io5";
+import { FaRegFileLines } from "react-icons/fa6";
 
 import { Button } from "@components/Shared/Button";
 import { ThemeModal } from "@components/Header/ThemeModal";
@@ -22,8 +24,17 @@ export const Header: React.FC = () => {
 			<nav className="navigation">
 				<div className="navigation__pages">
 					<a className="navigation__home" href="/">
-						<GiKeyboard />
+						<CgKeyboard
+							className="icon"
+							style={{ transform: "scale(1.15)" }}
+						/>
 					</a>
+					<Button>
+						<FaRegFileLines className="icon" />
+					</Button>
+					<Button>
+						<IoSettings className="icon" />
+					</Button>
 				</div>
 				<a className="navigation__logo" href="/">
 					Typing Metrix
@@ -33,10 +44,10 @@ export const Header: React.FC = () => {
 						className="navigation__themes"
 						onClick={() => setShowThemes(!showThemes)}
 					>
-						<IoMdColorFill />
+						<IoMdColorFill className="icon" />
 					</Button>
 					<Button className="navigation__login">
-						<IoIosLogIn />
+						<IoIosLogIn className="icon" />
 					</Button>
 				</div>
 			</nav>

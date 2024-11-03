@@ -11,26 +11,31 @@
 		justify-content: space-between;
 		color: var(--secondary);
 
-		&__settings {
+		.icon {
+			font-size: 2em;
+			vertical-align: middle;
+			line-height: 1;
+		}
+
+		&__settings,
+		&__pages {
 			display: flex;
-			gap: 1rem;
-			font-size: 36px;
+		}
 
-			& > * {
-				color: var(--secondary);
-				cursor: pointer;
-				background-color: transparent;
-				border: none;
-				outline: none;
-				font-size: 36px;
-				transition: 0.3s;
+		button {
+			padding: 0.3rem;
+			color: var(--secondary);
+			cursor: pointer;
+			background-color: transparent;
+			border: none;
+			outline: none;
+			transition: color 0.1s linear;
 
-				&:hover {
-					// box-shadow: 0 0 20px rgba(237, 241, 255, 1);
-					// background-color: rgb(215, 220, 236);
-					// color: #fff;
-					color: var(--font-primary);
-				}
+			&:hover {
+				// box-shadow: 0 0 20px rgba(237, 241, 255, 1);
+				// background-color: rgb(215, 220, 236);
+				// color: #fff;
+				color: var(--font-primary);
 			}
 		}
 
@@ -42,9 +47,9 @@
 		}
 
 		&__home {
-			font-size: 36px;
 			color: var(--secondary);
-			transition: 0.3s;
+			padding: 0.3rem;
+			transition: color 0.1s linear;
 
 			&:hover {
 				color: var(--font-primary);

@@ -7,7 +7,7 @@ import { TestActions } from "@components/Test/TestActions";
 import { InputTest } from "@components/Test/TestMode/InputTest";
 import { TestSetup } from "@components/Test/TestSetup";
 import { Button } from "@components/Shared/Button";
-import { TestInfo } from "@components/Test/TestInfo";
+import { ConfigPanel } from "@components/Test/ConfigPanel";
 import { useTestStore } from "@store/TestStore";
 
 import "./TestDisplay.scss";
@@ -106,7 +106,8 @@ export const TestDisplay = () => {
 			{activity === "PENDING" ? (
 				<div className="test-config">
 					<div className="typing">
-						<div className="typing__setup  typing--highlighted">
+						<ConfigPanel />
+						{/* <div className="typing__setup  typing--highlighted">
 							<Button
 								className="typing__setup__btn"
 								type="button"
@@ -123,7 +124,7 @@ export const TestDisplay = () => {
 								Controls
 							</Button>
 						</div>
-						<TestInfo />
+                        */}
 						{/* <div className="typing__config">
 							<div className="typing__config__value">
 								{activeFilter.name}
