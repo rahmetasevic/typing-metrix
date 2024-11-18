@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { useTestStore } from "@store/TestStore";
+import { TestStatus } from "@constants/index";
 
 import "./TestResult.scss";
 
@@ -10,9 +11,14 @@ export const TestResult = () => {
 	const results = useTestStore((state) => state.results);
 	const wordsLeft = useTestStore((state) => state.wordsLeft);
 	const testContent = useTestStore((state) => state.testContent);
+	const activity = useTestStore((state) => state.activity);
+
+	if (!testContent) return null;
 
 	return (
-		<div className="results">
+		<div
+			className={`results ${activity !== TestStatus.Finish ? "hidden" : ""}`}
+		>
 			<div className="results__time">
 				{activeFilter.name !== "Time"
 					? wordsLeft + "/" + testContent.length

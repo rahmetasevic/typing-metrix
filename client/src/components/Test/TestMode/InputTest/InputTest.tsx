@@ -4,6 +4,7 @@ import { useTestStore } from "@store/TestStore";
 import { useTimeCount } from "@hooks/useTimeCount";
 
 import "./InputTest.scss";
+import { TestStatus } from "@constants/index";
 
 export const InputTest = () => {
 	const [userInput, setUserInput] = useState<string>("");
@@ -11,31 +12,52 @@ export const InputTest = () => {
 
 	const [typedWord, setTypedWord] = useState<string>("");
 	const [typeHistory, setTypeHistory] = useState<string[]>([]);
-
-	const {
+	const [
 		time,
 		testContent,
-		setWord,
-		setChar,
 		currWord,
 		currChar,
 		activity,
-		setActivity,
 		activeFilter,
 		wordsLeft,
-		setWordsLeft,
-		setResults,
 		totalChars,
 		correctChars,
-		setCorrectChars,
 		incorrectChars,
+		contentState,
+		setWord,
+		setChar,
+		setActivity,
+		setWordsLeft,
+		setResults,
+		setCorrectChars,
 		setIncorrectChars,
 		setTotalChars,
-	} = useTestStore();
+	] = useTestStore((state) => [
+		state.time,
+		state.testContent,
+		state.currWord,
+		state.currChar,
+		state.activity,
+		state.activeFilter,
+		state.wordsLeft,
+		state.totalChars,
+		state.correctChars,
+		state.incorrectChars,
+		state.contentState,
+		state.setWord,
+		state.setChar,
+		state.setActivity,
+		state.setWordsLeft,
+		state.setResults,
+		state.setCorrectChars,
+		state.setIncorrectChars,
+		state.setTotalChars,
+	]);
 
 	useEffect(() => {
+		// console.log("inputTest(activity, content)", activity, testContent);
 		setUserInput("");
-		if (activity !== "STARTED") {
+		if (activity !== TestStatus.Start && testContent.length > 0) {
 			setWord(testContent[0], 0);
 			setChar(testContent[0][0], -1);
 		}
@@ -43,7 +65,7 @@ export const InputTest = () => {
 	}, [testContent, activity]);
 
 	useEffect(() => {
-		if (activity === "STARTED") checkMatch();
+		if (activity === TestStatus.Start) checkMatch();
 	}, [currChar]);
 
 	function detectKey(e: React.KeyboardEvent<HTMLInputElement>): void {
@@ -65,7 +87,7 @@ export const InputTest = () => {
 		if (key === "Tab" || key === "Enter") {
 			e.preventDefault();
 			// open command menu & pause the test
-			setActivity("STOPPED");
+			setActivity(TestStatus.Stop);
 			alert("Test is paused!");
 			return;
 		} else if (key === "") {
@@ -75,16 +97,16 @@ export const InputTest = () => {
 			setChar(key, -1);
 			setUserInput("");
 			if (!nextWord) {
-				setActivity("COMPLETED");
+				setActivity(TestStatus.Finish);
 				return;
 			}
 			calcTestMetrics();
 			scrollContent();
 		} else if (key.length === 1) {
 			setChar(key, currChar.index + 1);
-			if (activity !== "STARTED") {
+			if (activity !== TestStatus.Start) {
 				// setIsStarted(true);
-				setActivity("STARTED");
+				setActivity(TestStatus.Start);
 				activeFilter.name !== "Time" ? startTimer() : startCountdown();
 			}
 		}
@@ -99,12 +121,12 @@ export const InputTest = () => {
 			Math.abs(totalChars / 5 - incorrectChars) / minutesTaken,
 		);
 
-		console.log("time", time);
-		console.log("filter", activeFilter);
-		console.log("c - i => ", correctChars, incorrectChars);
-		console.log("totalC", totalChars);
-		console.log("grossWPM", grossWPM);
-		console.log("netWPM", netWPM);
+		// console.log("time", time);
+		// console.log("filter", activeFilter);
+		// console.log("c - i => ", correctChars, incorrectChars);
+		// console.log("totalC", totalChars);
+		// console.log("grossWPM", grossWPM);
+		// console.log("netWPM", netWPM);
 
 		setResults({
 			grossWPM: Number.isFinite(grossWPM) ? grossWPM : 0,
@@ -152,7 +174,7 @@ export const InputTest = () => {
 			if (
 				el.getBoundingClientRect().top + 10 !==
 					spn.getBoundingClientRect().top &&
-				activity === "STARTED"
+				activity === TestStatus.Start
 			) {
 				(
 					document.querySelector(".text__content") as HTMLDivElement
@@ -163,27 +185,31 @@ export const InputTest = () => {
 		}, 50);
 	}
 
+	if (contentState.error) return null;
+
 	return (
 		<div
-			className="typing-test"
+			className={`typing-test ${activity === TestStatus.Finish ? "invisible" : ""}`}
 			style={{
-				opacity: activity !== "COMPLETED" ? 1 : 0,
+				opacity: activity !== TestStatus.Finish ? 1 : 0,
 			}}
 		>
 			<div className="text">
 				<div className="text__content">
-					{testContent.map((word, ix) => (
-						<span className={getWordClass(ix)} key={ix}>
-							{word.split("").map((char, iy) => (
-								<span
-									className={`word-${ix}-char-${iy}`}
-									key={iy}
-								>
-									{char}
-								</span>
-							))}{" "}
-						</span>
-					))}
+					{contentState.loading && <span>Loading...</span>}
+					{testContent.length > 0 &&
+						testContent.map((word, ix) => (
+							<span className={getWordClass(ix)} key={ix}>
+								{word.split("").map((char, iy) => (
+									<span
+										className={`word-${ix}-char-${iy}`}
+										key={iy}
+									>
+										{char}
+									</span>
+								))}{" "}
+							</span>
+						))}
 				</div>
 			</div>
 			<input

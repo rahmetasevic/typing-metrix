@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdStar } from "react-icons/io";
 import { MdCheck } from "react-icons/md";
 
-import { themes } from "@assets/styles/themes/themes";
 import { Button } from "@components/Shared/Button";
 import { ModalProps } from "types/index";
 
@@ -11,6 +10,23 @@ import "./ThemeModal.scss";
 export const ThemeModal = (props: ModalProps) => {
 	const { visible, close } = props;
 	const [selectedTheme, setSelectedTheme] = useState<string>("dark");
+	const [themes, setThemes] = useState<any[]>([]);
+
+	useEffect(() => {
+		getThemes();
+	}, []);
+
+	async function getThemes(): Promise<void> {
+		try {
+			const res = await fetch("/public/themes/themes.json").then((r) =>
+				r.json(),
+			);
+
+			setThemes(res);
+		} catch (error) {
+			console.log("error in getting themes data");
+		}
+	}
 
 	function handleSelectTheme(e: React.MouseEvent<HTMLDivElement>): void {
 		const val = (e.currentTarget as HTMLDivElement).dataset.value;
@@ -21,7 +37,9 @@ export const ThemeModal = (props: ModalProps) => {
 		}
 	}
 
-	return visible ? (
+	if (!visible) return null;
+
+	return (
 		<div
 			className={`themes ${visible ? "themes__show" : ""}`}
 			onClick={(e) => {
@@ -46,6 +64,16 @@ export const ThemeModal = (props: ModalProps) => {
 						key={theme.name}
 					>
 						<div className="themes__modal__display">
+							<div className="themes__info">
+								<span>{theme.name}</span>
+								{selectedTheme === theme.name && (
+									<MdCheck
+										style={{
+											color: `${theme.textPrimary}`,
+										}}
+									/>
+								)}
+							</div>
 							<div className="themes__colors">
 								<div
 									className="themes__colors__paint"
@@ -66,20 +94,10 @@ export const ThemeModal = (props: ModalProps) => {
 									}}
 								></div>
 							</div>
-							<div className="themes__info">
-								<span>{theme.name}</span>
-								{selectedTheme === theme.name && (
-									<MdCheck
-										style={{
-											color: `${theme.textPrimary}`,
-										}}
-									/>
-								)}
-							</div>
 						</div>
 					</div>
 				))}
 			</div>
 		</div>
-	) : null;
+	);
 };

@@ -1,7 +1,7 @@
 export type FilterProps = {
 	name: string;
-	options: string[];
-	value: string;
+	options: string[] | null;
+	value: string | null;
 };
 
 export type ModalProps = {

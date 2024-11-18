@@ -2,22 +2,49 @@ import React, { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { BsInputCursor } from "react-icons/bs";
 
-import { FilterOption, SetupMode } from "@constants/index";
+import { FilterOption, SetupMode, TestStatus } from "@constants/index";
 import { useTestStore } from "@store/TestStore";
 import { Button } from "@components/Shared/Button";
 
 import "./ConfigPanel.scss";
 
 export const ConfigPanel = () => {
-	const [filterName, setFilterName] = useState<string>("Words");
-	const [activeFilter, setActiveFilter] = useTestStore((state) => [
-		state.activeFilter,
-		state.setActiveFilter,
-	]);
+	const [activeFilter, activity, setActiveFilter, setTime, setTestContent] =
+		useTestStore((state) => [
+			state.activeFilter,
+			state.activity,
+			state.setActiveFilter,
+			state.setTime,
+			state.setTestContent,
+		]);
+
+	useEffect(() => {
+		console.log("panel act", activity);
+	}, [activity]);
+
+	useEffect(() => {
+		console.log("actFil", activeFilter);
+	}, [activeFilter]);
+
+	useEffect(() => {
+		// let generateCount: number;
+		// activeFilter.name === "Time"
+		// 	? Number(activeFilter.value) * 10
+		// 	: Number(activeFilter.value);
+		if (activeFilter.name === "Time") {
+			// generateCount = Number(activeFilter.value) * 10;
+			setTime(Number(activeFilter.value));
+		} else {
+			// generateCount = Number(activeFilter.value);
+			setTime(0);
+		}
+
+		setTestContent();
+	}, [activeFilter]);
 
 	function handleFilterSelect(e: React.MouseEvent<HTMLButtonElement>): void {
 		const filterName = e.currentTarget.textContent;
-		console.log(filterName);
+		// console.log(filterName);
 
 		if (filterName) {
 			document
@@ -34,13 +61,17 @@ export const ConfigPanel = () => {
 					x.classList.remove("filter__value--highlighted"),
 				);
 
-			setActiveFilter({ ...activeFilter, name: filterName });
+			setActiveFilter({
+				name: filterName,
+				options: FilterOption[filterName]?.values ?? null,
+				value: FilterOption[filterName]?.values?.[0] ?? null,
+			});
 		}
 	}
 
 	function handleFilterValue(e: React.MouseEvent<HTMLButtonElement>): void {
 		const filterValue = e.currentTarget.textContent;
-		console.log(filterValue);
+		// console.log(filterValue);
 
 		if (filterValue) {
 			document
@@ -49,13 +80,15 @@ export const ConfigPanel = () => {
 					x.classList.remove("filter__value--highlighted"),
 				);
 			e.currentTarget.classList.add("filter__value--highlighted");
-		}
 
-		setActiveFilter({ ...activeFilter, value: filterValue });
+			setActiveFilter({ ...activeFilter, value: filterValue });
+		}
 	}
 
 	return (
-		<div className="panel">
+		<div
+			className={`panel ${activity !== TestStatus.Pending ? "hidden" : ""}`}
+		>
 			<div className="panel__filters">
 				<div className="panel__filters__titles">
 					{Object.keys(FilterOption).map((key, i) => {
@@ -70,17 +103,23 @@ export const ConfigPanel = () => {
 						);
 					})}
 				</div>
-				<hr className="splitter" />
-				<div className="filter-values">
-					{FilterOption[activeFilter.name].values.map((value, i) => (
-						<Button
-							className="filter__value"
-							key={i}
-							onClick={handleFilterValue}
-						>
-							{value}
-						</Button>
-					))}
+				<hr
+					className={`splitter ${activeFilter.name === "Quotes" ? "invisible" : ""}`}
+				/>
+				<div
+					className={`filter-values ${activeFilter.name === "Quotes" ? "invisible" : ""}`}
+				>
+					{FilterOption[activeFilter.name]?.values?.map(
+						(value, i) => (
+							<Button
+								className="filter__value"
+								key={i}
+								onClick={handleFilterValue}
+							>
+								{value}
+							</Button>
+						),
+					)}
 				</div>
 			</div>
 			<div className="panel__rules">

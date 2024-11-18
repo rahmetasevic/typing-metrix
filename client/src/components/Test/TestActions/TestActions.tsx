@@ -4,6 +4,7 @@ import { useShallow } from "zustand/react/shallow";
 
 import { Button } from "@components/Shared/Button";
 import { useTestStore } from "@store/TestStore";
+import { TestStatus } from "@constants/index";
 
 import "./TestActions.scss";
 
@@ -18,8 +19,7 @@ export const TestActions = () => {
 
 	return (
 		<div
-			className="test-actions"
-			style={{ opacity: activity === "COMPLETED" ? 1 : 0 }}
+			className={`actions ${activity !== TestStatus.Finish ? "invisible" : ""}`}
 		>
 			<Button className="redo-button" onClick={redoTest}>
 				<TbArrowBarToLeft />

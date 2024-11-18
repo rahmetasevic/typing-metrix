@@ -1,8 +1,9 @@
 import { create } from "zustand";
 
-import { generateTestContent } from "@lib/generate-text";
 import { FilterOption } from "@constants/index";
-import { FilterProps } from "types/index";
+import { FilterProps } from "types";
+import { TestStatus } from "@constants/index";
+import { generateContent } from "@utils";
 
 type TestAccuracy = {
 	correct: number;
@@ -27,7 +28,12 @@ type TestMetrics = {
 	errors: number;
 };
 
-type TestStatus = "PENDING" | "STARTED" | "STOPPED" | "COMPLETED";
+type ContentState = {
+	loading?: boolean;
+	error?: string | null;
+};
+
+// type TestStatus = "PENDING" | "STARTED" | "STOPPED" | "COMPLETED";
 export type TestMode = "STANDARD" | "CUSTOM";
 type TestState = {
 	mode: TestMode;
@@ -43,11 +49,13 @@ type TestState = {
 	correctChars: number;
 	incorrectChars: number;
 	results: TestMetrics;
+	contentState: ContentState;
+	dictionary: string[];
 };
 
 type TestActions = {
 	setMode: (mode: TestMode) => void;
-	setTestContent: (size: number, content?: string[]) => void;
+	setTestContent: (content?: string[]) => void;
 	setWord: (word: string, index: number) => void;
 	setChar: (char: string, index: number) => void;
 	setTime: (seconds: number) => void;
@@ -59,20 +67,23 @@ type TestActions = {
 	setIncorrectChars: (count: number) => void;
 	setWordsLeft: (count: number) => void;
 	setResults: (result: TestMetrics) => void;
+	setContentState: (currentState: ContentState) => void;
+	setDictionary: (dictionary: string[]) => void;
 	redoTest: () => void;
 	resetTest: () => void;
 };
 
 const initialState: TestState = {
 	mode: "STANDARD",
-	activity: "PENDING",
+	// activity: "PENDING",
+	activity: TestStatus.Pending,
 	activeFilter: {
 		name: "Words",
 		options: FilterOption["Words"].values,
 		value: FilterOption["Words"].values[0],
 	},
 	selectedFilter: { name: "Words", value: "10" },
-	testContent: generateTestContent(Number(FilterOption["Words"].values[0])),
+	testContent: [],
 	currWord: { text: "", index: -1 },
 	currChar: { text: "", index: 0 },
 	totalChars: 0,
@@ -81,6 +92,8 @@ const initialState: TestState = {
 	time: 0,
 	wordsLeft: 0,
 	results: { grossWPM: 0, netWPM: 0, accuracy: 0, errors: 0 },
+	contentState: { loading: false, error: null },
+	dictionary: [],
 };
 
 export const useTestStore = create<TestState & TestActions>()((set, get) => ({
@@ -88,8 +101,46 @@ export const useTestStore = create<TestState & TestActions>()((set, get) => ({
 	setMode: (mode: TestMode) => {
 		set({ mode: mode });
 	},
-	setTestContent: (size: number, content?: string[]) => {
-		set({ testContent: content ?? generateTestContent(size) });
+	setTestContent: async (content?: string[]) => {
+		// content as a parameter => for custom content that user inputs
+		// console.log("cst content", content);
+		set({ contentState: { loading: true, error: null } });
+		try {
+			// same content for words & time filters
+			const currentFilterName =
+				get().activeFilter.name !== "Quotes" ? "words" : "quotes";
+			const url =
+				currentFilterName !== "quotes"
+					? "/public/dictionaries/english_common.json"
+					: "/public/quotes/quotes.json";
+			const response = await fetch(url);
+			if (response.ok) {
+				const data = await response.json();
+				set({
+					dictionary: data[currentFilterName],
+				});
+				set({
+					testContent:
+						content ??
+						generateContent(data[currentFilterName], {
+							name: currentFilterName,
+							value: Number(get().activeFilter.value),
+						}),
+				});
+			} else {
+				console.log("failed to fetch dictionary content");
+			}
+		} catch (error) {
+			console.log("error in getting content data:", error);
+			set({
+				contentState: {
+					loading: false,
+					error: "error in getting content data",
+				},
+			});
+		} finally {
+			set({ contentState: { loading: false, error: null } });
+		}
 	},
 	setWord: (text: string, index: number) => {
 		set({ currWord: { text, index } });
@@ -124,33 +175,39 @@ export const useTestStore = create<TestState & TestActions>()((set, get) => ({
 	setResults: (result: TestMetrics) => {
 		set({ results: result });
 	},
-	// applyConfig: (cfc: Config) => {
-	// set(config: cfg)
-	// set({ ...initialState }, activeFilter)
-	// },
+	setContentState: (currentState: ContentState) => {
+		set({ contentState: currentState });
+	},
+	setDictionary(dictionary: string[]) {
+		set({ dictionary: dictionary });
+	},
 	redoTest: () => {
 		document
 			.querySelectorAll(".active-char")
 			.forEach((e) => e.classList.remove("active-char"));
 
-		// set((state) => ({
-		// 	currWord: { text: state.testContent[0], index: 0 },
-		// 	currChar: { text: state.testContent[0][0], index: 0 },
-		// 	activity: { status: "PENDING" },
-		// 	wordsLeft: 0
-		// }))
-		set({ ...initialState });
+		set({
+			...initialState,
+			dictionary: get().dictionary,
+			testContent: get().testContent,
+			activeFilter: get().activeFilter,
+		});
 	},
 	resetTest: () => {
 		// bug when 50+ words is finished, previous text stays hidden at top of the element
 		document
 			.querySelectorAll(".active-char")
 			.forEach((e) => e.classList.remove("active-char"));
-		const filterValue = Number(get().activeFilter.value);
-		const generatedText: string[] = generateTestContent(
-			get().activeFilter.name === "Time" ? filterValue * 10 : filterValue,
-		);
-		set({ ...initialState, testContent: generatedText });
-		// set({ testContent: generatedText, currWord: { text: generatedText[0], index: 0 }, currChar: { text: generatedText[0][0], index: -1 }, time: 0, activity: { status: "PENDING" }, wordsLeft: 0, results: { grossWPM: 0, accuracy: 0, errors: 0 } })
+		const generatedText: string[] = generateContent(get().dictionary, {
+			name: get().activeFilter.name.toLowerCase(),
+			value: Number(get().activeFilter.value),
+		});
+
+		set({
+			...initialState,
+			testContent: generatedText,
+			dictionary: get().dictionary,
+			activeFilter: get().activeFilter,
+		});
 	},
 }));

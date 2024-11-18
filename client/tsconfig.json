@@ -13,7 +13,8 @@
 			"@lib/*": ["lib/*"],
 			"@store/*": ["store/*"],
 			"@constants/*": ["constants/*"],
-			"types/*": ["./types/*"]
+			"@utils/*": ["utils/*"],
+			"types/*": ["/types/*"],
 		},
 		/* Bundler mode */
 		"moduleResolution": "bundler",

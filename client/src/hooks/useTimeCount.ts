@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { useTestStore } from "@store/TestStore";
+import { TestStatus } from "@constants/index";
 
 type TimeProps = {
 	type?: "COUNTDOWN" | "TIMER";
@@ -32,15 +33,19 @@ export const useTimeCount = () => {
 	}, [activity]);
 
 	useEffect(() => {
-		if (!timeConfig.type || !timeConfig.start || activity === "COMPLETED")
+		if (
+			!timeConfig.type ||
+			!timeConfig.start ||
+			activity === TestStatus.Finish
+		)
 			return;
 		if (timeConfig.type === "COUNTDOWN" && time < 1) {
-			setActivity("COMPLETED");
+			setActivity(TestStatus.Finish);
 			return;
 		}
 
 		const interval = setInterval(() => {
-			if (activity !== "STOPPED") {
+			if (activity !== TestStatus.Stop) {
 				setTime(timeConfig?.type === "COUNTDOWN" ? time - 1 : time + 1);
 			}
 		}, 1000);
@@ -53,11 +58,11 @@ export const useTimeCount = () => {
 	function stopTime(): void {
 		console.log("timer ended!");
 
-		if (activity === "PENDING") {
+		if (activity === TestStatus.Pending) {
 			setTimeConfig({ start: false });
 		}
 
-		if (activity === "COMPLETED") {
+		if (activity === TestStatus.Finish) {
 			setTime(
 				timeConfig?.type === "COUNTDOWN"
 					? Number(activeFilter.value)
