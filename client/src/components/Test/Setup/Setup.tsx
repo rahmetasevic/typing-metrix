@@ -4,9 +4,9 @@ import { useForm, FormProvider, useFormContext } from "react-hook-form";
 
 import { Button } from "@components/Shared/Button";
 import { useTestStore } from "@store/TestStore";
-import { ModalProps } from "types/index";
+import { ModalProps } from "types";
 
-import "./TestSetup.scss";
+import "./Setup.scss";
 
 import { SetupMode } from "@constants/index";
 
@@ -21,7 +21,7 @@ const Custom = lazy(() =>
 	})),
 );
 
-export const TestSetup = (props: ModalProps) => {
+export const Setup = (props: ModalProps) => {
 	const methods = useForm();
 	const { visible, close } = props;
 	const [setupMode, setSetupMode] = useState<string>("standard");

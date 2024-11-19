@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useShallow } from "zustand/react/shallow";
 import { BsInputCursor } from "react-icons/bs";
 
 import { FilterOption, SetupMode, TestStatus } from "@constants/index";

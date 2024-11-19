@@ -5,9 +5,9 @@ import { Button } from "@components/Shared/Button";
 import { FilterOption } from "@constants/index";
 import { useTestStore } from "@store/TestStore";
 
-import "./TestInfo.scss";
+import "./Info.scss";
 
-export const TestInfo = () => {
+export const Info = () => {
 	const [activeFilter, resetTest] = useTestStore((state) => [
 		state.activeFilter,
 		state.resetTest,

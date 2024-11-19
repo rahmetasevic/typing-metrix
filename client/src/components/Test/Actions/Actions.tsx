@@ -6,9 +6,9 @@ import { Button } from "@components/Shared/Button";
 import { useTestStore } from "@store/TestStore";
 import { TestStatus } from "@constants/index";
 
-import "./TestActions.scss";
+import "./Actions.scss";
 
-export const TestActions = () => {
+export const Actions = () => {
 	const [activity, redoTest, resetTest] = useTestStore(
 		useShallow((state) => [
 			state.activity,

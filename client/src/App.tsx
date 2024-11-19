@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { Header } from "@components/Header";
-import { TestDisplay } from "@components/Test/TestDisplay";
+import { Display } from "@components/Test/Display";
 
 import "./styles/App.scss";
 
@@ -10,7 +10,7 @@ function App() {
 		<div className="app">
 			<Header />
 			<div className="test-wrapper">
-				<TestDisplay />
+				<Display />
 			</div>
 		</div>
 	);

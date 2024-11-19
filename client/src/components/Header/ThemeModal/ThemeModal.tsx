@@ -3,7 +3,7 @@ import { IoMdStar } from "react-icons/io";
 import { MdCheck } from "react-icons/md";
 
 import { Button } from "@components/Shared/Button";
-import { ModalProps } from "types/index";
+import { ModalProps } from "types";
 
 import "./ThemeModal.scss";
 
@@ -18,7 +18,7 @@ export const ThemeModal = (props: ModalProps) => {
 
 	async function getThemes(): Promise<void> {
 		try {
-			const res = await fetch("/public/themes/themes.json").then((r) =>
+			const res = await fetch("/themes/themes.json").then((r) =>
 				r.json(),
 			);
 

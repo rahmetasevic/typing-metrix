@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { FilterOption } from "@constants/index";
 import { FilterProps } from "types";
 import { TestStatus } from "@constants/index";
-import { generateContent } from "@utils";
+import { generateContent } from "@utils/index";
 
 type TestAccuracy = {
 	correct: number;
@@ -111,8 +111,8 @@ export const useTestStore = create<TestState & TestActions>()((set, get) => ({
 				get().activeFilter.name !== "Quotes" ? "words" : "quotes";
 			const url =
 				currentFilterName !== "quotes"
-					? "/public/dictionaries/english_common.json"
-					: "/public/quotes/quotes.json";
+					? "/dictionaries/english_common.json"
+					: "/quotes/quotes.json";
 			const response = await fetch(url);
 			if (response.ok) {
 				const data = await response.json();
