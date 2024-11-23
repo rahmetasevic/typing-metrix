@@ -31,7 +31,7 @@ export default defineConfig({
 				replacement: path.resolve(__dirname, "src/store"),
 			},
 			{
-				find: "@types",
+				find: "types",
 				replacement: path.resolve(__dirname, "src/types"),
 			},
 			{

@@ -54,11 +54,11 @@ export const ConfigPanel = () => {
 				.querySelectorAll(".filter__value")
 				.forEach((x) => x.classList.remove("filter--highlighted"));
 			e.currentTarget.classList.add("filter--highlighted");
-			document
-				.querySelectorAll(".filter__value")
-				.forEach((x) =>
-					x.classList.remove("filter__value--highlighted"),
-				);
+			// document
+			// 	.querySelectorAll(".filter__value")
+			// 	.forEach((x) =>
+			// 		x.classList.remove("filter__value--highlighted"),
+			// 	);
 
 			setActiveFilter({
 				name: filterName,
@@ -90,14 +90,14 @@ export const ConfigPanel = () => {
 		>
 			<div className="panel__filters">
 				<div className="panel__filters__titles">
-					{Object.keys(FilterOption).map((key, i) => {
+					{Object.keys(FilterOption).map((filterName, i) => {
 						return (
 							<Button
-								className={`filter__title filter__${key.toLowerCase()}`}
+								className={`filter__title filter__${filterName.toLowerCase()} ${activeFilter.name === filterName ? "filter--highlighted" : ""}`}
 								key={i}
 								onClick={handleFilterSelect}
 							>
-								{key}
+								{filterName}
 							</Button>
 						);
 					})}
@@ -109,13 +109,13 @@ export const ConfigPanel = () => {
 					className={`filter-values ${activeFilter.name === "Quotes" ? "invisible" : ""}`}
 				>
 					{FilterOption[activeFilter.name]?.values?.map(
-						(value, i) => (
+						(filterValue, i) => (
 							<Button
-								className="filter__value"
+								className={`filter__value ${activeFilter.value === filterValue ? "filter__value--highlighted" : ""}`}
 								key={i}
 								onClick={handleFilterValue}
 							>
-								{value}
+								{filterValue}
 							</Button>
 						),
 					)}
