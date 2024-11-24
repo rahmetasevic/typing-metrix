@@ -55,15 +55,17 @@ export const ThemeModal = (props: ModalProps) => {
 								? "themes--highlighted"
 								: "none"
 						}`}
-						style={{
-							backgroundColor: `${theme.backgroundPrimary}`,
-							color: `${theme.textPrimary}`,
-						}}
 						onClick={handleSelectTheme}
 						data-value={theme.name}
 						key={theme.name}
 					>
-						<div className="themes__modal__display">
+						<div
+							className="themes__modal__display"
+							style={{
+								backgroundColor: `${theme.backgroundPrimary}`,
+								color: `${theme.textPrimary}`,
+							}}
+						>
 							<div className="themes__info">
 								<span>{theme.name}</span>
 								{selectedTheme === theme.name && (
