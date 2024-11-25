@@ -13,7 +13,7 @@
 	transition: all 0.2s ease;
 
 	&--highlighted {
-		border: 3px solid var(--primary) !important;
+		border: 2px solid var(--primary) !important;
 	}
 
 	&__modal {
@@ -21,20 +21,20 @@
 		position: absolute;
 		top: 15%;
 		grid-template-columns: repeat(5, 1fr);
-		background-color: var(--bg-primary);
+		background-color: var(--alternate);
 		box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 1);
 		padding: 0.5rem;
 		gap: 0.5rem;
 		border-radius: 10px;
-		width: 60%;
+		width: 50%;
 
 		&__display {
 			display: flex;
 			flex-direction: column;
 			gap: 0.3rem;
-			padding: 0.25rem;
-			border-radius: 5px;
-			border: 1px solid var(--bg-primary);
+			padding: 0.2rem;
+			// border-radius: 5px;
+			// border: 1px solid var(--bg-primary);
 		}
 
 		&__controls {
@@ -46,12 +46,12 @@
 		&__theme {
 			display: grid;
 			padding: 0.15rem;
-			border-radius: 9px;
+			border-radius: 5px;
 			cursor: pointer;
-			border: 3px solid var(--secondary);
+			border: 2px solid var(--secondary);
 
 			&:hover {
-				border: 3px solid var(--primary);
+				border: 2px solid var(--primary);
 			}
 		}
 	}
@@ -59,11 +59,12 @@
 	&__colors {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
-		gap: 0.3rem;
-		// border-radius: 15px;
+		padding: 0.3rem;
+		gap: 1rem;
+		border-radius: 5px;
 
 		&__paint {
-			padding: 0.8rem 0;
+			padding: 0.7rem 0;
 			border-radius: 5px;
 		}
 
@@ -80,6 +81,7 @@
 
 		span {
 			font-size: 16px;
+			color: var(--font-primary);
 		}
 	}
 
