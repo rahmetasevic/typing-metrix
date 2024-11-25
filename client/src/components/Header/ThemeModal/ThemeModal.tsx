@@ -59,13 +59,7 @@ export const ThemeModal = (props: ModalProps) => {
 						data-value={theme.name}
 						key={theme.name}
 					>
-						<div
-							className="themes__modal__display"
-							style={{
-								backgroundColor: `${theme.backgroundPrimary}`,
-								color: `${theme.textPrimary}`,
-							}}
-						>
+						<div className="themes__modal__display">
 							<div className="themes__info">
 								<span>{theme.name}</span>
 								{selectedTheme === theme.name && (
@@ -76,7 +70,13 @@ export const ThemeModal = (props: ModalProps) => {
 									/>
 								)}
 							</div>
-							<div className="themes__colors">
+							<div
+								className="themes__colors"
+								style={{
+									backgroundColor: `${theme.backgroundPrimary}`,
+									color: `${theme.textPrimary}`,
+								}}
+							>
 								<div
 									className="themes__colors__paint"
 									style={{
