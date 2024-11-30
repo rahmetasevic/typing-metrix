@@ -119,14 +119,17 @@ export const useTestStore = create<TestState & TestActions>()((set, get) => ({
 				set({
 					dictionary: data[currentFilterName],
 				});
-				set({
-					testContent:
-						content ??
-						generateContent(data[currentFilterName], {
-							name: currentFilterName,
-							value: Number(get().activeFilter.value),
-						}),
-				});
+
+				setTimeout(() => {
+					set({
+						testContent:
+							content ??
+							generateContent(data[currentFilterName], {
+								name: currentFilterName,
+								value: Number(get().activeFilter.value),
+							}),
+					});
+				}, 150);
 			} else {
 				console.log("failed to fetch dictionary content");
 			}

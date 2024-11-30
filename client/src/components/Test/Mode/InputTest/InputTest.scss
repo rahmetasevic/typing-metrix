@@ -1,36 +1,33 @@
-.typing-test {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-
 .text {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
 	background-color: var(--alternate);
 	color: var(--secondary);
-	padding: 1rem;
+	padding: 0.5rem;
 	border-radius: 15px;
 	width: 45vw;
-	height: 26vh;
 
 	&__content {
+		opacity: 1;
+		visibility: visible;
 		overflow: hidden;
-		height: 15vh;
+		height: 100px;
 		text-align: center;
 		font-size: 28px;
 		line-height: 2.5rem;
 		scroll-behavior: smooth;
+		transition: opacity 0.15s ease;
 	}
 }
 
 .input-box {
-	position: absolute;
 	border: none;
 	outline: none;
 	border-radius: 15px;
 	background-color: var(--bg-primary);
-	bottom: 5%;
-	height: 7vh;
+	height: 50px;
 	width: 20vw;
 	text-align: center;
 	font-size: 24px;

@@ -195,8 +195,10 @@ export const InputTest = () => {
 			}}
 		>
 			<div className="text">
-				<div className="text__content">
-					{contentState.loading && <span>Loading...</span>}
+				<div
+					className={`text__content ${testContent.length === 0 ? "hidden-content" : ""}`}
+				>
+					{/* {contentState.loading && <span>Loading...</span>} */}
 					{testContent.length > 0 &&
 						testContent.map((word, ix) => (
 							<span className={getWordClass(ix)} key={ix}>
@@ -211,15 +213,15 @@ export const InputTest = () => {
 							</span>
 						))}
 				</div>
+				<input
+					className="input-box"
+					type="text"
+					spellCheck="false"
+					onChange={(e) => setUserInput(e.target.value)}
+					value={userInput}
+					onKeyDown={detectKey}
+				/>
 			</div>
-			<input
-				className="input-box"
-				type="text"
-				spellCheck="false"
-				onChange={(e) => setUserInput(e.target.value)}
-				value={userInput}
-				onKeyDown={detectKey}
-			/>
 		</div>
 	);
 };

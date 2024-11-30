@@ -1,4 +1,9 @@
 .app {
 	display: grid;
 	gap: 2rem;
+
+	.test-wrapper {
+		display: grid;
+		grid-template-columns: 1fr 2fr 1fr;
+	}
 }

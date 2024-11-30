@@ -10,6 +10,7 @@ function App() {
 		<div className="app">
 			<Header />
 			<div className="test-wrapper">
+				<div className="dummy"></div>
 				<Display />
 			</div>
 		</div>

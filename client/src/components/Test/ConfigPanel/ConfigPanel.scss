@@ -13,8 +13,10 @@
 		gap: 0.2rem;
 		background-color: var(--alternate);
 
-		&__titles {
+		> * {
 			display: flex;
+			opacity: 1;
+			visibility: visible;
 		}
 	}
 
