@@ -1,14 +1,15 @@
-@import url("https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap");
-
-// $primary-color: #edf1ff;
-// $secondary-color: #fffafa;
+@font-face {
+	font-family: "Bungee Shade";
+	src: url("/fonts/BungeeShade-Regular.woff2") format("woff2");
+}
 
 #header {
 	padding: 0 5rem;
+
 	.navigation {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: space-evenly;
 		color: var(--secondary);
 
 		.icon {
@@ -32,18 +33,23 @@
 			transition: color 0.1s linear;
 
 			&:hover {
-				// box-shadow: 0 0 20px rgba(237, 241, 255, 1);
-				// background-color: rgb(215, 220, 236);
-				// color: #fff;
 				color: var(--font-primary);
 			}
 		}
 
 		&__logo {
 			font-family: "Bungee Shade";
-			font-size: 3em;
-			// color ideas #e70000, #51cfdb, #6ad6e0
-			color: var(--primary);
+			color: var(--bg-primary);
+			&__title {
+				font-size: 3em;
+				line-height: 0;
+				color: var(--primary);
+				transition: color 0.3s;
+			}
+
+			.colorless {
+				color: var(--secondary);
+			}
 		}
 
 		&__home {

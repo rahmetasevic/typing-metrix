@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CgKeyboard } from "react-icons/cg";
 import { IoIosLogIn } from "react-icons/io";
 import { IoMdColorFill } from "react-icons/io";
@@ -14,6 +14,12 @@ import "./Header.scss";
 
 export const Header: React.FC = () => {
 	const [showThemes, setShowThemes] = useState<boolean>(false);
+
+	useEffect(() => {
+		document
+			.querySelector(".navigation__logo__title")
+			?.classList.remove("colorless");
+	}, []);
 
 	return (
 		<header id="header">
@@ -37,7 +43,9 @@ export const Header: React.FC = () => {
 					</Button>
 				</div>
 				<a className="navigation__logo" href="/">
-					Typing Metrix
+					<h1 className="navigation__logo__title colorless">
+						Typing Metrix
+					</h1>
 				</a>
 				<div className="navigation__settings">
 					<Button
