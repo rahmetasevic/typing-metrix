@@ -42,10 +42,11 @@ export const ConfigPanel = () => {
 	}, [activeFilter]);
 
 	function handleFilterSelect(e: React.MouseEvent<HTMLButtonElement>): void {
+		addTransitionVisibility(".text__content");
 		const filterName = e.currentTarget.textContent;
-		// console.log(filterName);
 
 		if (filterName) {
+			addTransitionVisibility(".panel__filters__values");
 			document
 				.querySelectorAll(".filter__title")
 				.forEach((x) => x.classList.remove("filter--highlighted"));
@@ -54,11 +55,6 @@ export const ConfigPanel = () => {
 				.querySelectorAll(".filter__value")
 				.forEach((x) => x.classList.remove("filter--highlighted"));
 			e.currentTarget.classList.add("filter--highlighted");
-			// document
-			// 	.querySelectorAll(".filter__value")
-			// 	.forEach((x) =>
-			// 		x.classList.remove("filter__value--highlighted"),
-			// 	);
 
 			setActiveFilter({
 				name: filterName,
@@ -69,8 +65,8 @@ export const ConfigPanel = () => {
 	}
 
 	function handleFilterValue(e: React.MouseEvent<HTMLButtonElement>): void {
+		addTransitionVisibility(".text__content");
 		const filterValue = e.currentTarget.textContent;
-		// console.log(filterValue);
 
 		if (filterValue) {
 			document
@@ -81,6 +77,19 @@ export const ConfigPanel = () => {
 			e.currentTarget.classList.add("filter__value--highlighted");
 
 			setActiveFilter({ ...activeFilter, value: filterValue });
+		}
+	}
+
+	function addTransitionVisibility(className: string): void {
+		const isHidden = document
+			.querySelector(className)
+			?.classList.contains("hidden");
+
+		if (!isHidden) {
+			document.querySelector(className)?.classList.toggle("hidden");
+			setTimeout(() => {
+				document.querySelector(className)?.classList.toggle("hidden");
+			}, 150);
 		}
 	}
 
@@ -106,7 +115,7 @@ export const ConfigPanel = () => {
 					className={`splitter ${activeFilter.name === "Quotes" ? "invisible" : ""}`}
 				/>
 				<div
-					className={`filter-values ${activeFilter.name === "Quotes" ? "invisible" : ""}`}
+					className={`panel__filters__values ${activeFilter.name === "Quotes" ? "invisible" : ""}`}
 				>
 					{FilterOption[activeFilter.name]?.values?.map(
 						(filterValue, i) => (
