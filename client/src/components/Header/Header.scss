@@ -4,12 +4,12 @@
 }
 
 #header {
-	padding: 0 5rem;
-
 	.navigation {
-		display: flex;
+		display: grid;
+		justify-items: center;
+		grid-template-columns: 1fr 2fr 1fr;
 		align-items: center;
-		justify-content: space-evenly;
+		gap: 1rem;
 		color: var(--secondary);
 
 		.icon {
@@ -38,9 +38,12 @@
 		}
 
 		&__logo {
+			text-align: center;
 			font-family: "Bungee Shade";
 			color: var(--bg-primary);
 			&__title {
+				text-wrap-mode: nowrap;
+				font-family: inherit;
 				font-size: 3em;
 				line-height: 0;
 				color: var(--primary);
@@ -48,6 +51,7 @@
 			}
 
 			.colorless {
+				font-family: inherit;
 				color: var(--secondary);
 			}
 		}
