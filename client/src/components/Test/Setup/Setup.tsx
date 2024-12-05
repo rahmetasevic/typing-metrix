@@ -57,7 +57,7 @@ export const Setup = (props: ModalProps) => {
 				"setup__mode--highlighted",
 			);
 
-			setSetupMode(val.toLowerCase());
+			setSetupMode(val);
 			// setMode();
 			methods.reset();
 		}

@@ -78,11 +78,11 @@ const initialState: TestState = {
 	// activity: "PENDING",
 	activity: TestStatus.Pending,
 	activeFilter: {
-		name: "Words",
-		options: FilterOption["Words"].values,
-		value: FilterOption["Words"].values[0],
+		name: "words",
+		options: FilterOption["words"].values,
+		value: FilterOption["words"].values[0],
 	},
-	selectedFilter: { name: "Words", value: "10" },
+	selectedFilter: { name: "words", value: "10" },
 	testContent: [],
 	currWord: { text: "", index: -1 },
 	currChar: { text: "", index: 0 },
@@ -107,7 +107,7 @@ export const useTestStore = create<TestState & TestActions>()((set, get) => ({
 		set({ contentState: { loading: true, error: null } });
 		try {
 			// same content for words & time filters
-			const currentFilterName = get().activeFilter.name.toLowerCase();
+			const currentFilterName = get().activeFilter.name;
 			const dataKey = currentFilterName !== "quotes" ? "words" : "quotes";
 			const url =
 				dataKey === "words"
@@ -203,7 +203,7 @@ export const useTestStore = create<TestState & TestActions>()((set, get) => ({
 			.querySelectorAll(".active-char")
 			.forEach((e) => e.classList.remove("active-char"));
 		const generatedText: string[] = generateContent(get().dictionary, {
-			name: get().activeFilter.name.toLowerCase(),
+			name: get().activeFilter.name,
 			value: Number(get().activeFilter.value),
 		});
 

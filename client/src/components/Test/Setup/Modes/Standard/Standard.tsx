@@ -8,7 +8,7 @@ import { useTestStore } from "@store/TestStore";
 import "./Standard.scss";
 
 export const Standard = () => {
-	const [filterName, setFilterName] = useState<string>("Words");
+	const [filterName, setFilterName] = useState<string>("words");
 
 	// const { register, setValue } = useForm();
 	const { register, formState, setValue, getValues } = useFormContext();
@@ -62,7 +62,7 @@ export const Standard = () => {
 					const Icon = FilterOption[key].icon;
 					return (
 						<div
-							className={`filter filter__${key.toLowerCase()}`}
+							className={`filter filter__${key}`}
 							key={i}
 							data-value={key}
 							onClick={handleFilterSelect}

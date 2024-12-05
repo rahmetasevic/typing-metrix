@@ -195,10 +195,7 @@ export const InputTest = () => {
 			}}
 		>
 			<div className="text">
-				<div
-					className={`text__content ${testContent.length === 0 ? "hidden-content" : ""}`}
-				>
-					{/* {contentState.loading && <span>Loading...</span>} */}
+				<div className="text__content">
 					{testContent.length > 0 &&
 						testContent.map((word, ix) => (
 							<span className={getWordClass(ix)} key={ix}>

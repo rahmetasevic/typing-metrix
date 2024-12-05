@@ -22,15 +22,11 @@ export const ConfigPanel = () => {
 	}, [activity]);
 
 	useEffect(() => {
-		console.log("actFil", activeFilter);
-	}, [activeFilter]);
-
-	useEffect(() => {
 		// let generateCount: number;
 		// activeFilter.name === "Time"
 		// 	? Number(activeFilter.value) * 10
 		// 	: Number(activeFilter.value);
-		if (activeFilter.name === "Time") {
+		if (activeFilter.name === "time") {
 			// generateCount = Number(activeFilter.value) * 10;
 			setTime(Number(activeFilter.value));
 		} else {
@@ -38,15 +34,16 @@ export const ConfigPanel = () => {
 			setTime(0);
 		}
 
+		console.log(activeFilter);
 		setTestContent();
 	}, [activeFilter]);
 
 	function handleFilterSelect(e: React.MouseEvent<HTMLButtonElement>): void {
+		addTransitionVisibility(".panel__filters__values");
 		addTransitionVisibility(".text__content");
 		const filterName = e.currentTarget.textContent;
 
 		if (filterName) {
-			addTransitionVisibility(".panel__filters__values");
 			document
 				.querySelectorAll(".filter__title")
 				.forEach((x) => x.classList.remove("filter--highlighted"));
@@ -56,11 +53,13 @@ export const ConfigPanel = () => {
 				.forEach((x) => x.classList.remove("filter--highlighted"));
 			e.currentTarget.classList.add("filter--highlighted");
 
-			setActiveFilter({
-				name: filterName,
-				options: FilterOption[filterName]?.values ?? null,
-				value: FilterOption[filterName]?.values?.[0] ?? null,
-			});
+			setTimeout(() => {
+				setActiveFilter({
+					name: filterName,
+					options: FilterOption[filterName]?.values ?? null,
+					value: FilterOption[filterName]?.values?.[0] ?? null,
+				});
+			}, 50);
 		}
 	}
 
@@ -81,14 +80,16 @@ export const ConfigPanel = () => {
 	}
 
 	function addTransitionVisibility(className: string): void {
+		console.log("className", className);
 		const isHidden = document
 			.querySelector(className)
 			?.classList.contains("hidden");
-
 		if (!isHidden) {
-			document.querySelector(className)?.classList.toggle("hidden");
+			console.log("hidden", isHidden);
+
+			document.querySelector(className)?.classList.add("hidden");
 			setTimeout(() => {
-				document.querySelector(className)?.classList.toggle("hidden");
+				document.querySelector(className)?.classList.remove("hidden");
 			}, 300);
 		}
 	}
@@ -102,7 +103,7 @@ export const ConfigPanel = () => {
 					{Object.keys(FilterOption).map((filterName, i) => {
 						return (
 							<Button
-								className={`filter__title filter__${filterName.toLowerCase()} ${activeFilter.name === filterName ? "filter--highlighted" : ""}`}
+								className={`filter__title filter__${filterName} ${activeFilter.name === filterName ? "filter--highlighted" : ""}`}
 								key={i}
 								onClick={handleFilterSelect}
 							>
@@ -112,10 +113,10 @@ export const ConfigPanel = () => {
 					})}
 				</div>
 				<hr
-					className={`splitter ${activeFilter.name === "Quotes" ? "invisible" : ""}`}
+					className={`splitter ${activeFilter.name === "quotes" ? "invisible" : ""}`}
 				/>
 				<div
-					className={`panel__filters__values ${activeFilter.name === "Quotes" ? "invisible" : ""}`}
+					className={`panel__filters__values ${activeFilter.name === "quotes" ? "invisible" : ""}`}
 				>
 					{FilterOption[activeFilter.name]?.values?.map(
 						(filterValue, i) => (
@@ -131,8 +132,8 @@ export const ConfigPanel = () => {
 				</div>
 			</div>
 			<div className="panel__rules">
-				<Button>Punctuation</Button>
-				<Button>Numbers</Button>
+				<Button>punctuation</Button>
+				<Button>numbers</Button>
 			</div>
 			<div className="panel__appearance">
 				<Button>

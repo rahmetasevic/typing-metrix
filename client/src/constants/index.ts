@@ -3,7 +3,7 @@ import { PiTextAa } from "react-icons/pi";
 import { MdOutlineTimer } from "react-icons/md";
 import { GrBlockQuote } from "react-icons/gr";
 
-type FilterOptionKey = "Words" | "Time" | "Quotes";
+type FilterOptionKey = "words" | "time" | "quotes";
 type FilterOptionProps = {
 	[key in FilterOptionKey]: {
 		values?: string[] | null;
@@ -12,15 +12,15 @@ type FilterOptionProps = {
 };
 
 export const FilterOption: FilterOptionProps = {
-	Words: {
+	words: {
 		values: ["10", "25", "50"],
 		icon: PiTextAa,
 	},
-	Time: {
+	time: {
 		values: ["15", "30", "60"],
 		icon: MdOutlineTimer,
 	},
-	Quotes: {
+	quotes: {
 		values: null,
 		icon: GrBlockQuote,
 	},
