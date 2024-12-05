@@ -1,4 +1,5 @@
 export function generateWords(dictionary: string[], amount: number): string[] {
+	// console.log(dictionary, amount);
 	const x = Math.floor(Math.random() * dictionary.length);
 	let y: number;
 
@@ -30,11 +31,18 @@ export function generateContent(
 
 	switch (name) {
 		case "words":
-		case "time":
 			content = generateWords(data, value);
+			break;
+		case "time":
+			// Words Needed=(Average WPM×Test Duration (minutes))+Buffer Words
+			const time = value / 60;
+			const amount = Math.floor(305 * time + 305 * time * 0.1);
+			content = generateWords(data, amount);
 			break;
 		case "quotes":
 			content = generateQuote(data);
+			break;
+		default:
 			break;
 	}
 

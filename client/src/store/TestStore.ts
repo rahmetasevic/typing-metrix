@@ -107,29 +107,30 @@ export const useTestStore = create<TestState & TestActions>()((set, get) => ({
 		set({ contentState: { loading: true, error: null } });
 		try {
 			// same content for words & time filters
-			const currentFilterName =
-				get().activeFilter.name !== "Quotes" ? "words" : "quotes";
+			const currentFilterName = get().activeFilter.name.toLowerCase();
+			const dataKey = currentFilterName !== "quotes" ? "words" : "quotes";
 			const url =
-				currentFilterName !== "quotes"
+				dataKey === "words"
 					? "/dictionaries/english_common.json"
 					: "/quotes/quotes.json";
 			const response = await fetch(url);
 			if (response.ok) {
 				const data = await response.json();
+
 				set({
-					dictionary: data[currentFilterName],
+					dictionary: data[dataKey],
 				});
 
-				setTimeout(() => {
-					set({
-						testContent:
-							content ??
-							generateContent(data[currentFilterName], {
-								name: currentFilterName,
-								value: Number(get().activeFilter.value),
-							}),
-					});
-				}, 150);
+				// setTimeout(() => {
+				set({
+					testContent:
+						content ??
+						generateContent(data[dataKey], {
+							name: currentFilterName,
+							value: Number(get().activeFilter.value),
+						}),
+				});
+				// }, 150);
 			} else {
 				console.log("failed to fetch dictionary content");
 			}

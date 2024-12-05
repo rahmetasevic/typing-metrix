@@ -38,12 +38,12 @@
 		}
 
 		&__logo {
-			text-align: center;
 			font-family: "Bungee Shade";
+			text-align: center;
 			color: var(--bg-primary);
 			&__title {
+				font-family: "Bungee Shade";
 				text-wrap-mode: nowrap;
-				font-family: inherit;
 				font-size: 3em;
 				line-height: 0;
 				color: var(--primary);

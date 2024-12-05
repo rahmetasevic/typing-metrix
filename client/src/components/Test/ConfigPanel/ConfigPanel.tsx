@@ -89,7 +89,7 @@ export const ConfigPanel = () => {
 			document.querySelector(className)?.classList.toggle("hidden");
 			setTimeout(() => {
 				document.querySelector(className)?.classList.toggle("hidden");
-			}, 150);
+			}, 300);
 		}
 	}
 
