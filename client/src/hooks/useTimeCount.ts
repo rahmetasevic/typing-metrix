@@ -9,7 +9,10 @@ type TimeProps = {
 };
 
 export const useTimeCount = () => {
-	const [timeConfig, setTimeConfig] = useState<TimeProps>({ start: false });
+	const [timeConfig, setTimeConfig] = useState<TimeProps>({
+		type: "COUNTDOWN",
+		start: false,
+	});
 	const [activity, time, activeFilter, setActivity, setTime] = useTestStore(
 		(state) => [
 			state.activity,
@@ -33,12 +36,15 @@ export const useTimeCount = () => {
 	}, [activity]);
 
 	useEffect(() => {
+		console.log(timeConfig);
 		if (
 			!timeConfig.type ||
 			!timeConfig.start ||
 			activity === TestStatus.Finish
-		)
+		) {
 			return;
+		}
+
 		if (timeConfig.type === "COUNTDOWN" && time < 1) {
 			setActivity(TestStatus.Finish);
 			return;
@@ -48,6 +54,7 @@ export const useTimeCount = () => {
 			if (activity !== TestStatus.Stop) {
 				setTime(timeConfig?.type === "COUNTDOWN" ? time - 1 : time + 1);
 			}
+			console.log("curr", time);
 		}, 1000);
 
 		return () => {
@@ -56,13 +63,12 @@ export const useTimeCount = () => {
 	}, [timeConfig, time]);
 
 	function stopTime(): void {
-		console.log("timer ended!");
-
 		if (activity === TestStatus.Pending) {
 			setTimeConfig({ start: false });
 		}
 
 		if (activity === TestStatus.Finish) {
+			console.log("timer ended!");
 			setTime(
 				timeConfig?.type === "COUNTDOWN"
 					? Number(activeFilter.value)

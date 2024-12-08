@@ -10,12 +10,6 @@ type TestAccuracy = {
 	incorrect: number;
 };
 
-type SelectedFilterProps = {
-	name: string;
-	value: string;
-	options?: string[];
-};
-
 type TextContent = {
 	text: string;
 	index: number;
@@ -39,7 +33,6 @@ type TestState = {
 	mode: TestMode;
 	activity: TestStatus;
 	activeFilter: FilterProps;
-	selectedFilter: SelectedFilterProps;
 	testContent: string[];
 	currWord: TextContent;
 	currChar: TextContent;
@@ -61,7 +54,6 @@ type TestActions = {
 	setTime: (seconds: number) => void;
 	setActivity: (status: TestStatus) => void;
 	setActiveFilter: (filter: FilterProps) => void;
-	setSelectedFilter: (filter: SelectedFilterProps) => void;
 	setTotalChars: (count: number) => void;
 	setCorrectChars: (count: number) => void;
 	setIncorrectChars: (count: number) => void;
@@ -79,10 +71,9 @@ const initialState: TestState = {
 	activity: TestStatus.Pending,
 	activeFilter: {
 		name: "words",
-		options: FilterOption["words"].values,
-		value: FilterOption["words"].values[0],
+		options: FilterOption.words.values!,
+		value: FilterOption.words.values![0],
 	},
-	selectedFilter: { name: "words", value: "10" },
 	testContent: [],
 	currWord: { text: "", index: -1 },
 	currChar: { text: "", index: 0 },
@@ -121,7 +112,6 @@ export const useTestStore = create<TestState & TestActions>()((set, get) => ({
 					dictionary: data[dataKey],
 				});
 
-				// setTimeout(() => {
 				set({
 					testContent:
 						content ??
@@ -130,7 +120,6 @@ export const useTestStore = create<TestState & TestActions>()((set, get) => ({
 							value: Number(get().activeFilter.value),
 						}),
 				});
-				// }, 150);
 			} else {
 				console.log("failed to fetch dictionary content");
 			}
@@ -169,9 +158,6 @@ export const useTestStore = create<TestState & TestActions>()((set, get) => ({
 	},
 	setActiveFilter: (filter: FilterProps) => {
 		set({ activeFilter: filter });
-	},
-	setSelectedFilter: (filter: SelectedFilterProps) => {
-		set({ selectedFilter: filter });
 	},
 	setWordsLeft: (count: number) => {
 		set({ wordsLeft: count });

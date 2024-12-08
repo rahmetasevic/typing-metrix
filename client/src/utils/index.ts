@@ -1,5 +1,4 @@
 export function generateWords(dictionary: string[], amount: number): string[] {
-	// console.log(dictionary, amount);
 	const x = Math.floor(Math.random() * dictionary.length);
 	let y: number;
 

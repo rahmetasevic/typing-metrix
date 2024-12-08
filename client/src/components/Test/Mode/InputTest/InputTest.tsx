@@ -107,14 +107,17 @@ export const InputTest = () => {
 			if (activity !== TestStatus.Start) {
 				// setIsStarted(true);
 				setActivity(TestStatus.Start);
-				activeFilter.name !== "Time" ? startTimer() : startCountdown();
+				activeFilter.name !== "time" ? startTimer() : startCountdown();
 			}
 		}
 		setTotalChars(totalChars + 1);
 	}
 
 	function calcTestMetrics(): void {
-		const minutesTaken = (time / 60000) * 1000;
+		const minutesTaken =
+			activeFilter.name === "time"
+				? (Number(activeFilter.value) / 60000) * 1000
+				: (time / 60000) * 1000;
 		const accuracy = Math.round((correctChars / totalChars) * 100);
 		const grossWPM = Math.round(totalChars / 5 / minutesTaken);
 		const netWPM = Math.round(
@@ -124,6 +127,7 @@ export const InputTest = () => {
 		// console.log("time", time);
 		// console.log("filter", activeFilter);
 		// console.log("c - i => ", correctChars, incorrectChars);
+		// console.log("timeTaken", minutesTaken);
 		// console.log("totalC", totalChars);
 		// console.log("grossWPM", grossWPM);
 		// console.log("netWPM", netWPM);

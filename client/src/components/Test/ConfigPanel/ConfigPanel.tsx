@@ -34,7 +34,7 @@ export const ConfigPanel = () => {
 			setTime(0);
 		}
 
-		console.log(activeFilter);
+		console.log("activeFilter", activeFilter);
 		setTestContent();
 	}, [activeFilter]);
 
@@ -80,13 +80,10 @@ export const ConfigPanel = () => {
 	}
 
 	function addTransitionVisibility(className: string): void {
-		console.log("className", className);
 		const isHidden = document
 			.querySelector(className)
 			?.classList.contains("hidden");
 		if (!isHidden) {
-			console.log("hidden", isHidden);
-
 			document.querySelector(className)?.classList.add("hidden");
 			setTimeout(() => {
 				document.querySelector(className)?.classList.remove("hidden");

@@ -25,21 +25,13 @@ export const Setup = (props: ModalProps) => {
 	const methods = useForm();
 	const { visible, close } = props;
 	const [setupMode, setSetupMode] = useState<string>("standard");
-	const [
-		activeFilter,
-		selectedFilter,
-		setActiveFilter,
-		setSelectedFilter,
-		setMode,
-		setTestContent,
-	] = useTestStore((state) => [
-		state.activeFilter,
-		state.selectedFilter,
-		state.setActiveFilter,
-		state.setSelectedFilter,
-		state.setMode,
-		state.setTestContent,
-	]);
+	const [activeFilter, setActiveFilter, setMode, setTestContent] =
+		useTestStore((state) => [
+			state.activeFilter,
+			state.setActiveFilter,
+			state.setMode,
+			state.setTestContent,
+		]);
 
 	useEffect(() => {
 		setSetupMode("standard");

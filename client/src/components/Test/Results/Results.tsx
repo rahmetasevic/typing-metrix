@@ -20,10 +20,13 @@ export const Results = () => {
 			className={`results ${activity !== TestStatus.Finish ? "hidden" : ""}`}
 		>
 			<div className="results__time">
-				{activeFilter.name !== "Time"
+				{activeFilter.name !== "time"
 					? wordsLeft + "/" + testContent.length
 					: time}
-				<span>{activeFilter.name + " left"}</span>
+				<span>
+					{activeFilter.name +
+						(activeFilter.name !== "time" ? " left" : " spent")}
+				</span>
 			</div>
 			<div className="results__wpm">
 				{results.grossWPM + "/" + results.netWPM}
