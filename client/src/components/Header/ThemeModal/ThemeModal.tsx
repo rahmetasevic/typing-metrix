@@ -32,7 +32,7 @@ export const ThemeModal = (props: ModalProps) => {
 		const theme = (e.currentTarget as HTMLDivElement).dataset.value;
 
 		if (theme) {
-			document.body.setAttribute("data-theme", theme);
+			document.documentElement.setAttribute("data-theme", theme);
 			localStorage.setItem("theme", theme);
 			setSelectedTheme(theme);
 		}
