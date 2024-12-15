@@ -7,19 +7,13 @@ import "./ThemeModal.scss";
 
 export const ThemeModal = (props: ModalProps) => {
 	const { visible, close } = props;
-	const [selectedTheme, setSelectedTheme] = useState<string>("dark");
+	const [selectedTheme, setSelectedTheme] = useState<string>(
+		localStorage.getItem("theme") ?? "dark",
+	);
 	const [themes, setThemes] = useState<any[]>([]);
 
 	useEffect(() => {
 		getThemes();
-
-		const theme = localStorage.getItem("theme");
-		if (theme) {
-			document.body.setAttribute("data-theme", theme);
-			setSelectedTheme(theme);
-		} else {
-			document.body.setAttribute("data-theme", selectedTheme);
-		}
 	}, []);
 
 	async function getThemes(): Promise<void> {

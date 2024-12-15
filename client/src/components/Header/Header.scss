@@ -38,12 +38,12 @@
 			text-align: center;
 
 			&__title {
-				color: var(--primary) !important;
+				color: var(--primary);
 				font-family: "Bungee Shade";
 				text-wrap-mode: nowrap;
 				font-size: 3em;
 				line-height: 0;
-				transition: color 0.1s;
+				transition: color 0.5s;
 			}
 
 			.colorless {
