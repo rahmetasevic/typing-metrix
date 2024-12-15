@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { IoMdStar } from "react-icons/io";
 import { MdCheck } from "react-icons/md";
 
-import { Button } from "@components/Shared/Button";
 import { ModalProps } from "types";
 
 import "./ThemeModal.scss";
@@ -14,6 +12,14 @@ export const ThemeModal = (props: ModalProps) => {
 
 	useEffect(() => {
 		getThemes();
+
+		const theme = localStorage.getItem("theme");
+		if (theme) {
+			document.body.setAttribute("data-theme", theme);
+			setSelectedTheme(theme);
+		} else {
+			document.body.setAttribute("data-theme", selectedTheme);
+		}
 	}, []);
 
 	async function getThemes(): Promise<void> {
@@ -29,11 +35,12 @@ export const ThemeModal = (props: ModalProps) => {
 	}
 
 	function handleSelectTheme(e: React.MouseEvent<HTMLDivElement>): void {
-		const val = (e.currentTarget as HTMLDivElement).dataset.value;
+		const theme = (e.currentTarget as HTMLDivElement).dataset.value;
 
-		if (val) {
-			document.body.setAttribute("data-theme", val);
-			setSelectedTheme(val);
+		if (theme) {
+			document.body.setAttribute("data-theme", theme);
+			localStorage.setItem("theme", theme);
+			setSelectedTheme(theme);
 		}
 	}
 

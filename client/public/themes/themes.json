@@ -52,5 +52,50 @@
 		"alternate": "#404552",
 		"textPrimary": "#f5f6f7",
 		"error": "#fc4138"
+	},
+	{
+		"name": "gruvbox dark",
+		"backgroundPrimary": "#282828",
+		"primary": "#d79921",
+		"secondary": "#665c54",
+		"alternate": "#1d2021",
+		"textPrimary": "#ebdbb2",
+		"error": "#fb4934"
+	},
+	{
+		"name": "github dark",
+		"backgroundPrimary": "#010409",
+		"primary": "#f0f6fc",
+		"secondary": "#9198a1",
+		"alternate": "#212830",
+		"textPrimary": "#fff",
+		"error": "#da3633"
+	},
+	{
+		"name": "everforest dark",
+		"backgroundPrimary": "#1e2326",
+		"primary": "#a7c080",
+		"secondary": "#4f5b58",
+		"alternate": "#2e383c",
+		"textPrimary": "#d3c6aa",
+		"error": "#e67e80"
+	},
+	{
+		"name": "nightfox",
+		"backgroundPrimary": "#131a24",
+		"primary": "#63cdcf",
+		"secondary": "#738091",
+		"alternate": "#192330",
+		"textPrimary": "#d6d6d7",
+		"error": "#c94f6d"
+	},
+	{
+		"name": "dayfox",
+		"backgroundPrimary": "#f6f2ee",
+		"primary": "#e78a4e",
+		"secondary": "#928374",
+		"alternate": "#e0d4c5",
+		"textPrimary": "#3c3836",
+		"error": "#ea6962"
 	}
 ]
