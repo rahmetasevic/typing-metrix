@@ -210,6 +210,12 @@ export const useTestStore = create<TestState & TestActions>()(
 		}),
 		{
 			name: "config-storage", // name of item in the storage (must be unique)
+			partialize: (state) =>
+				Object.fromEntries(
+					Object.entries(state).filter(
+						([key]) => !["dictionary", "testContent"].includes(key),
+					),
+				),
 		},
 	),
 );
