@@ -1,8 +1,8 @@
 .text {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
+	display: grid;
+	grid-template-rows: 2fr 1fr auto;
+	gap: 0.5rem;
+	justify-items: center;
 	background-color: var(--alternate);
 	color: var(--secondary);
 	padding: 0.5rem;
