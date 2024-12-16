@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 import { FilterOption } from "@constants/index";
 import { FilterProps } from "types";
@@ -87,117 +88,128 @@ const initialState: TestState = {
 	dictionary: [],
 };
 
-export const useTestStore = create<TestState & TestActions>()((set, get) => ({
-	...initialState,
-	setMode: (mode: TestMode) => {
-		set({ mode: mode });
-	},
-	setTestContent: async (content?: string[]) => {
-		// content as a parameter => for custom content that user inputs
-		// console.log("cst content", content);
-		set({ contentState: { loading: true, error: null } });
-		try {
-			// same content for words & time filters
-			const currentFilterName = get().activeFilter.name;
-			const dataKey = currentFilterName !== "quotes" ? "words" : "quotes";
-			const url =
-				dataKey === "words"
-					? "/dictionaries/english_common.json"
-					: "/quotes/quotes.json";
-			const response = await fetch(url);
-			if (response.ok) {
-				const data = await response.json();
+export const useTestStore = create<TestState & TestActions>()(
+	persist(
+		(set, get) => ({
+			...initialState,
+			setMode: (mode: TestMode) => {
+				set({ mode: mode });
+			},
+			setTestContent: async (content?: string[]) => {
+				// content as a parameter => for custom content that user inputs
+				// console.log("cst content", content);
+				set({ contentState: { loading: true, error: null } });
+				try {
+					// same content for words & time filters
+					const currentFilterName = get().activeFilter.name;
+					const dataKey =
+						currentFilterName !== "quotes" ? "words" : "quotes";
+					const url =
+						dataKey === "words"
+							? "/dictionaries/english_common.json"
+							: "/quotes/quotes.json";
+					const response = await fetch(url);
+					if (response.ok) {
+						const data = await response.json();
+
+						set({
+							dictionary: data[dataKey],
+						});
+
+						set({
+							testContent:
+								content ??
+								generateContent(data[dataKey], {
+									name: currentFilterName,
+									value: Number(get().activeFilter.value),
+								}),
+						});
+					} else {
+						console.log("failed to fetch dictionary content");
+					}
+				} catch (error) {
+					console.log("error in getting content data:", error);
+					set({
+						contentState: {
+							loading: false,
+							error: "error in getting content data",
+						},
+					});
+				} finally {
+					set({ contentState: { loading: false, error: null } });
+				}
+			},
+			setWord: (text: string, index: number) => {
+				set({ currWord: { text, index } });
+			},
+			setChar: (char: string, index: number) => {
+				set({ currChar: { text: char, index } });
+			},
+			setTime: (seconds: number) => {
+				set({ time: seconds });
+			},
+			setTotalChars: (count: number) => {
+				set({ totalChars: count });
+			},
+			setActivity: (status: TestStatus) => {
+				set({ activity: status });
+			},
+			setCorrectChars: (count: number) => {
+				set({ correctChars: count });
+			},
+			setIncorrectChars: (count: number) => {
+				set({ incorrectChars: count });
+			},
+			setActiveFilter: (filter: FilterProps) => {
+				set({ activeFilter: filter });
+			},
+			setWordsLeft: (count: number) => {
+				set({ wordsLeft: count });
+			},
+			setResults: (result: TestMetrics) => {
+				set({ results: result });
+			},
+			setContentState: (currentState: ContentState) => {
+				set({ contentState: currentState });
+			},
+			setDictionary(dictionary: string[]) {
+				set({ dictionary: dictionary });
+			},
+			redoTest: () => {
+				document
+					.querySelectorAll(".active-char")
+					.forEach((e) => e.classList.remove("active-char"));
 
 				set({
-					dictionary: data[dataKey],
+					...initialState,
+					dictionary: get().dictionary,
+					testContent: get().testContent,
+					activeFilter: get().activeFilter,
 				});
+			},
+			resetTest: () => {
+				// bug when 50+ words is finished, previous text stays hidden at top of the element
+				document
+					.querySelectorAll(".active-char")
+					.forEach((e) => e.classList.remove("active-char"));
+				const generatedText: string[] = generateContent(
+					get().dictionary,
+					{
+						name: get().activeFilter.name,
+						value: Number(get().activeFilter.value),
+					},
+				);
 
 				set({
-					testContent:
-						content ??
-						generateContent(data[dataKey], {
-							name: currentFilterName,
-							value: Number(get().activeFilter.value),
-						}),
+					...initialState,
+					testContent: generatedText,
+					dictionary: get().dictionary,
+					activeFilter: get().activeFilter,
 				});
-			} else {
-				console.log("failed to fetch dictionary content");
-			}
-		} catch (error) {
-			console.log("error in getting content data:", error);
-			set({
-				contentState: {
-					loading: false,
-					error: "error in getting content data",
-				},
-			});
-		} finally {
-			set({ contentState: { loading: false, error: null } });
-		}
-	},
-	setWord: (text: string, index: number) => {
-		set({ currWord: { text, index } });
-	},
-	setChar: (char: string, index: number) => {
-		set({ currChar: { text: char, index } });
-	},
-	setTime: (seconds: number) => {
-		set({ time: seconds });
-	},
-	setTotalChars: (count: number) => {
-		set({ totalChars: count });
-	},
-	setActivity: (status: TestStatus) => {
-		set({ activity: status });
-	},
-	setCorrectChars: (count: number) => {
-		set({ correctChars: count });
-	},
-	setIncorrectChars: (count: number) => {
-		set({ incorrectChars: count });
-	},
-	setActiveFilter: (filter: FilterProps) => {
-		set({ activeFilter: filter });
-	},
-	setWordsLeft: (count: number) => {
-		set({ wordsLeft: count });
-	},
-	setResults: (result: TestMetrics) => {
-		set({ results: result });
-	},
-	setContentState: (currentState: ContentState) => {
-		set({ contentState: currentState });
-	},
-	setDictionary(dictionary: string[]) {
-		set({ dictionary: dictionary });
-	},
-	redoTest: () => {
-		document
-			.querySelectorAll(".active-char")
-			.forEach((e) => e.classList.remove("active-char"));
-
-		set({
-			...initialState,
-			dictionary: get().dictionary,
-			testContent: get().testContent,
-			activeFilter: get().activeFilter,
-		});
-	},
-	resetTest: () => {
-		// bug when 50+ words is finished, previous text stays hidden at top of the element
-		document
-			.querySelectorAll(".active-char")
-			.forEach((e) => e.classList.remove("active-char"));
-		const generatedText: string[] = generateContent(get().dictionary, {
-			name: get().activeFilter.name,
-			value: Number(get().activeFilter.value),
-		});
-
-		set({
-			...initialState,
-			testContent: generatedText,
-			dictionary: get().dictionary,
-			activeFilter: get().activeFilter,
-		});
-	},
-}));
+			},
+		}),
+		{
+			name: "config-storage", // name of item in the storage (must be unique)
+		},
+	),
+);
