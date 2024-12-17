@@ -36,7 +36,8 @@ export const useTimeCount = () => {
 	}, [activity]);
 
 	useEffect(() => {
-		console.log(timeConfig);
+		console.log("timeConfig", timeConfig);
+		console.log("curr", time);
 		if (
 			!timeConfig.type ||
 			!timeConfig.start ||
@@ -45,7 +46,7 @@ export const useTimeCount = () => {
 			return;
 		}
 
-		if (timeConfig.type === "COUNTDOWN" && time < 1) {
+		if (timeConfig.type === "COUNTDOWN" && time === 0) {
 			setActivity(TestStatus.Finish);
 			return;
 		}
@@ -54,7 +55,6 @@ export const useTimeCount = () => {
 			if (activity !== TestStatus.Stop) {
 				setTime(timeConfig?.type === "COUNTDOWN" ? time - 1 : time + 1);
 			}
-			console.log("curr", time);
 		}, 1000);
 
 		return () => {
@@ -69,6 +69,7 @@ export const useTimeCount = () => {
 
 		if (activity === TestStatus.Finish) {
 			console.log("timer ended!");
+			setTimeConfig({ start: false });
 			setTime(
 				timeConfig?.type === "COUNTDOWN"
 					? Number(activeFilter.value)

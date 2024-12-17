@@ -59,7 +59,7 @@ export const ConfigPanel = () => {
 					options: FilterOption[filterName]?.values ?? null,
 					value: FilterOption[filterName]?.values?.[0] ?? null,
 				});
-			}, 50);
+			}, 100);
 		}
 	}
 
@@ -87,7 +87,7 @@ export const ConfigPanel = () => {
 			document.querySelector(className)?.classList.add("hidden");
 			setTimeout(() => {
 				document.querySelector(className)?.classList.remove("hidden");
-			}, 300);
+			}, 200);
 		}
 	}
 

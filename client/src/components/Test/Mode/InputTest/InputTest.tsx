@@ -124,13 +124,13 @@ export const InputTest = () => {
 			Math.abs(totalChars / 5 - incorrectChars) / minutesTaken,
 		);
 
-		console.log("time", time);
-		console.log("filter", activeFilter);
-		console.log("c - i => ", correctChars, incorrectChars);
-		console.log("timeTaken", minutesTaken);
-		console.log("totalC", totalChars);
-		console.log("grossWPM", grossWPM);
-		console.log("netWPM", netWPM);
+		// console.log("time", time);
+		// console.log("filter", activeFilter);
+		// console.log("c - i => ", correctChars, incorrectChars);
+		// console.log("timeTaken", minutesTaken);
+		// console.log("totalC", totalChars);
+		// console.log("grossWPM", grossWPM);
+		// console.log("netWPM", netWPM);
 
 		setResults({
 			grossWPM: Number.isFinite(grossWPM) ? grossWPM : 0,

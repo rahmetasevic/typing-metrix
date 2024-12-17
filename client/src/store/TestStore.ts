@@ -34,7 +34,7 @@ type TestState = {
 	mode: TestMode;
 	activity: TestStatus;
 	activeFilter: FilterProps;
-	testContent: string[];
+	testContent: string[] | null;
 	currWord: TextContent;
 	currChar: TextContent;
 	time: number;
@@ -49,7 +49,7 @@ type TestState = {
 
 type TestActions = {
 	setMode: (mode: TestMode) => void;
-	setTestContent: (content?: string[]) => void;
+	setTestContent: (content?: string[] | null) => void;
 	setWord: (word: string, index: number) => void;
 	setChar: (char: string, index: number) => void;
 	setTime: (seconds: number) => void;
@@ -95,7 +95,7 @@ export const useTestStore = create<TestState & TestActions>()(
 			setMode: (mode: TestMode) => {
 				set({ mode: mode });
 			},
-			setTestContent: async (content?: string[]) => {
+			setTestContent: async (content?: string[] | null) => {
 				// content as a parameter => for custom content that user inputs
 				// console.log("cst content", content);
 				set({ contentState: { loading: true, error: null } });
