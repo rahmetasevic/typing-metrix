@@ -1,34 +1,42 @@
 #header {
 	.navigation {
 		display: grid;
+		grid-template-columns: repeat(3, 1fr);
 		justify-items: center;
-		grid-template-columns: 1fr 2fr 1fr;
 		align-items: center;
 		gap: 1rem;
 		color: var(--secondary);
 
-		.icon {
-			font-size: 2em;
-			vertical-align: middle;
-			line-height: 1;
+		&__pages {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 0.5rem;
 		}
 
-		&__settings,
-		&__pages {
+		&__settings {
 			display: flex;
+			width: 100%;
+			justify-content: space-around;
 		}
 
 		button {
-			padding: 0.3rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 0.5rem;
+			padding: 0.5rem 0.75rem;
 			color: var(--secondary);
+			border-radius: 10px;
 			cursor: pointer;
 			background-color: transparent;
 			border: none;
 			outline: none;
 			transition: color 0.1s linear;
+			font-size: 1rem;
 
 			&:hover {
 				color: var(--font-primary);
+				background-color: var(--alternate);
 			}
 		}
 
@@ -41,7 +49,7 @@
 				color: var(--primary);
 				font-family: "Bungee Shade";
 				text-wrap-mode: nowrap;
-				font-size: 3em;
+				font-size: 2.5em;
 				line-height: 0;
 				transition: color 0.5s;
 			}
@@ -53,12 +61,20 @@
 		}
 
 		&__home {
+			text-decoration: none;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 0.5rem;
 			color: var(--secondary);
-			padding: 0.3rem;
+			border-radius: 10px;
+			padding: 0.5rem 0.75rem;
 			transition: color 0.1s linear;
+			font-size: 1rem;
 
 			&:hover {
 				color: var(--font-primary);
+				background-color: var(--alternate);
 			}
 		}
 	}

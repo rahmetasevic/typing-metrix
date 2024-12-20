@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CgKeyboard } from "react-icons/cg";
+import { FaRegKeyboard } from "react-icons/fa";
 import { IoIosLogIn } from "react-icons/io";
 import { IoMdColorFill } from "react-icons/io";
 import { IoSettings } from "react-icons/io5";
@@ -30,16 +30,16 @@ export const Header: React.FC = () => {
 			<nav className="navigation">
 				<div className="navigation__pages">
 					<a className="navigation__home" href="/">
-						<CgKeyboard
-							className="icon"
-							style={{ transform: "scale(1.15)" }}
-						/>
+						<FaRegKeyboard className="icon" />
+						home
 					</a>
 					<Button>
 						<FaRegFileLines className="icon" />
+						about
 					</Button>
 					<Button>
 						<IoSettings className="icon" />
+						settings
 					</Button>
 				</div>
 				<a className="navigation__logo" href="/">
@@ -53,10 +53,11 @@ export const Header: React.FC = () => {
 						onClick={() => setShowThemes(!showThemes)}
 					>
 						<IoMdColorFill className="icon" />
+						{localStorage.getItem("theme") ?? "dark"}
 					</Button>
-					<Button className="navigation__login">
+					{/* <Button className="navigation__login">
 						<IoIosLogIn className="icon" />
-					</Button>
+					</Button> */}
 				</div>
 			</nav>
 		</header>
