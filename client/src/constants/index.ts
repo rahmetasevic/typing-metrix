@@ -37,3 +37,11 @@ export enum TestStatus {
 	Stop = "STOP",
 	Finish = "FINISH",
 }
+
+export const QUICKBAR_OPTIONS = [
+	"typing",
+	"layout",
+	"metrics",
+	"appearance",
+	"user",
+] as const;
