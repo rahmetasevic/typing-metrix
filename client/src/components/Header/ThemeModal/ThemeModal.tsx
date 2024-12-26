@@ -35,6 +35,7 @@ export const ThemeModal = (props: ModalProps) => {
 			document.documentElement.setAttribute("data-theme", theme);
 			localStorage.setItem("theme", theme);
 			setSelectedTheme(theme);
+			close();
 		}
 	}
 
@@ -43,12 +44,15 @@ export const ThemeModal = (props: ModalProps) => {
 	return (
 		<div
 			className={`themes ${visible ? "themes__show" : ""}`}
-			onClick={(e) => {
-				e.stopPropagation();
-				close();
-			}}
+			onClick={close}
 		>
-			<div className="themes__modal" onClick={handleSelectTheme}>
+			<div
+				className="themes__modal"
+				onClick={(e) => {
+					e.stopPropagation();
+					handleSelectTheme(e);
+				}}
+			>
 				{themes.map((theme, i) => (
 					<div
 						className={`themes__modal__theme theme-${theme.name} ${

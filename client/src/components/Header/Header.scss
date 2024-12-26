@@ -14,9 +14,9 @@
 		}
 
 		&__settings {
-			display: flex;
-			width: 100%;
-			justify-content: space-around;
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 0.5rem;
 		}
 
 		button {
