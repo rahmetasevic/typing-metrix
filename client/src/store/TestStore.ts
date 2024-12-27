@@ -1,10 +1,10 @@
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 
 import { FilterOption } from "@constants/index";
 import { FilterProps } from "types";
 import { TestStatus } from "@constants/index";
-import { generateContent } from "@utils/index";
+import { generateContent } from "@lib/contentGenerator";
 
 type TestAccuracy = {
 	correct: number;
@@ -115,7 +115,6 @@ export const useTestStore = create<TestState & TestActions>()(
 						set({
 							dictionary: data[dataKey],
 						});
-
 						set({
 							testContent:
 								content ??

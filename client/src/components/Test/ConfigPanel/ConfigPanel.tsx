@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { BsInputCursor } from "react-icons/bs";
 
-import { FilterOption, SetupMode, TestStatus } from "@constants/index";
+import { FilterOption, TestStatus } from "@constants/index";
 import { useTestStore } from "@store/TestStore";
+import { useTestConfigStore } from "@store/TestConfigStore";
 import { Button } from "@components/Shared/Button";
 
 import "./ConfigPanel.scss";
@@ -16,27 +17,22 @@ export const ConfigPanel = () => {
 			state.setTime,
 			state.setTestContent,
 		]);
+	const [config, setPunctuation, setNumbers] = useTestConfigStore((state) => [
+		state.config,
+		state.setPunctuation,
+		state.setNumbers,
+	]);
 
 	useEffect(() => {
-		console.log("panel act", activity);
-	}, [activity]);
-
-	useEffect(() => {
-		// let generateCount: number;
-		// activeFilter.name === "Time"
-		// 	? Number(activeFilter.value) * 10
-		// 	: Number(activeFilter.value);
 		if (activeFilter.name === "time") {
-			// generateCount = Number(activeFilter.value) * 10;
 			setTime(Number(activeFilter.value));
 		} else {
-			// generateCount = Number(activeFilter.value);
 			setTime(0);
 		}
 
 		console.log("activeFilter", activeFilter);
 		setTestContent();
-	}, [activeFilter]);
+	}, [activeFilter, config]);
 
 	function handleFilterSelect(e: React.MouseEvent<HTMLButtonElement>): void {
 		addTransitionVisibility(".panel__filters__values");
@@ -79,6 +75,28 @@ export const ConfigPanel = () => {
 		}
 	}
 
+	function handlePanelRules(e: React.MouseEvent<HTMLButtonElement>): void {
+		addTransitionVisibility(".text__content");
+
+		const rule = (e.target as HTMLButtonElement).textContent;
+		const isHighlighted = e.target.classList.contains(
+			"filter__value--highlighted",
+		);
+		// console.log("rule", rule);
+
+		if (!isHighlighted) {
+			e.target.classList.add("filter__value--highlighted");
+		} else {
+			e.target.classList.remove("filter__value--highlighted");
+		}
+
+		if (rule === "punctuation") {
+			setPunctuation(!config.punctuation);
+		} else {
+			setNumbers(!config.numbers);
+		}
+	}
+
 	function addTransitionVisibility(className: string): void {
 		const isHidden = document
 			.querySelector(className)
@@ -101,6 +119,7 @@ export const ConfigPanel = () => {
 						return (
 							<Button
 								className={`filter__title filter__${filterName} ${activeFilter.name === filterName ? "filter--highlighted" : ""}`}
+								type="button"
 								key={i}
 								onClick={handleFilterSelect}
 							>
@@ -119,6 +138,7 @@ export const ConfigPanel = () => {
 						(filterValue, i) => (
 							<Button
 								className={`filter__value ${activeFilter.value === filterValue ? "filter__value--highlighted" : ""}`}
+								type="button"
 								key={i}
 								onClick={handleFilterValue}
 							>
@@ -128,13 +148,21 @@ export const ConfigPanel = () => {
 					)}
 				</div>
 			</div>
-			<div className="panel__rules">
-				<Button>punctuation</Button>
-				<Button>numbers</Button>
-			</div>
-			<div className="panel__appearance">
-				<Button>
-					<BsInputCursor />
+			<div
+				className={`panel__rules ${activeFilter.name === "quotes" ? "invisible" : ""}`}
+				onClick={handlePanelRules}
+			>
+				<Button
+					className={`panel__rule ${config.punctuation ? "filter__value--highlighted" : ""}`}
+					type="button"
+				>
+					punctuation
+				</Button>
+				<Button
+					className={`panel__rule ${config.numbers ? "filter__value--highlighted" : ""}`}
+					type="button"
+				>
+					numbers
 				</Button>
 			</div>
 		</div>

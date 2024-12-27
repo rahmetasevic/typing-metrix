@@ -13,7 +13,6 @@ export const QuickbarModal = (props: ModalProps) => {
 
 	function handleSelectOption(e: React.MouseEvent<HTMLDivElement>): void {
 		const option = e.currentTarget.textContent;
-		console.log(option);
 
 		if (option && option !== selectedOption) {
 			document
