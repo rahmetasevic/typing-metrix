@@ -38,14 +38,6 @@ export enum TestStatus {
 	Finish = "FINISH",
 }
 
-export const QUICKBAR_OPTIONS = [
-	"typing",
-	"layout",
-	"metrics",
-	"appearance",
-	"user",
-] as const;
-
 export const PUNCTUATION_CHARS = [
 	"!",
 	'"',
@@ -78,4 +70,31 @@ export const PUNCTUATION_CHARS = [
 	"|",
 	"}",
 	"~",
+] as const;
+
+export type SuggestionProps = {
+	type: string;
+	title?: string;
+	description: string;
+	values: string[];
+};
+
+export const Suggestions: SuggestionProps[] = [
+	{
+		type: "mode",
+		description: "type of test",
+		values: ["words", "time", "quotes"],
+	},
+	{
+		type: "rule",
+		title: "punctuation",
+		description: "add punctuation marks",
+		values: ["on", "off"],
+	},
+	{
+		type: "rule",
+		title: "numbers",
+		description: "include numbers in test content",
+		values: ["on", "off"],
+	},
 ] as const;

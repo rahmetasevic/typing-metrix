@@ -17,10 +17,9 @@ export const ConfigPanel = () => {
 			state.setTime,
 			state.setTestContent,
 		]);
-	const [config, setPunctuation, setNumbers] = useTestConfigStore((state) => [
+	const [config, setConfig] = useTestConfigStore((state) => [
 		state.config,
-		state.setPunctuation,
-		state.setNumbers,
+		state.setConfig,
 	]);
 
 	useEffect(() => {
@@ -91,9 +90,11 @@ export const ConfigPanel = () => {
 		}
 
 		if (rule === "punctuation") {
-			setPunctuation(!config.punctuation);
+			// setPunctuation(!config.punctuation);
+			setConfig("punctuation", !config.punctuation);
 		} else {
-			setNumbers(!config.numbers);
+			// setNumbers(!config.numbers);
+			setConfig("numbers", !config.numbers);
 		}
 	}
 

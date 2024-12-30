@@ -1,0 +1,54 @@
+.quickbar {
+	&__suggestions {
+		button {
+			display: inline-flex;
+			justify-content: center;
+			padding: 0.5rem;
+			background-color: var(--alternate);
+			outline: none;
+			color: var(--secondary);
+			font-size: 17px;
+			border-radius: 10px;
+			border: 1px solid var(--primary);
+			width: 20%;
+		}
+	}
+
+	&__suggestion {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0.5rem;
+		font-size: 17px;
+		color: var(--secondary);
+		cursor: pointer;
+
+		& > * {
+			pointer-events: none;
+		}
+
+		&__text {
+			color: var(--font-primary);
+		}
+
+		&__values {
+			display: flex;
+			gap: 0.5rem;
+		}
+
+		&--highlighted {
+			background-color: var(--primary) !important;
+			color: var(--bg-primary) !important;
+		}
+
+		&:hover {
+			background-color: var(--alternate);
+			color: var(--font-primary);
+
+			button {
+				background-color: var(--primary);
+				color: var(--bg-primary);
+			}
+		}
+	}
+}

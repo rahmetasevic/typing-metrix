@@ -5,3 +5,7 @@ export function shuffleArray(arr: string[]): string[] {
 	}
 	return arr;
 }
+
+export function convertToBoolean(x: string): boolean {
+	return x === "on" ? true : false;
+}

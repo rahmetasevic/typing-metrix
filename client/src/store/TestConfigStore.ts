@@ -11,8 +11,9 @@ type ConfigState = {
 };
 
 type ConfigActions = {
-	setPunctuation: (punctuation: boolean) => void;
-	setNumbers: (numbers: boolean) => void;
+	setConfig: (property: keyof UserPreferences, value: any) => void;
+	// setPunctuation: (punctuation: boolean) => void;
+	// setNumbers: (numbers: boolean) => void;
 };
 
 const initialState: ConfigState = {
@@ -26,12 +27,19 @@ export const useTestConfigStore = create<ConfigState & ConfigActions>()(
 	persist(
 		(set, get) => ({
 			...initialState,
-			setPunctuation: (punctuation: boolean) => {
-				set({ config: { ...get().config, punctuation: punctuation } });
-			},
-			setNumbers: (numbers: boolean) => {
-				set({ config: { ...get().config, numbers: numbers } });
-			},
+			// setPunctuation: (punctuation: boolean) => {
+			// 	set({ config: { ...get().config, punctuation: punctuation } });
+			// },
+			// setNumbers: (numbers: boolean) => {
+			// 	set({ config: { ...get().config, numbers: numbers } });
+			// },
+			setConfig: (property, value) =>
+				set({
+					config: {
+						...get().config,
+						[property]: value, // Dynamically update the property
+					},
+				}),
 		}),
 		{
 			name: "config-store",

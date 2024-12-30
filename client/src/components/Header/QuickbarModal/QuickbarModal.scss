@@ -13,14 +13,13 @@
 	transition: all 0.2s ease;
 
 	&__modal {
-		display: grid;
+		display: flex;
+		flex-direction: column;
 		position: absolute;
 		top: 15%;
-		grid-template-rows: repeat(3, 1fr);
-		background-color: var(--alternate);
+		background-color: var(--bg-primary);
 		box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 1);
-		gap: 0.5rem;
-		width: 50%;
+		width: 40%;
 	}
 
 	&__search {
@@ -32,7 +31,7 @@
 			position: absolute;
 			margin-left: 5px;
 			color: var(--secondary);
-			font-size: 1.25rem;
+			font-size: 1.2rem;
 		}
 
 		input {
@@ -40,7 +39,7 @@
 			border: none;
 			outline: none;
 			background-color: var(--bg-primary);
-			font-size: 24px;
+			font-size: 20px;
 			color: var(--font-primary);
 			font-family: inherit;
 			padding: 0.5rem 0 0.5rem 1.8rem;
@@ -53,6 +52,7 @@
 			border: none;
 			outline: none;
 			cursor: pointer;
+			font-size: 20px;
 
 			&:hover {
 				color: var(--font-primary);
@@ -64,7 +64,6 @@
 		display: flex;
 		align-items: center;
 		gap: 1rem;
-		background-color: var(--bg-primary);
 		border-top: 1px solid var(--secondary);
 	}
 
