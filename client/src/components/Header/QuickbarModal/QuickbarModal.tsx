@@ -4,8 +4,8 @@ import { IoSearchOutline } from "react-icons/io5";
 import { Button } from "@components/Shared/Button";
 import { QuickbarSuggestions } from "./QuickbarSuggestions";
 import { QuickbarRecents } from "./QuickbarRecents";
-import { ModalProps } from "types";
-import { SuggestionProps, Suggestions } from "@constants/index";
+import { ModalProps, SuggestionProps } from "types";
+import { Suggestions } from "@constants/index";
 
 import "./QuickbarModal.scss";
 

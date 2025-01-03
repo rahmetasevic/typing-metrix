@@ -1,17 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-
-import { useTestStore } from "@store/TestStore";
-import { useTimeCount } from "@hooks/useTimeCount";
-
-import "./InputTest.scss";
 import { TestStatus } from "@constants/index";
+import { useTestStore } from "@store/TestStore";
+import { useEffect, useRef, useState } from "react";
+import { useTimeCount } from "./useTimeCount";
 
-export const InputTest = () => {
+export const useTestEngine = () => {
 	const [userInput, setUserInput] = useState<string>("");
 	const [startCountdown, startTimer] = useTimeCount();
-
-	const [typedWord, setTypedWord] = useState<string>("");
-	const [typeHistory, setTypeHistory] = useState<string[]>([]);
 	const [
 		time,
 		testContent,
@@ -68,51 +62,6 @@ export const InputTest = () => {
 		if (activity === TestStatus.Start) checkMatch();
 	}, [currChar]);
 
-	function detectKey(e: React.KeyboardEvent<HTMLInputElement>): void {
-		const key = e.key.trim();
-		const nextWord = testContent[currWord.index + 1];
-		// console.log(nextWord, activity);
-
-		// if (!nextWord || activity.status === "COMPLETED") {
-		// 	// setActivity({ "COMPLETED" });
-		// 	// resetTest();
-		// 	return;
-		// }
-
-		// if (!testContent[currWord.index]) {
-		// 	resetTest();
-		// 	return;
-		// }
-
-		if (key === "Tab" || key === "Enter") {
-			e.preventDefault();
-			// open command menu & pause the test
-			setActivity(TestStatus.Stop);
-			alert("Test is paused!");
-			return;
-		} else if (key === "") {
-			setTypeHistory([...typeHistory, userInput]);
-			setWordsLeft(wordsLeft + 1);
-			setWord(nextWord, currWord.index + 1);
-			setChar(key, -1);
-			setUserInput("");
-			if (!nextWord) {
-				setActivity(TestStatus.Finish);
-				return;
-			}
-			calcTestMetrics();
-			scrollContent();
-		} else if (key.length === 1) {
-			setChar(key, currChar.index + 1);
-			if (activity !== TestStatus.Start) {
-				// setIsStarted(true);
-				setActivity(TestStatus.Start);
-				activeFilter.name !== "time" ? startTimer() : startCountdown();
-			}
-		}
-		setTotalChars(totalChars + 1);
-	}
-
 	function calcTestMetrics(): void {
 		const minutesTaken =
 			activeFilter.name === "time"
@@ -163,8 +112,8 @@ export const InputTest = () => {
 		}
 	}
 
-	function getWordClass(x: number): string | undefined {
-		return x === currWord.index ? "current-word" : undefined;
+	function getWordClass(x: number): string {
+		return x === currWord.index ? "current-word" : "";
 	}
 
 	function scrollContent(): void {
@@ -189,40 +138,58 @@ export const InputTest = () => {
 		}, 50);
 	}
 
-	if (contentState.error) return null;
+	function detectKey(e: React.KeyboardEvent<HTMLInputElement>): void {
+		const key = e.key.trim();
+		const nextWord = testContent[currWord.index + 1];
+		console.log("key", key);
+		// console.log(nextWord, activity);
 
-	return (
-		<div
-			className={`typing-test ${activity === TestStatus.Finish ? "invisible" : ""}`}
-			style={{
-				opacity: activity !== TestStatus.Finish ? 1 : 0,
-			}}
-		>
-			<div className="text">
-				<div className="text__content">
-					{testContent.length > 0 &&
-						testContent.map((word, ix) => (
-							<span className={getWordClass(ix)} key={ix}>
-								{word.split("").map((char, iy) => (
-									<span
-										className={`word-${ix}-char-${iy}`}
-										key={iy}
-									>
-										{char}
-									</span>
-								))}{" "}
-							</span>
-						))}
-				</div>
-				<input
-					className="input-box"
-					type="text"
-					spellCheck="false"
-					onChange={(e) => setUserInput(e.target.value)}
-					value={userInput}
-					onKeyDown={detectKey}
-				/>
-			</div>
-		</div>
-	);
+		// if (!nextWord || activity.status === "COMPLETED") {
+		// 	// setActivity({ "COMPLETED" });
+		// 	// resetTest();
+		// 	return;
+		// }
+
+		// if (!testContent[currWord.index]) {
+		// 	resetTest();
+		// 	return;
+		// }
+
+		if (key === "Tab" || key === "Enter") {
+			e.preventDefault();
+			// open command menu & pause the test
+			setActivity(TestStatus.Stop);
+			alert("Test is paused!");
+			return;
+		} else if (key === "") {
+			// setTypeHistory([...typeHistory, userInput]);
+			setWordsLeft(wordsLeft + 1);
+			setWord(nextWord, currWord.index + 1);
+			setChar(key, -1);
+			setUserInput("");
+			if (!nextWord) {
+				setActivity(TestStatus.Finish);
+				return;
+			}
+			calcTestMetrics();
+			scrollContent();
+		} else if (key.length === 1) {
+			setChar(key, currChar.index + 1);
+			if (activity !== TestStatus.Start) {
+				// setIsStarted(true);
+				setActivity(TestStatus.Start);
+				activeFilter.name !== "time" ? startTimer() : startCountdown();
+			}
+		}
+		setTotalChars(totalChars + 1);
+	}
+
+	return [
+		testContent,
+		activity,
+		userInput,
+		getWordClass,
+		detectKey,
+		setUserInput,
+	];
 };

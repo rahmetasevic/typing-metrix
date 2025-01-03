@@ -2,6 +2,7 @@ import { IconType } from "react-icons";
 import { PiTextAa } from "react-icons/pi";
 import { MdOutlineTimer } from "react-icons/md";
 import { GrBlockQuote } from "react-icons/gr";
+import { SuggestionProps } from "types";
 
 type FilterOptionKey = "words" | "time" | "quotes";
 type FilterOptionProps = {
@@ -71,13 +72,6 @@ export const PUNCTUATION_CHARS = [
 	"}",
 	"~",
 ] as const;
-
-export type SuggestionProps = {
-	type: string;
-	title?: string;
-	description: string;
-	values: string[];
-};
 
 export const Suggestions: SuggestionProps[] = [
 	{
