@@ -9,7 +9,7 @@ document.documentElement.setAttribute(
 	localStorage.getItem("theme") ?? "dark",
 );
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById("app") as HTMLElement).render(
 	<React.StrictMode>
 		<App />
 	</React.StrictMode>,
