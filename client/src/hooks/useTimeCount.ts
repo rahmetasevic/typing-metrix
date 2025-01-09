@@ -36,8 +36,8 @@ export const useTimeCount = () => {
 	}, [activity]);
 
 	useEffect(() => {
-		console.log("timeConfig", timeConfig);
-		console.log("curr", time);
+		// console.log("timeConfig", timeConfig);
+		// console.log("curr", time);
 		if (
 			!timeConfig.type ||
 			!timeConfig.start ||

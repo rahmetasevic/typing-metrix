@@ -12,10 +12,10 @@ export const QuickbarSuggestions = ({ suggestions }) => {
 		state.setConfig,
 	]);
 
-	useEffect(() => {
-		console.log(suggestions);
-		console.log("cfg", config);
-	}, [suggestions]);
+	// useEffect(() => {
+	// 	console.log(suggestions);
+	// 	console.log("cfg", config);
+	// }, [suggestions]);
 
 	function handleSuggestion(e: React.MouseEvent<HTMLDivElement>): void {
 		const suggestionTitle = (e.target as HTMLDivElement)

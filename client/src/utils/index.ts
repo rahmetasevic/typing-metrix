@@ -9,3 +9,15 @@ export function shuffleArray(arr: string[]): string[] {
 export function convertToBoolean(x: string): boolean {
 	return x === "on" ? true : false;
 }
+
+export function addTransition(className: string): void {
+	const isHidden = document
+		.querySelector(className)
+		?.classList.contains("hidden");
+	if (!isHidden) {
+		document.querySelector(className)?.classList.add("hidden");
+		setTimeout(() => {
+			document.querySelector(className)?.classList.remove("hidden");
+		}, 200);
+	}
+}

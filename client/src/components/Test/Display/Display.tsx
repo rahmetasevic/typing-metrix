@@ -1,20 +1,18 @@
 import { Results } from "@components/Test/Results";
-import { Actions } from "@components/Test/Actions";
-import { ParagraphBox } from "@components/Test/Layout/ParagraphBox";
+import { ActionsPanel } from "@components/Test/ActionsPanel";
 import { ConfigPanel } from "@components/Test/ConfigPanel";
+import { Layout } from "@components/Test/Layout";
 
 import "./Display.scss";
-import { ParagraphFlow } from "../Layout/ParagraphFlow/ParagraphFlow";
 
 export const Display = () => {
 	return (
 		<div className="home">
 			<ConfigPanel />
-			<ParagraphFlow />
-			{/* <ParagraphBox /> */}
-			<Results />
+			<Layout />
+			<ActionsPanel />
 			{/* {activity === "PENDING" && <Info />} */}
-			<Actions />
+			<Results />
 		</div>
 	);
 };

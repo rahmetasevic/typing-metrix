@@ -2,6 +2,10 @@ import { IconType } from "react-icons";
 import { PiTextAa } from "react-icons/pi";
 import { MdOutlineTimer } from "react-icons/md";
 import { GrBlockQuote } from "react-icons/gr";
+import { VscWholeWord } from "react-icons/vsc";
+import { BsBodyText } from "react-icons/bs";
+import { LuTextCursorInput } from "react-icons/lu";
+
 import { SuggestionProps } from "types";
 
 type FilterOptionKey = "words" | "time" | "quotes";
@@ -38,6 +42,32 @@ export enum TestStatus {
 	Stop = "STOP",
 	Finish = "FINISH",
 }
+
+export const LayoutType = {
+	FLOW: "flow",
+	BOX: "box",
+	INLINE: "inline",
+} as const;
+export type LayoutTypeName = (typeof LayoutType)[keyof typeof LayoutType];
+type DisplayLayoutProps = {
+	name: LayoutTypeName;
+	icon: IconType;
+};
+
+export const DisplayLayout: DisplayLayoutProps[] = [
+	{
+		name: LayoutType.FLOW,
+		icon: BsBodyText,
+	},
+	{
+		name: LayoutType.BOX,
+		icon: VscWholeWord,
+	},
+	{
+		name: LayoutType.INLINE,
+		icon: LuTextCursorInput,
+	},
+] as const;
 
 export const PUNCTUATION_CHARS = [
 	"!",

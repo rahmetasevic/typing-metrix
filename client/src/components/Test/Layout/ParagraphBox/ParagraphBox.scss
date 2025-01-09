@@ -1,45 +1,45 @@
-.text {
+.parbox {
 	display: grid;
 	grid-template-rows: 2fr 1fr auto;
-	gap: 0.5rem;
 	justify-items: center;
+	align-items: center;
 	background-color: var(--alternate);
 	color: var(--secondary);
 	padding: 0.5rem;
 	border-radius: 15px;
-	width: 45vw;
 	transition: all 0.1s ease;
+	height: 230px;
 
 	&__content {
 		opacity: 1;
 		visibility: visible;
 		overflow: hidden;
-		height: 100px;
+		height: 150px;
 		text-align: center;
 		font-size: 28px;
-		line-height: 2.5rem;
+		line-height: 1.75;
 		scroll-behavior: smooth;
 		transition: opacity 0.15s ease;
 	}
-}
 
-.input-box {
-	border: none;
-	outline: none;
-	border-radius: 15px;
-	background-color: var(--bg-primary);
-	height: 50px;
-	width: 20vw;
-	text-align: center;
-	font-size: 24px;
-	letter-spacing: 2px;
-	color: var(--font-primary);
-	font-family: inherit;
-
-	&:focus {
-		border-color: transparent;
+	input {
 		border: none;
-		box-shadow: 0 0 0 2px var(--secondary);
+		outline: none;
+		border-radius: 15px;
+		background-color: var(--bg-primary);
+		height: 50px;
+		width: 20vw;
+		text-align: center;
+		font-size: 24px;
+		letter-spacing: 2px;
+		color: var(--font-primary);
+		font-family: inherit;
+
+		&:focus {
+			border-color: transparent;
+			border: none;
+			box-shadow: 0 0 0 2px var(--secondary);
+		}
 	}
 }
 

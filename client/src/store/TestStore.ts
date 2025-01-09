@@ -1,10 +1,11 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import { FilterOption } from "@constants/index";
+import { FilterOption, LayoutType } from "@constants/index";
 import { FilterProps } from "types";
 import { TestStatus } from "@constants/index";
 import { generateContent } from "@lib/contentGenerator";
+import { addTransition } from "@utils/index";
 
 type TestAccuracy = {
 	correct: number;
@@ -30,6 +31,7 @@ type ContentState = {
 
 // type TestStatus = "PENDING" | "STARTED" | "STOPPED" | "COMPLETED";
 export type TestMode = "STANDARD" | "CUSTOM";
+// export type DisplayLayout = "box" | "flow" | "inline";
 type TestState = {
 	mode: TestMode;
 	activity: TestStatus;
@@ -45,6 +47,7 @@ type TestState = {
 	results: TestMetrics;
 	contentState: ContentState;
 	dictionary: string[];
+	displayLayout: LayoutType;
 };
 
 type TestActions = {
@@ -62,6 +65,7 @@ type TestActions = {
 	setResults: (result: TestMetrics) => void;
 	setContentState: (currentState: ContentState) => void;
 	setDictionary: (dictionary: string[]) => void;
+	setDisplayLayout: (layout: LayoutType) => void;
 	redoTest: () => void;
 	resetTest: () => void;
 };
@@ -86,6 +90,7 @@ const initialState: TestState = {
 	results: { grossWPM: 0, netWPM: 0, accuracy: 0, errors: 0 },
 	contentState: { loading: false, error: null },
 	dictionary: [],
+	displayLayout: "flow",
 };
 
 export const useTestStore = create<TestState & TestActions>()(
@@ -174,6 +179,9 @@ export const useTestStore = create<TestState & TestActions>()(
 			setDictionary(dictionary: string[]) {
 				set({ dictionary: dictionary });
 			},
+			setDisplayLayout(layout: LayoutType) {
+				set({ displayLayout: layout });
+			},
 			redoTest: () => {
 				document
 					.querySelectorAll(".active-char")
@@ -188,9 +196,13 @@ export const useTestStore = create<TestState & TestActions>()(
 			},
 			resetTest: () => {
 				// bug when 50+ words is finished, previous text stays hidden at top of the element
+
 				document
 					.querySelectorAll(".active-char")
 					.forEach((e) => e.classList.remove("active-char"));
+				const contentClass =
+					document.querySelector(".typing-test")?.firstElementChild
+						?.classList[0];
 				const generatedText: string[] = generateContent(
 					get().dictionary,
 					{
@@ -199,9 +211,12 @@ export const useTestStore = create<TestState & TestActions>()(
 					},
 				);
 
+				addTransition(`.${contentClass}__content`);
+
 				set({
 					...initialState,
 					testContent: generatedText,
+					displayLayout: get().displayLayout,
 					dictionary: get().dictionary,
 					activeFilter: get().activeFilter,
 				});

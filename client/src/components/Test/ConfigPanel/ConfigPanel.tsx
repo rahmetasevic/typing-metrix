@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { BsInputCursor } from "react-icons/bs";
 
 import { FilterOption, TestStatus } from "@constants/index";
 import { useTestStore } from "@store/TestStore";
@@ -7,6 +6,7 @@ import { useTestConfigStore } from "@store/TestConfigStore";
 import { Button } from "@components/Shared/Button";
 
 import "./ConfigPanel.scss";
+import { addTransition } from "@utils/index";
 
 export const ConfigPanel = () => {
 	const [activeFilter, activity, setActiveFilter, setTime, setTestContent] =
@@ -29,14 +29,18 @@ export const ConfigPanel = () => {
 			setTime(0);
 		}
 
-		console.log("activeFilter", activeFilter);
+		// console.log("activeFilter", activeFilter);
 		setTestContent();
 	}, [activeFilter, config]);
 
 	function handleFilterSelect(e: React.MouseEvent<HTMLButtonElement>): void {
-		addTransitionVisibility(".panel__filters__values");
-		addTransitionVisibility(".text__content");
+		const contentClass =
+			document.querySelector(".typing-test")?.firstElementChild
+				?.classList[0];
 		const filterName = e.currentTarget.textContent;
+
+		addTransition(".panel__filters__values");
+		addTransition(`.${contentClass}__content`);
 
 		if (filterName) {
 			document
@@ -59,8 +63,12 @@ export const ConfigPanel = () => {
 	}
 
 	function handleFilterValue(e: React.MouseEvent<HTMLButtonElement>): void {
-		addTransitionVisibility(".text__content");
+		const contentClass =
+			document.querySelector(".typing-test")?.firstElementChild
+				?.classList[0];
 		const filterValue = e.currentTarget.textContent;
+
+		addTransition(`.${contentClass}__content`);
 
 		if (filterValue) {
 			document
@@ -75,7 +83,11 @@ export const ConfigPanel = () => {
 	}
 
 	function handlePanelRules(e: React.MouseEvent<HTMLButtonElement>): void {
-		addTransitionVisibility(".text__content");
+		const contentClass =
+			document.querySelector(".typing-test")?.firstElementChild
+				?.classList[0];
+
+		addTransition(`.${contentClass}__content`);
 
 		const rule = (e.target as HTMLButtonElement).textContent;
 		const isHighlighted = e.target.classList.contains(
@@ -98,18 +110,18 @@ export const ConfigPanel = () => {
 		}
 	}
 
-	function addTransitionVisibility(className: string): void {
-		const isHidden = document
-			.querySelector(className)
-			?.classList.contains("hidden");
-		if (!isHidden) {
-			document.querySelector(className)?.classList.add("hidden");
-			setTimeout(() => {
-				document.querySelector(className)?.classList.remove("hidden");
-			}, 200);
-		}
-	}
-
+	// function addTransitionVisibility(className: string): void {
+	// 	const isHidden = document
+	// 		.querySelector(className)
+	// 		?.classList.contains("hidden");
+	// 	if (!isHidden) {
+	// 		document.querySelector(className)?.classList.add("hidden");
+	// 		setTimeout(() => {
+	// 			document.querySelector(className)?.classList.remove("hidden");
+	// 		}, 200);
+	// 	}
+	// }
+	//
 	return (
 		<div
 			className={`panel ${activity !== TestStatus.Pending ? "hidden" : ""}`}

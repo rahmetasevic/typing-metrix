@@ -1,4 +1,4 @@
-import { TestStatus } from "@constants/index";
+import { LayoutType, TestStatus } from "@constants/index";
 import { useTestStore } from "@store/TestStore";
 import { useEffect, useRef, useState } from "react";
 import { useTimeCount } from "./useTimeCount";
@@ -18,6 +18,7 @@ export const useTestEngine = () => {
 		correctChars,
 		incorrectChars,
 		contentState,
+		displayLayout,
 		setWord,
 		setChar,
 		setActivity,
@@ -38,6 +39,7 @@ export const useTestEngine = () => {
 		state.correctChars,
 		state.incorrectChars,
 		state.contentState,
+		state.displayLayout,
 		state.setWord,
 		state.setChar,
 		state.setActivity,
@@ -51,11 +53,21 @@ export const useTestEngine = () => {
 	useEffect(() => {
 		// console.log("inputTest(activity, content)", activity, testContent);
 		setUserInput("");
-		if (activity !== TestStatus.Start && testContent.length > 0) {
-			setWord(testContent[0], 0);
-			setChar(testContent[0][0], -1);
+		if (activity !== TestStatus.Start && testContent!.length > 0) {
+			// const contentBlock =
+			// 	document.querySelector(".typing-test")?.firstElementChild
+			// 		?.classList[0];
+			// console.log(
+			// 	"ue",
+			// 	(
+			// 		document.querySelector(
+			// 			`.${contentBlock}__content`,
+			// 		) as HTMLDivElement
+			// 	).scrollTop,
+			// );
+			setWord(testContent![0], 0);
+			setChar(testContent![0][0], -1);
 		}
-		// if (activity.status === "COMPLETED") calcTestResults();
 	}, [testContent, activity]);
 
 	useEffect(() => {
@@ -118,30 +130,93 @@ export const useTestEngine = () => {
 
 	function scrollContent(): void {
 		setTimeout(() => {
-			const el: HTMLDivElement = document.querySelector(
-				".text__content",
-			) as HTMLDivElement;
-			const spn: HTMLSpanElement = document.querySelector(
+			const contentBlock =
+				document.querySelector(".typing-test")?.firstElementChild
+					?.classList[0];
+			const content = document.querySelector(
+				`.${contentBlock}__content`,
+			) as HTMLElement;
+			const currentWord: HTMLSpanElement = document.querySelector(
 				".current-word",
 			) as HTMLSpanElement;
-			if (
-				el.getBoundingClientRect().top + 10 !==
-					spn.getBoundingClientRect().top &&
-				activity === TestStatus.Start
-			) {
-				(
-					document.querySelector(".text__content") as HTMLDivElement
-				).scrollTop +=
-					spn.getBoundingClientRect().top -
-					el.getBoundingClientRect().top;
+
+			if (displayLayout !== LayoutType.INLINE) {
+				const absDiff =
+					Math.floor(
+						(currentWord!.getBoundingClientRect().top -
+							content!.getBoundingClientRect().top) /
+							50,
+					) * 50;
+				const diff =
+					currentWord!.getBoundingClientRect().top -
+					content!.getBoundingClientRect().top -
+					absDiff;
+
+				// console.log("abs_diff", absDiff);
+				//
+				// console.log(
+				// 	"ct_cw_cc-right",
+				// 	content.getBoundingClientRect().right,
+				// 	currentWord.getBoundingClientRect().right,
+				// 	currentChar.getBoundingClientRect().right,
+				// );
+				//
+				if (absDiff > 0 && activity === TestStatus.Start) {
+					content!.scrollTop +=
+						diff > absDiff ? absDiff + diff : absDiff;
+					// console.log("ct_st", content!.getBoundingClientRect().top);
+					// console.log(
+					// 	"cw_st",
+					// 	currentWord!.getBoundingClientRect().top,
+					// );
+					// console.log(
+					// 	"cc_st",
+					// 	currentChar!.getBoundingClientRect().top,
+					// );
+					// console.log(
+					// 	"diff",
+					// 	currentWord.getBoundingClientRect().top -
+					// 		content.getBoundingClientRect().top,
+					// );
+					// console.log("total_scrollTop", content!.scrollTop);
+				}
+			} else {
+				const previousWordLen = parseFloat(
+					currentWord!
+						.previousElementSibling!.getBoundingClientRect()
+						.width.toFixed(2),
+				);
+				// console.log("cw", currentWord.getBoundingClientRect());
+				// console.log(
+				// 	"pw",
+				// 	currentWord.previousElementSibling!.getBoundingClientRect(),
+				// );
+				content!.scrollLeft += previousWordLen;
+				// content.scrollBy({ left: 50, behavior: "smooth" });
 			}
 		}, 50);
 	}
 
+	function resetScroll(): void {
+		const contentBlock =
+			document.querySelector(".typing-test")?.firstElementChild
+				?.classList[0];
+		(
+			document.querySelector(
+				`.${contentBlock}__content`,
+			) as HTMLDivElement
+		).scrollTop = 0;
+		(
+			document.querySelector(
+				`.${contentBlock}__content`,
+			) as HTMLDivElement
+		).scrollLeft = 0;
+	}
+
 	function detectKey(e: React.KeyboardEvent<HTMLInputElement>): void {
 		const key = e.key.trim();
-		const nextWord = testContent[currWord.index + 1];
-		console.log("key", key);
+		const nextWord = testContent![currWord.index + 1];
+		// console.log("key", key);
 		// console.log(nextWord, activity);
 
 		// if (!nextWord || activity.status === "COMPLETED") {
@@ -168,11 +243,12 @@ export const useTestEngine = () => {
 			setChar(key, -1);
 			setUserInput("");
 			if (!nextWord) {
+				resetScroll();
 				setActivity(TestStatus.Finish);
 				return;
 			}
-			calcTestMetrics();
 			scrollContent();
+			calcTestMetrics();
 		} else if (key.length === 1) {
 			setChar(key, currChar.index + 1);
 			if (activity !== TestStatus.Start) {
