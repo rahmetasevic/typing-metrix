@@ -4,8 +4,14 @@ import { useTestEngine } from "@hooks/useTestEngine";
 import "./ParagraphFlow.scss";
 
 export const ParagraphFlow = () => {
-	const [testContent, userInput, getWordClass, detectKey, setUserInput] =
-		useTestEngine();
+	const [
+		testContent,
+		activity,
+		userInput,
+		getWordClass,
+		detectKey,
+		setUserInput,
+	] = useTestEngine();
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	function focusContent(): void {

@@ -46,6 +46,7 @@ export const ActionsPanel = () => {
 					return (
 						<Button
 							className={`actions__layout ${displayLayout === layout.name ? "layout--highlighted" : ""}`}
+							key={layout.name}
 							onClick={handleContentLayout}
 							dataValue={layout.name}
 						>
