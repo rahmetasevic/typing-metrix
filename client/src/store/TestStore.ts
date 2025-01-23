@@ -47,7 +47,8 @@ type TestState = {
 	results: TestMetrics;
 	contentState: ContentState;
 	dictionary: string[];
-	displayLayout: LayoutType;
+	displayLayout: (typeof LayoutType)[keyof typeof LayoutType];
+	showQuickbar: boolean;
 };
 
 type TestActions = {
@@ -65,7 +66,10 @@ type TestActions = {
 	setResults: (result: TestMetrics) => void;
 	setContentState: (currentState: ContentState) => void;
 	setDictionary: (dictionary: string[]) => void;
-	setDisplayLayout: (layout: LayoutType) => void;
+	setDisplayLayout: (
+		layout: (typeof LayoutType)[keyof typeof LayoutType],
+	) => void;
+	setShowQuickbar: (isVisible: boolean) => void;
 	redoTest: () => void;
 	resetTest: () => void;
 };
@@ -90,7 +94,8 @@ const initialState: TestState = {
 	results: { grossWPM: 0, netWPM: 0, accuracy: 0, errors: 0 },
 	contentState: { loading: false, error: null },
 	dictionary: [],
-	displayLayout: "flow",
+	displayLayout: LayoutType.FLOW,
+	showQuickbar: false,
 };
 
 export const useTestStore = create<TestState & TestActions>()(
@@ -179,8 +184,13 @@ export const useTestStore = create<TestState & TestActions>()(
 			setDictionary(dictionary: string[]) {
 				set({ dictionary: dictionary });
 			},
-			setDisplayLayout(layout: LayoutType) {
+			setDisplayLayout(
+				layout: (typeof LayoutType)[keyof typeof LayoutType],
+			) {
 				set({ displayLayout: layout });
+			},
+			setShowQuickbar(isVisible: boolean) {
+				set({ showQuickbar: isVisible });
 			},
 			redoTest: () => {
 				document
@@ -195,8 +205,6 @@ export const useTestStore = create<TestState & TestActions>()(
 				});
 			},
 			resetTest: () => {
-				// bug when 50+ words is finished, previous text stays hidden at top of the element
-
 				document
 					.querySelectorAll(".active-char")
 					.forEach((e) => e.classList.remove("active-char"));

@@ -11,12 +11,16 @@ import { ThemeModal } from "@components/Header/ThemeModal";
 
 import "./Header.scss";
 import { QuickbarModal } from "./QuickbarModal";
+import { useTestStore } from "@store/TestStore";
 
 // implement sign in button similar on Stripe website
 
 export const Header: React.FC = () => {
 	const [showThemes, setShowThemes] = useState<boolean>(false);
-	const [showQuickbar, setShowQuickbar] = useState<boolean>(false);
+	const [showQuickbar, setShowQuickbar] = useTestStore((state) => [
+		state.showQuickbar,
+		state.setShowQuickbar,
+	]);
 
 	useEffect(() => {
 		document
