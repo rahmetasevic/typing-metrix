@@ -12,6 +12,7 @@ import { ThemeModal } from "@components/Header/ThemeModal";
 import "./Header.scss";
 import { QuickbarModal } from "./QuickbarModal";
 import { useTestStore } from "@store/TestStore";
+import { Link } from "react-router-dom";
 
 // implement sign in button similar on Stripe website
 
@@ -40,18 +41,18 @@ export const Header: React.FC = () => {
 			/>
 			<nav className="navigation">
 				<div className="navigation__pages">
-					<a className="navigation__home" href="/">
+					<Link to="/">
 						<FaRegKeyboard className="icon" />
 						home
-					</a>
-					<Button>
+					</Link>
+					<Link to="/about">
 						<FaRegFileLines className="icon" />
 						about
-					</Button>
-					<Button>
+					</Link>
+					<Link to="/settings">
 						<IoSettings className="icon" />
 						settings
-					</Button>
+					</Link>
 				</div>
 				<a className="navigation__logo" href="/">
 					<h1 className="navigation__logo__title colorless">

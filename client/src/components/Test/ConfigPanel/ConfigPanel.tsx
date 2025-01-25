@@ -4,9 +4,9 @@ import { FilterOption, TestStatus } from "@constants/index";
 import { useTestStore } from "@store/TestStore";
 import { useTestConfigStore } from "@store/TestConfigStore";
 import { Button } from "@components/Shared/Button";
+import { addTransition } from "@utils/index";
 
 import "./ConfigPanel.scss";
-import { addTransition } from "@utils/index";
 
 export const ConfigPanel = () => {
 	const [activeFilter, activity, setActiveFilter, setTime, setTestContent] =
@@ -110,18 +110,6 @@ export const ConfigPanel = () => {
 		}
 	}
 
-	// function addTransitionVisibility(className: string): void {
-	// 	const isHidden = document
-	// 		.querySelector(className)
-	// 		?.classList.contains("hidden");
-	// 	if (!isHidden) {
-	// 		document.querySelector(className)?.classList.add("hidden");
-	// 		setTimeout(() => {
-	// 			document.querySelector(className)?.classList.remove("hidden");
-	// 		}, 200);
-	// 	}
-	// }
-	//
 	return (
 		<div
 			className={`panel ${activity !== TestStatus.Pending ? "hidden" : ""}`}

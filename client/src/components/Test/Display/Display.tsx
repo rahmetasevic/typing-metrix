@@ -7,7 +7,7 @@ import "./Display.scss";
 
 export const Display = () => {
 	return (
-		<div className="home">
+		<div className="display">
 			<ConfigPanel />
 			<Layout />
 			<ActionsPanel />

@@ -16,8 +16,12 @@ export function addTransition(className: string): void {
 		?.classList.contains("hidden");
 	if (!isHidden) {
 		document.querySelector(className)?.classList.add("hidden");
+		(document.querySelector(className) as HTMLElement).style.opacity = "0";
+
 		setTimeout(() => {
 			document.querySelector(className)?.classList.remove("hidden");
+			(document.querySelector(className) as HTMLElement).style.opacity =
+				"1";
 		}, 200);
 	}
 }

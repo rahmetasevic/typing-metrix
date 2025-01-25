@@ -2,7 +2,6 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-top: 14rem;
 	padding: 0 1.25rem;
 
 	&__left {
@@ -10,7 +9,6 @@
 	}
 
 	&__section {
-		// display: flex;
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 

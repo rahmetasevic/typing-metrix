@@ -10,6 +10,23 @@
 		&__pages {
 			display: grid;
 			grid-template-columns: repeat(3, 1fr);
+
+			& > * {
+				text-decoration: none;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 0.3rem;
+				color: var(--font-primary);
+				border-radius: 10px;
+				padding: 0.5rem 0.75rem;
+				transition: color 0.1s linear;
+				font-size: 18px;
+
+				&:hover {
+					background-color: var(--alternate);
+				}
+			}
 		}
 
 		&__settings {
@@ -54,23 +71,6 @@
 			.colorless {
 				font-family: inherit;
 				color: var(--secondary);
-			}
-		}
-
-		&__home {
-			text-decoration: none;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			gap: 0.3rem;
-			color: var(--font-primary);
-			border-radius: 10px;
-			padding: 0.5rem 0.75rem;
-			transition: color 0.1s linear;
-			font-size: 18px;
-
-			&:hover {
-				background-color: var(--alternate);
 			}
 		}
 	}
