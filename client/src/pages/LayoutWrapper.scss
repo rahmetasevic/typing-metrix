@@ -5,22 +5,6 @@
 			1fr
 		);
 	align-items: start;
-	transition: all 5s ease;
-	.page-enter {
-		opacity: 0; /* Start transition from transparent */
-	}
-
-	.page-enter-active {
-		opacity: 1; /* End transition at fully visible */
-	}
-
-	.page-exit {
-		opacity: 1; /* Start exit transition from fully visible */
-	}
-
-	.page-exit-active {
-		opacity: 0; /* End exit transition at fully transparent */
-	}
 
 	& > * {
 		grid-column: 2;
