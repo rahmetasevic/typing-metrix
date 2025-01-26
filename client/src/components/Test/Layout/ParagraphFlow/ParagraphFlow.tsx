@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useTestEngine } from "@hooks/useTestEngine";
+import { TbHandClick } from "react-icons/tb";
 
 import "./ParagraphFlow.scss";
 
@@ -24,7 +25,7 @@ export const ParagraphFlow = () => {
 	return (
 		<div className="parflow">
 			<input
-				className="input-box"
+				className="parflow__input"
 				type="text"
 				ref={inputRef}
 				onChange={(e) => setUserInput(e.target.value)}
@@ -32,7 +33,11 @@ export const ParagraphFlow = () => {
 				onKeyDown={detectKey}
 				spellCheck="false"
 			/>
-			<div className="parflow__content" onClick={focusContent}>
+			<div
+				className="parflow__content"
+				onClick={focusContent}
+				tabIndex={0}
+			>
 				{testContent.length > 0 &&
 					testContent.map((word, ix) => (
 						<span className={getWordClass(ix)} key={ix}>
@@ -46,6 +51,9 @@ export const ParagraphFlow = () => {
 							))}{" "}
 						</span>
 					))}
+			</div>
+			<div className="parflow__blurred">
+				<TbHandClick /> click to focus on the test
 			</div>
 		</div>
 	);

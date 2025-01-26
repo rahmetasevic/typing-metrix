@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useTestEngine } from "@hooks/useTestEngine";
-import { TestStatus } from "@constants/index";
+import { TbHandClick } from "react-icons/tb";
 
 import "./ParagraphInline.scss";
 
@@ -18,7 +18,7 @@ export const ParagraphInline = () => {
 	function focusContent(): void {
 		// console.log("ref", inputRef);
 		if (inputRef.current) {
-			console.log("Focusing input element");
+			// console.log("Focusing input element");
 			inputRef.current.focus();
 		}
 	}
@@ -26,7 +26,7 @@ export const ParagraphInline = () => {
 	return (
 		<div className="parinline">
 			<input
-				className="input-box"
+				className="parinline__input"
 				type="text"
 				ref={inputRef}
 				onChange={(e) => setUserInput(e.target.value)}
@@ -49,6 +49,9 @@ export const ParagraphInline = () => {
 							&nbsp;
 						</span>
 					))}
+			</div>
+			<div className="parinline__blurred">
+				<TbHandClick /> click to focus on the test
 			</div>
 		</div>
 	);

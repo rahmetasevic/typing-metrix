@@ -1,5 +1,5 @@
-import { TestStatus } from "@constants/index";
 import { useTestEngine } from "@hooks/useTestEngine";
+import { TbHandClick } from "react-icons/tb";
 
 import "./ParagraphBox.scss";
 
@@ -31,13 +31,16 @@ export const ParagraphBox = () => {
 					))}
 			</div>
 			<input
-				className="input-box"
+				className="parbox__input"
 				type="text"
 				spellCheck="false"
 				onChange={(e) => setUserInput(e.target.value)}
 				value={userInput}
 				onKeyDown={detectKey}
 			/>
+			<div className="parbox__blurred">
+				<TbHandClick /> click to focus on the test
+			</div>
 		</div>
 	);
 };
