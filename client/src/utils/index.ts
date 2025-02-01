@@ -1,3 +1,6 @@
+import { SelectOption } from "@components/Shared/Select";
+import { ThemeProps } from "types";
+
 export function shuffleArray(arr: string[]): string[] {
 	for (let i = arr.length - 1; i > 0; i--) {
 		const j = Math.floor(Math.random() * (i + 1));
@@ -24,4 +27,8 @@ export function addTransition(className: string): void {
 				"1";
 		}, 200);
 	}
+}
+
+export function filterThemeTitle(themes: ThemeProps[]): any {
+	return themes.map((theme) => ({ value: theme.name }));
 }

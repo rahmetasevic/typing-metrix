@@ -1,3 +1,5 @@
+import { SettingsCategories } from "@constants/index";
+
 export type FilterProps = {
 	name: string;
 	options: string[] | null;
@@ -9,9 +11,22 @@ export type ModalProps = {
 	close: () => void;
 };
 
+type SuggestionCategory =
+	(typeof SettingsCategories)[keyof typeof SettingsCategories];
 export type SuggestionProps = {
-	type: string;
-	title?: string;
-	description: string;
-	values: string[];
+	[key in SuggestionCategory]?: {
+		title?: string;
+		description: string;
+		values: ThemeProps[] | string[];
+	}[];
+};
+
+export type ThemeProps = {
+	name: string;
+	backgroundPrimary: string;
+	primary: string;
+	secondary: string;
+	alternate: string;
+	textPrimary: string;
+	error: string;
 };

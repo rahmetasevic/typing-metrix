@@ -6,7 +6,7 @@ import { VscWholeWord } from "react-icons/vsc";
 import { BsBodyText } from "react-icons/bs";
 import { LuTextCursorInput } from "react-icons/lu";
 
-import { SuggestionProps } from "types";
+import { SuggestionProps, ThemeProps } from "types";
 
 type FilterOptionKey = "words" | "time" | "quotes";
 type FilterOptionProps = {
@@ -103,22 +103,36 @@ export const PUNCTUATION_CHARS = [
 	"~",
 ] as const;
 
-export const Suggestions: SuggestionProps[] = [
-	{
-		type: "mode",
-		description: "type of test",
-		values: ["words", "time", "quotes"],
-	},
-	{
-		type: "rule",
-		title: "punctuation",
-		description: "add punctuation marks",
-		values: ["on", "off"],
-	},
-	{
-		type: "rule",
-		title: "numbers",
-		description: "include numbers in test content",
-		values: ["on", "off"],
-	},
-] as const;
+export const SettingsCategories = {
+	APPEARANCE: "appearance",
+	TYPING: "typing",
+	LAYOUT: "layout",
+	METRICS: "metrics",
+	USER: "user",
+} as const;
+
+export const Suggestions: SuggestionProps = {
+	[SettingsCategories.APPEARANCE]: [
+		{
+			title: "theme",
+			description: "list of themes",
+			values: [], // initialized in component
+		},
+	],
+	[SettingsCategories.TYPING]: [
+		{
+			description: "type of test",
+			values: ["words", "time", "quotes"],
+		},
+		{
+			title: "punctuation",
+			description: "add punctuation marks",
+			values: ["on", "off"],
+		},
+		{
+			title: "numbers",
+			description: "include numbers in test content",
+			values: ["on", "off"],
+		},
+	],
+} as const;

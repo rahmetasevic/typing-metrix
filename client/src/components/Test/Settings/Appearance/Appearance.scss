@@ -1,0 +1,25 @@
+.appearance {
+	padding: 0.5rem;
+
+	&__settings {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+	&__info {
+		display: flex;
+		flex-direction: column;
+		gap: 0.3rem;
+	}
+
+	&__title {
+		font-size: 18px;
+		color: var(--font-primary);
+	}
+
+	&__description {
+		font-size: 16px;
+		color: var(--secondary);
+	}
+}

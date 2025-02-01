@@ -5,11 +5,16 @@ import "./HelpModal.scss";
 export const HelpModal = (props: ModalProps) => {
 	const { visible, close } = props;
 
+	function closeModal(e: React.MouseEvent<HTMLDivElement>): void {
+		close();
+		e.stopPropagation();
+	}
+
 	if (!visible) return null;
 
 	return (
 		<div className={`help ${visible ? "help__show" : ""}`} onClick={close}>
-			<div className="help__modal">
+			<div className="help__modal" onClick={(e) => e.stopPropagation()}>
 				<h3 className="help__modal__title">keyboard shortcuts:</h3>
 				<ul className="help__shortcuts">
 					<li className="help__shortcut">

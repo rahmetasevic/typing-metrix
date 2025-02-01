@@ -4,14 +4,16 @@ import { persist } from "zustand/middleware";
 type UserPreferences = {
 	punctuation: boolean;
 	numbers: boolean;
+	theme: string;
 };
 
 type ConfigState = {
 	config: UserPreferences;
 };
 
+export type ConfigProperty = keyof UserPreferences;
 type ConfigActions = {
-	setConfig: (property: keyof UserPreferences, value: any) => void;
+	setConfig: (property: ConfigProperty, value: any) => void;
 	// setPunctuation: (punctuation: boolean) => void;
 	// setNumbers: (numbers: boolean) => void;
 };
@@ -20,6 +22,7 @@ const initialState: ConfigState = {
 	config: {
 		punctuation: false,
 		numbers: false,
+		theme: localStorage.getItem("theme") ?? "dark",
 	},
 };
 

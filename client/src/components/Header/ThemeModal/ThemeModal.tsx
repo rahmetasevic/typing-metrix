@@ -2,31 +2,17 @@ import React, { useEffect, useState } from "react";
 import { MdCheck } from "react-icons/md";
 
 import { ModalProps } from "types";
+import { useGetThemes } from "@hooks/useGetThemes";
 
 import "./ThemeModal.scss";
+import { useTestConfigStore } from "@store/TestConfigStore";
 
 export const ThemeModal = (props: ModalProps) => {
+	const { themes } = useGetThemes();
 	const { visible, close } = props;
 	const [selectedTheme, setSelectedTheme] = useState<string>(
 		localStorage.getItem("theme") ?? "dark",
 	);
-	const [themes, setThemes] = useState<any[]>([]);
-
-	useEffect(() => {
-		getThemes();
-	}, []);
-
-	async function getThemes(): Promise<void> {
-		try {
-			const res = await fetch("/themes/themes.json").then((r) =>
-				r.json(),
-			);
-
-			setThemes(res);
-		} catch (error) {
-			console.log("error in getting themes data");
-		}
-	}
 
 	function handleSelectTheme(e: React.MouseEvent<HTMLDivElement>): void {
 		const theme = (e.currentTarget as HTMLDivElement).dataset.value;

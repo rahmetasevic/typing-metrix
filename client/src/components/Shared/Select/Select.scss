@@ -1,0 +1,13 @@
+select {
+	display: grid;
+	outline: none;
+	border: none;
+	border-radius: 10px;
+	background-color: var(--alternate);
+	color: var(--font-primary);
+	padding: 0.5em;
+	line-height: 1.25;
+	cursor: pointer;
+	// appearance: none;
+	width: 100%;
+}

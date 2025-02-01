@@ -13,8 +13,7 @@ import "./Header.scss";
 import { QuickbarModal } from "./QuickbarModal";
 import { useTestStore } from "@store/TestStore";
 import { Link } from "react-router-dom";
-
-// implement sign in button similar on Stripe website
+import { useTestConfigStore } from "@store/TestConfigStore";
 
 export const Header: React.FC = () => {
 	const [showThemes, setShowThemes] = useState<boolean>(false);
@@ -22,6 +21,7 @@ export const Header: React.FC = () => {
 		state.showQuickbar,
 		state.setShowQuickbar,
 	]);
+	const [config] = useTestConfigStore((state) => [state.config]);
 
 	useEffect(() => {
 		document
@@ -72,7 +72,7 @@ export const Header: React.FC = () => {
 						onClick={() => setShowThemes(!showThemes)}
 					>
 						<IoMdColorFill className="icon" />
-						{localStorage.getItem("theme") ?? "dark"}
+						{config.theme}
 					</Button>
 				</div>
 			</nav>
