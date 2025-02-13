@@ -136,3 +136,5 @@ export const Suggestions: SuggestionProps = {
 		},
 	],
 } as const;
+
+export const LANGUAGE_OPTIONS = ["english", "spanish"];

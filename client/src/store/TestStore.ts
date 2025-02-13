@@ -1,16 +1,11 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import { FilterOption, LayoutType } from "@constants/index";
+import { FilterOption, LANGUAGE_OPTIONS, LayoutType } from "@constants/index";
 import { FilterProps } from "types";
 import { TestStatus } from "@constants/index";
 import { generateContent } from "@lib/contentGenerator";
 import { addTransition } from "@utils/index";
-
-type TestAccuracy = {
-	correct: number;
-	incorrect: number;
-};
 
 type TextContent = {
 	text: string;
@@ -24,14 +19,7 @@ type TestMetrics = {
 	errors: number;
 };
 
-type ContentState = {
-	loading?: boolean;
-	error?: string | null;
-};
-
-// type TestStatus = "PENDING" | "STARTED" | "STOPPED" | "COMPLETED";
 export type TestMode = "STANDARD" | "CUSTOM";
-// export type DisplayLayout = "box" | "flow" | "inline";
 type TestState = {
 	mode: TestMode;
 	activity: TestStatus;
@@ -45,10 +33,10 @@ type TestState = {
 	correctChars: number;
 	incorrectChars: number;
 	results: TestMetrics;
-	contentState: ContentState;
 	dictionary: string[];
 	displayLayout: (typeof LayoutType)[keyof typeof LayoutType];
 	showQuickbar: boolean;
+	language: (typeof LANGUAGE_OPTIONS)[number];
 };
 
 type TestActions = {
@@ -64,19 +52,18 @@ type TestActions = {
 	setIncorrectChars: (count: number) => void;
 	setWordsLeft: (count: number) => void;
 	setResults: (result: TestMetrics) => void;
-	setContentState: (currentState: ContentState) => void;
 	setDictionary: (dictionary: string[]) => void;
 	setDisplayLayout: (
 		layout: (typeof LayoutType)[keyof typeof LayoutType],
 	) => void;
 	setShowQuickbar: (isVisible: boolean) => void;
+	setLanguage: (language: (typeof LANGUAGE_OPTIONS)[number]) => void;
 	redoTest: () => void;
 	resetTest: () => void;
 };
 
 const initialState: TestState = {
 	mode: "STANDARD",
-	// activity: "PENDING",
 	activity: TestStatus.Pending,
 	activeFilter: {
 		name: "words",
@@ -92,10 +79,10 @@ const initialState: TestState = {
 	time: 0,
 	wordsLeft: 0,
 	results: { grossWPM: 0, netWPM: 0, accuracy: 0, errors: 0 },
-	contentState: { loading: false, error: null },
 	dictionary: [],
 	displayLayout: LayoutType.FLOW,
 	showQuickbar: false,
+	language: LANGUAGE_OPTIONS[0],
 };
 
 export const useTestStore = create<TestState & TestActions>()(
@@ -108,16 +95,17 @@ export const useTestStore = create<TestState & TestActions>()(
 			setTestContent: async (content?: string[] | null) => {
 				// content as a parameter => for custom content that user inputs
 				// console.log("cst content", content);
-				set({ contentState: { loading: true, error: null } });
 				try {
 					// same content for words & time filters
 					const currentFilterName = get().activeFilter.name;
 					const dataKey =
 						currentFilterName !== "quotes" ? "words" : "quotes";
+					console.log("gc", get().language);
 					const url =
 						dataKey === "words"
-							? "/dictionaries/english_common.json"
+							? `/dictionaries/${get().language}.json`
 							: "/quotes/quotes.json";
+					console.log("url", url);
 					const response = await fetch(url);
 					if (response.ok) {
 						const data = await response.json();
@@ -138,14 +126,6 @@ export const useTestStore = create<TestState & TestActions>()(
 					}
 				} catch (error) {
 					console.log("error in getting content data:", error);
-					set({
-						contentState: {
-							loading: false,
-							error: "error in getting content data",
-						},
-					});
-				} finally {
-					set({ contentState: { loading: false, error: null } });
 				}
 			},
 			setWord: (text: string, index: number) => {
@@ -178,9 +158,6 @@ export const useTestStore = create<TestState & TestActions>()(
 			setResults: (result: TestMetrics) => {
 				set({ results: result });
 			},
-			setContentState: (currentState: ContentState) => {
-				set({ contentState: currentState });
-			},
 			setDictionary(dictionary: string[]) {
 				set({ dictionary: dictionary });
 			},
@@ -191,6 +168,9 @@ export const useTestStore = create<TestState & TestActions>()(
 			},
 			setShowQuickbar(isVisible: boolean) {
 				set({ showQuickbar: isVisible });
+			},
+			setLanguage(language: (typeof LANGUAGE_OPTIONS)[number]) {
+				set({ language: language });
 			},
 			redoTest: () => {
 				document

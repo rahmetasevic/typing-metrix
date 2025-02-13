@@ -1,4 +1,3 @@
-import { SelectOption } from "@components/Shared/Select";
 import { ThemeProps } from "types";
 
 export function shuffleArray(arr: string[]): string[] {

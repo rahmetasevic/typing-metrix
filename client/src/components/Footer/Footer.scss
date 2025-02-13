@@ -10,11 +10,12 @@
 
 	&__section {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(3, 1fr);
 
 		a {
 			display: flex;
 			align-items: center;
+			justify-content: center;
 			gap: 0.3rem;
 			color: var(--font-primary);
 			border-radius: 10px;
