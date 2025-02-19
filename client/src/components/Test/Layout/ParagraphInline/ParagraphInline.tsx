@@ -5,53 +5,57 @@ import { TbHandClick } from "react-icons/tb";
 import "./ParagraphInline.scss";
 
 export const ParagraphInline = () => {
-	const [
+	const {
 		testContent,
 		activity,
 		userInput,
 		getWordClass,
 		detectKey,
 		setUserInput,
-	] = useTestEngine();
+	} = useTestEngine();
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	function focusContent(): void {
-		// console.log("ref", inputRef);
 		if (inputRef.current) {
-			// console.log("Focusing input element");
+			// console.log("Focusing input element", inputRef);
 			inputRef.current.focus();
 		}
 	}
 
 	return (
 		<div className="parinline">
-			<input
-				className="parinline__input"
-				type="text"
-				ref={inputRef}
-				onChange={(e) => setUserInput(e.target.value)}
-				value={userInput}
-				onKeyDown={detectKey}
-				spellCheck="false"
-			/>
-			<div className="parinline__content" onClick={focusContent}>
-				{testContent.length > 0 &&
-					testContent.map((word, ix) => (
-						<span className={getWordClass(ix)} key={ix}>
-							{word.split("").map((char, iy) => (
-								<span
-									className={`word-${ix}-char-${iy}`}
-									key={iy}
-								>
-									{char}
+			<div className="parinline__wrapper">
+				<div className="parinline__uinput">{userInput}</div>
+				<div className="parinline__layout">
+					<input
+						className="parinline__input"
+						type="text"
+						ref={inputRef}
+						onChange={(e) => setUserInput(e.target.value)}
+						value={userInput}
+						onKeyDown={detectKey}
+						spellCheck="false"
+					/>
+					<div className="parinline__content" onClick={focusContent}>
+						{testContent!.length > 0 &&
+							testContent?.map((word, ix) => (
+								<span className={getWordClass(ix)} key={ix}>
+									{word.split("").map((char, iy) => (
+										<span
+											className={`word-${ix}-char-${iy}`}
+											key={iy}
+										>
+											{char}
+										</span>
+									))}
+									&nbsp;
 								</span>
 							))}
-							&nbsp;
-						</span>
-					))}
-			</div>
-			<div className="parinline__blurred">
-				<TbHandClick /> click to focus on the test
+					</div>
+					<div className="parinline__blurred">
+						<TbHandClick /> click to focus on the test
+					</div>
+				</div>
 			</div>
 		</div>
 	);

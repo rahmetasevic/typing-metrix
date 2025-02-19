@@ -4,20 +4,20 @@ import { TbHandClick } from "react-icons/tb";
 import "./ParagraphBox.scss";
 
 export const ParagraphBox = () => {
-	const [
+	const {
 		testContent,
 		activity,
 		userInput,
 		getWordClass,
 		detectKey,
 		setUserInput,
-	] = useTestEngine();
+	} = useTestEngine();
 
 	return (
 		<div className="parbox">
 			<div className="parbox__content">
 				{testContent!.length > 0 &&
-					testContent.map((word, ix) => (
+					testContent?.map((word, ix) => (
 						<span className={getWordClass(ix)} key={ix}>
 							{word.split("").map((char, iy) => (
 								<span

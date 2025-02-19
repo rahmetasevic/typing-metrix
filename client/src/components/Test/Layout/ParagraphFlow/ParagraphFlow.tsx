@@ -5,14 +5,14 @@ import { TbHandClick } from "react-icons/tb";
 import "./ParagraphFlow.scss";
 
 export const ParagraphFlow = () => {
-	const [
+	const {
 		testContent,
 		activity,
 		userInput,
 		getWordClass,
 		detectKey,
 		setUserInput,
-	] = useTestEngine();
+	} = useTestEngine();
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	function focusContent(): void {
@@ -38,8 +38,8 @@ export const ParagraphFlow = () => {
 				onClick={focusContent}
 				tabIndex={0}
 			>
-				{testContent.length > 0 &&
-					testContent.map((word, ix) => (
+				{testContent!.length > 0 &&
+					testContent?.map((word, ix) => (
 						<span className={getWordClass(ix)} key={ix}>
 							{word.split("").map((char, iy) => (
 								<span

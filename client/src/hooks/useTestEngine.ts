@@ -184,12 +184,19 @@ export const useTestEngine = () => {
 						.previousElementSibling!.getBoundingClientRect()
 						.width.toFixed(2),
 				);
+				const leftInput = document.querySelector(
+					`.parinline__uinput`,
+				) as HTMLElement;
 				// console.log("cw", currentWord.getBoundingClientRect());
 				// console.log(
 				// 	"pw",
 				// 	currentWord.previousElementSibling!.getBoundingClientRect(),
 				// );
+				// console.log("sl", content!.scrollLeft);
+				// console.log("sw", content!.scrollWidth);
+				// console.log("prevWordLen", previousWordLen);
 				content!.scrollLeft += previousWordLen;
+				leftInput!.scrollLeft += previousWordLen;
 				// content.scrollBy({ left: 50, behavior: "smooth" });
 			}
 		}, 50);
@@ -239,7 +246,9 @@ export const useTestEngine = () => {
 			setWordsLeft(wordsLeft + 1);
 			setWord(nextWord, currWord.index + 1);
 			setChar(key, -1);
-			setUserInput("");
+			if (displayLayout === LayoutType.BOX) {
+				setUserInput("");
+			}
 			if (!nextWord) {
 				resetScroll();
 				setActivity(TestStatus.Finish);
@@ -258,12 +267,12 @@ export const useTestEngine = () => {
 		setTotalChars(totalChars + 1);
 	}
 
-	return [
+	return {
 		testContent,
 		activity,
 		userInput,
 		getWordClass,
 		detectKey,
 		setUserInput,
-	];
+	};
 };

@@ -100,12 +100,10 @@ export const useTestStore = create<TestState & TestActions>()(
 					const currentFilterName = get().activeFilter.name;
 					const dataKey =
 						currentFilterName !== "quotes" ? "words" : "quotes";
-					console.log("gc", get().language);
 					const url =
 						dataKey === "words"
 							? `/dictionaries/${get().language}.json`
 							: "/quotes/quotes.json";
-					console.log("url", url);
 					const response = await fetch(url);
 					if (response.ok) {
 						const data = await response.json();
