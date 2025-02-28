@@ -41,8 +41,12 @@ export const useTestEngine = () => {
 		// console.log("inputTest(activity, content)", activity, testContent);
 		setUserInput("");
 		if (activity !== TestStatus.Start && testContent!.length > 0) {
+			resetScroll();
 			setWord(testContent![0], 0);
 			setChar(testContent![0][0], -1);
+			// (
+			// 	document.querySelector(`.parinline__content`) as HTMLDivElement
+			// ).scrollLeft = 0;
 		}
 	}, [testContent, activity]);
 
@@ -56,7 +60,6 @@ export const useTestEngine = () => {
 				entered: 0,
 			});
 			setCharIndex(0);
-			resetScroll();
 		}
 	}, [activity]);
 
@@ -188,16 +191,20 @@ export const useTestEngine = () => {
 		const contentBlock =
 			document.querySelector(".typing-test")?.firstElementChild
 				?.classList[0];
-		(
-			document.querySelector(
-				`.${contentBlock}__content`,
-			) as HTMLDivElement
-		).scrollTop = 0;
-		(
-			document.querySelector(
-				`.${contentBlock}__content`,
-			) as HTMLDivElement
-		).scrollLeft = 0;
+
+		if (displayLayout === LayoutType.INLINE) {
+			(
+				document.querySelector(
+					`.${contentBlock}__content`,
+				) as HTMLDivElement
+			).scrollLeft = 0;
+		} else {
+			(
+				document.querySelector(
+					`.${contentBlock}__content`,
+				) as HTMLDivElement
+			).scrollTop = 0;
+		}
 	}
 
 	function detectKey(e: React.KeyboardEvent<HTMLInputElement>): void {
