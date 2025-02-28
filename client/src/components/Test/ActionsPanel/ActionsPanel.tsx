@@ -37,10 +37,10 @@ export const ActionsPanel = () => {
 	}
 
 	return (
-		<div className="actions">
-			<div
-				className={`actions__layouts ${activity === TestStatus.Finish || activity === TestStatus.Start ? "invisible" : ""}`}
-			>
+		<div
+			className={`actions ${activity === TestStatus.Finish || activity === TestStatus.Start ? "invisible" : ""}`}
+		>
+			<div className="actions__layouts">
 				{DisplayLayout.map((layout) => {
 					const Icon = layout.icon;
 					return (
@@ -56,16 +56,7 @@ export const ActionsPanel = () => {
 				})}
 			</div>
 			<div className="actions__control">
-				<Button
-					className={`${activity !== TestStatus.Finish ? "invisible" : ""}`}
-					onClick={redoTest}
-				>
-					<TbArrowBarToLeft />
-				</Button>
-				<Button
-					className={`${activity === TestStatus.Start ? "invisible" : ""}`}
-					onClick={resetTest}
-				>
+				<Button onClick={resetTest}>
 					<MdRestartAlt />
 				</Button>
 			</div>

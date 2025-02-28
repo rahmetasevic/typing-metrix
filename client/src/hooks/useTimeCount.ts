@@ -13,13 +13,12 @@ export const useTimeCount = () => {
 		type: "COUNTDOWN",
 		start: false,
 	});
-	const [activity, time, activeFilter, setActivity, setTime] = useTestStore(
+	const [activity, timeCount, setActivity, setTimeCount] = useTestStore(
 		(state) => [
 			state.activity,
-			state.time,
-			state.activeFilter,
+			state.timeCount,
 			state.setActivity,
-			state.setTime,
+			state.setTimeCount,
 		],
 	);
 
@@ -37,7 +36,7 @@ export const useTimeCount = () => {
 
 	useEffect(() => {
 		// console.log("timeConfig", timeConfig);
-		// console.log("curr", time);
+		// console.log("curr", timeCount);
 		if (
 			!timeConfig.type ||
 			!timeConfig.start ||
@@ -46,21 +45,25 @@ export const useTimeCount = () => {
 			return;
 		}
 
-		if (timeConfig.type === "COUNTDOWN" && time === 0) {
+		if (timeConfig.type === "COUNTDOWN" && timeCount === 0) {
 			setActivity(TestStatus.Finish);
 			return;
 		}
 
 		const interval = setInterval(() => {
 			if (activity !== TestStatus.Stop) {
-				setTime(timeConfig?.type === "COUNTDOWN" ? time - 1 : time + 1);
+				setTimeCount(
+					timeConfig?.type === "COUNTDOWN"
+						? timeCount - 1
+						: timeCount + 1,
+				);
 			}
 		}, 1000);
 
 		return () => {
 			clearInterval(interval);
 		};
-	}, [timeConfig, time]);
+	}, [timeConfig, timeCount]);
 
 	function stopTime(): void {
 		if (activity === TestStatus.Pending) {
@@ -68,13 +71,13 @@ export const useTimeCount = () => {
 		}
 
 		if (activity === TestStatus.Finish) {
-			console.log("timer ended!");
+			// console.log("timer ended!", timeCount, timeConfig);
 			setTimeConfig({ start: false });
-			setTime(
-				timeConfig?.type === "COUNTDOWN"
-					? Number(activeFilter.value)
-					: 0,
-			);
+			// setTimeCount(
+			// 	timeConfig?.type === "COUNTDOWN"
+			// 		? Number(activeFilter.value)
+			// 		: timeCount,
+			// );
 		}
 	}
 

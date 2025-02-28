@@ -27,6 +27,7 @@ export const Layout = () => {
 			// figure out to reset scroll before display is set to none
 			// className={`typing-test ${activity === TestStatus.Finish ? "invisible" : ""}`}
 			style={{
+				display: activity !== TestStatus.Finish ? "block" : "none",
 				opacity: activity !== TestStatus.Finish ? 1 : 0,
 			}}
 		>

@@ -10,9 +10,9 @@ export const Display = () => {
 		<div className="display">
 			<ConfigPanel />
 			<Layout />
+			<Results />
 			<ActionsPanel />
 			{/* {activity === "PENDING" && <Info />} */}
-			<Results />
 		</div>
 	);
 };

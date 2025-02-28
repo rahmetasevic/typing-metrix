@@ -1,125 +1,107 @@
 import { LayoutType, TestStatus } from "@constants/index";
 import { useTestStore } from "@store/TestStore";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTimeCount } from "./useTimeCount";
 
 export const useTestEngine = () => {
 	const [userInput, setUserInput] = useState<string>("");
+	const [charIndex, setCharIndex] = useState<number>(0);
 	const [startCountdown, startTimer] = useTimeCount();
 	const [
-		time,
 		testContent,
 		currWord,
 		currChar,
 		activity,
 		activeFilter,
-		wordsLeft,
-		totalChars,
-		correctChars,
-		incorrectChars,
+		timeCount,
 		displayLayout,
+		charStats,
+		setCharStats,
 		setWord,
 		setChar,
 		setActivity,
-		setWordsLeft,
 		setResults,
-		setCorrectChars,
-		setIncorrectChars,
-		setTotalChars,
 	] = useTestStore((state) => [
-		state.time,
 		state.testContent,
 		state.currWord,
 		state.currChar,
 		state.activity,
 		state.activeFilter,
-		state.wordsLeft,
-		state.totalChars,
-		state.correctChars,
-		state.incorrectChars,
+		state.timeCount,
 		state.displayLayout,
+		state.charStats,
+		state.setCharStats,
 		state.setWord,
 		state.setChar,
 		state.setActivity,
-		state.setWordsLeft,
 		state.setResults,
-		state.setCorrectChars,
-		state.setIncorrectChars,
-		state.setTotalChars,
 	]);
 
 	useEffect(() => {
 		// console.log("inputTest(activity, content)", activity, testContent);
 		setUserInput("");
 		if (activity !== TestStatus.Start && testContent!.length > 0) {
-			// const contentBlock =
-			// 	document.querySelector(".typing-test")?.firstElementChild
-			// 		?.classList[0];
-			// console.log(
-			// 	"ue",
-			// 	(
-			// 		document.querySelector(
-			// 			`.${contentBlock}__content`,
-			// 		) as HTMLDivElement
-			// 	).scrollTop,
-			// );
 			setWord(testContent![0], 0);
 			setChar(testContent![0][0], -1);
 		}
 	}, [testContent, activity]);
 
 	useEffect(() => {
-		if (activity === TestStatus.Start) checkMatch();
-	}, [currChar]);
+		if (activity === TestStatus.Finish) {
+			calcTestMetrics();
+			setCharStats({
+				correct: 0,
+				incorrect: 0,
+				missed: 0,
+				entered: 0,
+			});
+			setCharIndex(0);
+			resetScroll();
+		}
+	}, [activity]);
 
 	function calcTestMetrics(): void {
+		// console.log("characters", charStats);
+		// console.log("tt", timeCount);
+
 		const minutesTaken =
 			activeFilter.name === "time"
 				? (Number(activeFilter.value) / 60000) * 1000
-				: (time / 60000) * 1000;
-		const accuracy = Math.round((correctChars / totalChars) * 100);
-		const grossWPM = Math.round(totalChars / 5 / minutesTaken);
+				: (timeCount / 60000) * 1000;
+		const accuracy = Math.round(
+			(charStats.correct / charStats.entered) * 100,
+		);
+		const grossWPM = Math.round(charStats.entered / 5 / minutesTaken);
 		const netWPM = Math.round(
-			Math.abs(totalChars / 5 - incorrectChars) / minutesTaken,
+			Math.abs(charStats.entered / 5 - charStats.incorrect) /
+				minutesTaken,
+		);
+		const grossCpm = Math.round(charStats.entered / minutesTaken);
+		const netCpm = Math.round(
+			Math.abs(charStats.entered - charStats.incorrect) / minutesTaken,
 		);
 
 		// console.log("time", time);
 		// console.log("filter", activeFilter);
 		// console.log("c - i => ", correctChars, incorrectChars);
-		// console.log("timeTaken", minutesTaken);
 		// console.log("totalC", totalChars);
 		// console.log("grossWPM", grossWPM);
 		// console.log("netWPM", netWPM);
+		// console.log("timeTaken", minutesTaken);
 
 		setResults({
-			grossWPM: Number.isFinite(grossWPM) ? grossWPM : 0,
-			netWPM: Number.isFinite(netWPM) ? netWPM : 0,
-			accuracy,
-			errors: incorrectChars,
+			grossWpm: Number.isFinite(grossWPM) ? grossWPM : 0,
+			netWpm: Number.isFinite(netWPM) ? netWPM : 0,
+			cpm: Number.isFinite(netCpm) ? netCpm : 0,
+			accuracy: accuracy,
+			timeTaken: Math.round(minutesTaken * 60),
+			characters: {
+				correct: charStats.correct,
+				incorrect: charStats.incorrect,
+				missed: charStats.missed,
+				entered: charStats.entered,
+			},
 		});
-	}
-
-	function checkMatch(): void {
-		document
-			.querySelector(`.word-${currWord.index}-char-${currChar.index}`)
-			?.classList.add("active-char");
-
-		// on first try there is an error in currword and currchar!!
-		// console.log(currChar, currWord);
-		if (
-			currChar.text === currWord.text[currChar.index] ||
-			currChar.text === ""
-		) {
-			setCorrectChars(correctChars + 1);
-			// setCorrect(correct + 1);
-			// ====> needs to be set after creating user preferences
-			// document.querySelector(`.word-${currWord.index}-char-${currChar.index}`)?.classList.add('correct-char');
-		} else {
-			setIncorrectChars(incorrectChars + 1);
-			// setIncorrect(incorrect + 1);
-			// ====> needs to be set after creating user preferences
-			// document.querySelector(`.word-${currWord.index}-char-${currChar.index}`)?.classList.add('incorrect-char');
-		}
 	}
 
 	function getWordClass(x: number): string {
@@ -224,17 +206,6 @@ export const useTestEngine = () => {
 		// console.log("key", key);
 		// console.log(nextWord, activity);
 
-		// if (!nextWord || activity.status === "COMPLETED") {
-		// 	// setActivity({ "COMPLETED" });
-		// 	// resetTest();
-		// 	return;
-		// }
-
-		// if (!testContent[currWord.index]) {
-		// 	resetTest();
-		// 	return;
-		// }
-
 		if (key === "Tab" || key === "Enter") {
 			e.preventDefault();
 			// open command menu & pause the test
@@ -242,29 +213,94 @@ export const useTestEngine = () => {
 			alert("Test is paused!");
 			return;
 		} else if (key === "") {
-			// setTypeHistory([...typeHistory, userInput]);
-			setWordsLeft(wordsLeft + 1);
+			// console.log("currWord", currWord, currWord.text.length);
+			// console.log("uinput", userInput, userInput.trim().length);
+			// console.log(
+			// 	"missed",
+			// 	currWord.text.length - userInput.trim().length,
+			// );
+
+			if (
+				userInput.trim().length === 0 ||
+				userInput.length < currWord.text.length
+			) {
+				setCharStats({
+					...charStats,
+					missed:
+						charStats.missed +
+						(currWord.text.length - userInput.trim().length),
+				});
+			} else {
+				// console.log(currWord, currChar);
+				// console.log("uinput", userInput);
+				setCharStats({
+					...charStats,
+					correct: charStats.correct + 1,
+					entered: charStats.entered + 1,
+				});
+			}
+
+			setCharIndex(0);
 			setWord(nextWord, currWord.index + 1);
 			setChar(key, -1);
-			if (displayLayout === LayoutType.BOX) {
-				setUserInput("");
-			}
+
+			// HISTORY OF TYPED WORDS
+			// if (displayLayout !== LayoutType.INLINE) {
+			// setUserInput("");
+			// }
+
 			if (!nextWord) {
-				resetScroll();
 				setActivity(TestStatus.Finish);
 				return;
 			}
+
 			scrollContent();
-			calcTestMetrics();
+			setUserInput("");
 		} else if (key.length === 1) {
-			setChar(key, currChar.index + 1);
 			if (activity !== TestStatus.Start) {
-				// setIsStarted(true);
 				setActivity(TestStatus.Start);
 				activeFilter.name !== "time" ? startTimer() : startCountdown();
 			}
+
+			document
+				.querySelector(`.word-${currWord.index}-char-${charIndex}`)
+				?.classList.add("active-char");
+
+			const currWordChar = currWord.text[charIndex];
+			if (!currWordChar) {
+				setCharStats({
+					...charStats,
+					entered: charStats.entered + 1,
+				});
+			} else if (currWordChar && key === currWordChar) {
+				setCharStats({
+					...charStats,
+					correct: charStats.correct + 1,
+					entered: charStats.entered + 1,
+				});
+
+				if (
+					currWord.index === testContent!.length - 1 &&
+					!currWord.text[charIndex + 1]
+				) {
+					setActivity(TestStatus.Finish);
+					return;
+				}
+				// ====> needs to be set after creating user preferences
+				// document.querySelector(`.word-${currWord.index}-char-${currChar.index}`)?.classList.add('correct-char');
+			} else {
+				setCharStats({
+					...charStats,
+					incorrect: charStats.incorrect + 1,
+					entered: charStats.entered + 1,
+				});
+				// ====> needs to be set after creating user preferences
+				// document.querySelector(`.word-${currWord.index}-char-${currChar.index}`)?.classList.add('incorrect-char');
+			}
+
+			setChar(key, currChar.index + 1);
+			setCharIndex(charIndex + 1);
 		}
-		setTotalChars(totalChars + 1);
 	}
 
 	return {

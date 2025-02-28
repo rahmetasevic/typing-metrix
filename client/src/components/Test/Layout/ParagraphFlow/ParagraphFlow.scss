@@ -35,10 +35,6 @@
 		opacity: 0;
 		border: none;
 		outline: none;
-		text-align: center;
-		font-size: 24px;
-		letter-spacing: 2px;
-		color: var(--font-primary);
 	}
 
 	input:focus ~ &__blurred {

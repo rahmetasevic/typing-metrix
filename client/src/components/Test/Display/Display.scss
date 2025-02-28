@@ -1,6 +1,7 @@
 .display {
 	display: grid;
 	justify-items: center;
+	width: 100%;
 	gap: 2rem;
 	opacity: 0;
 	transition: all 0.1s ease;
@@ -14,10 +15,6 @@
 	.invisible {
 		display: none;
 	}
-
-	.typing-test {
-		width: 100%;
-	}
 }
 
 .row {
@@ -29,7 +26,6 @@
 		display: flex;
 		background: #333;
 		color: white;
-		// border-radius: 4px;
 		box-shadow: 0px 23px 30px -20px rgba(0, 0, 0, 0.4);
 		list-style: none;
 	}
@@ -59,8 +55,4 @@
 			color: rgba(255, 255, 255, 1);
 		}
 	}
-}
-
-.test-config {
-	width: 100%;
 }

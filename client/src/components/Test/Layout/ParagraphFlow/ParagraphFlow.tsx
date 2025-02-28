@@ -1,8 +1,10 @@
 import { useEffect, useRef } from "react";
+import { useTestStore } from "@store/TestStore";
 import { useTestEngine } from "@hooks/useTestEngine";
 import { TbHandClick } from "react-icons/tb";
 
 import "./ParagraphFlow.scss";
+import { TestStatus } from "@constants/index";
 
 export const ParagraphFlow = () => {
 	const {
@@ -17,7 +19,6 @@ export const ParagraphFlow = () => {
 
 	function focusContent(): void {
 		if (inputRef.current) {
-			// console.log("Focusing input element", inputRef);
 			inputRef.current.focus();
 		}
 	}

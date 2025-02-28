@@ -8,7 +8,7 @@ import { LuTextCursorInput } from "react-icons/lu";
 
 import { SuggestionProps, ThemeProps } from "types";
 
-type FilterOptionKey = "words" | "time" | "quotes";
+export type FilterOptionKey = "words" | "time" | "quotes";
 type FilterOptionProps = {
 	[key in FilterOptionKey]: {
 		values?: string[] | null;

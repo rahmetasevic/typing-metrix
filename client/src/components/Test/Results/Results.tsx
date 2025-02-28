@@ -1,43 +1,70 @@
 import React, { useEffect, useState } from "react";
+import { MdRestartAlt } from "react-icons/md";
+import { TbArrowBarToLeft } from "react-icons/tb";
 
 import { useTestStore } from "@store/TestStore";
 import { TestStatus } from "@constants/index";
+import { Button } from "@components/Shared/Button";
 
 import "./Results.scss";
 
 export const Results = () => {
-	const time = useTestStore((state) => state.time);
 	const activeFilter = useTestStore((state) => state.activeFilter);
 	const results = useTestStore((state) => state.results);
-	const wordsLeft = useTestStore((state) => state.wordsLeft);
 	const testContent = useTestStore((state) => state.testContent);
 	const activity = useTestStore((state) => state.activity);
+	const resetTest = useTestStore((state) => state.resetTest);
+	const redoTest = useTestStore((state) => state.redoTest);
 
 	if (!testContent) return null;
 
 	return (
 		<div
 			className={`results ${activity !== TestStatus.Finish ? "hidden" : ""}`}
+			style={{
+				display: activity === TestStatus.Finish ? "flex" : "none",
+			}}
 		>
-			<div className="results__time">
-				{activeFilter.name !== "time"
-					? wordsLeft + "/" + testContent.length
-					: time}
-				<span>
-					{activeFilter.name +
-						(activeFilter.name !== "time" ? " left" : " spent")}
-				</span>
+			<div className="results__layout">
+				<div className="results__mode">
+					{activeFilter.name !== "quotes"
+						? activeFilter.name + "/" + activeFilter.value
+						: activeFilter.name}
+					<span>mode</span>
+				</div>
+				<div className="results__wpm">
+					{results.netWpm}
+					<span>wpm</span>
+				</div>
+				<div className="results__cpm">
+					{results.cpm}
+					<span>cpm</span>
+				</div>
+				<div className="results__acc">
+					{results.accuracy}%<span>acc</span>
+				</div>
+				<div className="results__duration">
+					{results.timeTaken + "s"}
+					<span>duration</span>
+				</div>
+				<div className="results__chars">
+					{results.characters?.correct +
+						"/" +
+						results.characters?.incorrect +
+						"/" +
+						results.characters?.missed +
+						"/" +
+						results.characters?.entered}
+					<span>characters</span>
+				</div>
 			</div>
-			<div className="results__wpm">
-				{results.grossWPM + "/" + results.netWPM}
-				<span>WPM</span>
-			</div>
-			<div className="results__acc">
-				{results.accuracy}%<span>Accuracy</span>
-			</div>
-			<div className="results__errors">
-				{results.errors}
-				<span>Errors</span>
+			<div className="results__actions">
+				<Button onClick={redoTest}>
+					<TbArrowBarToLeft />
+				</Button>
+				<Button onClick={resetTest}>
+					<MdRestartAlt />
+				</Button>
 			</div>
 		</div>
 	);

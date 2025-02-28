@@ -12,11 +12,20 @@ type TextContent = {
 	index: number;
 };
 
-type TestMetrics = {
-	grossWPM: number;
-	netWPM: number;
+export type CharactersProps = {
+	correct: number;
+	incorrect: number;
+	missed: number;
+	entered: number;
+};
+
+type TestResults = {
+	grossWpm?: number;
+	netWpm: number;
+	cpm: number;
 	accuracy: number;
-	errors: number;
+	timeTaken: number;
+	characters: CharactersProps;
 };
 
 export type TestMode = "STANDARD" | "CUSTOM";
@@ -27,12 +36,9 @@ type TestState = {
 	testContent: string[] | null;
 	currWord: TextContent;
 	currChar: TextContent;
-	time: number;
-	wordsLeft: number;
-	totalChars: number;
-	correctChars: number;
-	incorrectChars: number;
-	results: TestMetrics;
+	timeCount: number;
+	charStats: CharactersProps;
+	results: TestResults;
 	dictionary: string[];
 	displayLayout: (typeof LayoutType)[keyof typeof LayoutType];
 	showQuickbar: boolean;
@@ -44,20 +50,17 @@ type TestActions = {
 	setTestContent: (content?: string[] | null) => void;
 	setWord: (word: string, index: number) => void;
 	setChar: (char: string, index: number) => void;
-	setTime: (seconds: number) => void;
 	setActivity: (status: TestStatus) => void;
 	setActiveFilter: (filter: FilterProps) => void;
-	setTotalChars: (count: number) => void;
-	setCorrectChars: (count: number) => void;
-	setIncorrectChars: (count: number) => void;
-	setWordsLeft: (count: number) => void;
-	setResults: (result: TestMetrics) => void;
+	setTimeCount: (seconds: number) => void;
+	setResults: (result: TestResults) => void;
 	setDictionary: (dictionary: string[]) => void;
 	setDisplayLayout: (
 		layout: (typeof LayoutType)[keyof typeof LayoutType],
 	) => void;
 	setShowQuickbar: (isVisible: boolean) => void;
 	setLanguage: (language: (typeof LANGUAGE_OPTIONS)[number]) => void;
+	setCharStats: (chars: CharactersProps) => void;
 	redoTest: () => void;
 	resetTest: () => void;
 };
@@ -73,12 +76,21 @@ const initialState: TestState = {
 	testContent: [],
 	currWord: { text: "", index: -1 },
 	currChar: { text: "", index: 0 },
-	totalChars: 0,
-	correctChars: 0,
-	incorrectChars: 0,
-	time: 0,
-	wordsLeft: 0,
-	results: { grossWPM: 0, netWPM: 0, accuracy: 0, errors: 0 },
+	timeCount: 0,
+	charStats: {
+		correct: 0,
+		incorrect: 0,
+		missed: 0,
+		entered: 0,
+	},
+	results: {
+		grossWpm: 0,
+		netWpm: 0,
+		cpm: 0,
+		accuracy: 0,
+		timeTaken: 0,
+		characters: { correct: 0, incorrect: 0, missed: 0, entered: 0 },
+	},
 	dictionary: [],
 	displayLayout: LayoutType.FLOW,
 	showQuickbar: false,
@@ -132,28 +144,16 @@ export const useTestStore = create<TestState & TestActions>()(
 			setChar: (char: string, index: number) => {
 				set({ currChar: { text: char, index } });
 			},
-			setTime: (seconds: number) => {
-				set({ time: seconds });
-			},
-			setTotalChars: (count: number) => {
-				set({ totalChars: count });
+			setTimeCount: (seconds: number) => {
+				set({ timeCount: seconds });
 			},
 			setActivity: (status: TestStatus) => {
 				set({ activity: status });
 			},
-			setCorrectChars: (count: number) => {
-				set({ correctChars: count });
-			},
-			setIncorrectChars: (count: number) => {
-				set({ incorrectChars: count });
-			},
 			setActiveFilter: (filter: FilterProps) => {
 				set({ activeFilter: filter });
 			},
-			setWordsLeft: (count: number) => {
-				set({ wordsLeft: count });
-			},
-			setResults: (result: TestMetrics) => {
+			setResults: (result: TestResults) => {
 				set({ results: result });
 			},
 			setDictionary(dictionary: string[]) {
@@ -169,6 +169,9 @@ export const useTestStore = create<TestState & TestActions>()(
 			},
 			setLanguage(language: (typeof LANGUAGE_OPTIONS)[number]) {
 				set({ language: language });
+			},
+			setCharStats(chars: CharactersProps) {
+				set({ charStats: chars });
 			},
 			redoTest: () => {
 				document

@@ -9,14 +9,19 @@ import { addTransition } from "@utils/index";
 import "./ConfigPanel.scss";
 
 export const ConfigPanel = () => {
-	const [activeFilter, activity, setActiveFilter, setTime, setTestContent] =
-		useTestStore((state) => [
-			state.activeFilter,
-			state.activity,
-			state.setActiveFilter,
-			state.setTime,
-			state.setTestContent,
-		]);
+	const [
+		activeFilter,
+		activity,
+		setTimeCount,
+		setActiveFilter,
+		setTestContent,
+	] = useTestStore((state) => [
+		state.activeFilter,
+		state.activity,
+		state.setTimeCount,
+		state.setActiveFilter,
+		state.setTestContent,
+	]);
 	const [config, setConfig] = useTestConfigStore((state) => [
 		state.config,
 		state.setConfig,
@@ -24,9 +29,9 @@ export const ConfigPanel = () => {
 
 	useEffect(() => {
 		if (activeFilter.name === "time") {
-			setTime(Number(activeFilter.value));
+			setTimeCount(Number(activeFilter.value));
 		} else {
-			setTime(0);
+			setTimeCount(0);
 		}
 
 		// console.log("activeFilter", activeFilter);
@@ -82,7 +87,7 @@ export const ConfigPanel = () => {
 		}
 	}
 
-	function handlePanelRules(e: React.MouseEvent<HTMLButtonElement>): void {
+	function handlePanelRules(e: React.MouseEvent<HTMLDivElement>): void {
 		const contentClass =
 			document.querySelector(".typing-test")?.firstElementChild
 				?.classList[0];
