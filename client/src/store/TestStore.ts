@@ -183,6 +183,10 @@ export const useTestStore = create<TestState & TestActions>()(
 					dictionary: get().dictionary,
 					testContent: get().testContent,
 					activeFilter: get().activeFilter,
+					timeCount:
+						get().activeFilter.name === "time"
+							? Number(get().activeFilter.value)
+							: 0,
 				});
 			},
 			resetTest: () => {
@@ -208,6 +212,10 @@ export const useTestStore = create<TestState & TestActions>()(
 					displayLayout: get().displayLayout,
 					dictionary: get().dictionary,
 					activeFilter: get().activeFilter,
+					timeCount:
+						get().activeFilter.name === "time"
+							? Number(get().activeFilter.value)
+							: 0,
 				});
 			},
 		}),

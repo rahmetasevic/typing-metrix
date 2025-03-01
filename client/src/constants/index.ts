@@ -6,7 +6,7 @@ import { VscWholeWord } from "react-icons/vsc";
 import { BsBodyText } from "react-icons/bs";
 import { LuTextCursorInput } from "react-icons/lu";
 
-import { SuggestionProps, ThemeProps } from "types";
+import { SuggestionProps } from "types";
 
 export type FilterOptionKey = "words" | "time" | "quotes";
 type FilterOptionProps = {

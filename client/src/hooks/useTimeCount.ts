@@ -19,6 +19,7 @@ export const useTimeCount = () => {
 			state.timeCount,
 			state.setActivity,
 			state.setTimeCount,
+			state.activeFilter,
 		],
 	);
 

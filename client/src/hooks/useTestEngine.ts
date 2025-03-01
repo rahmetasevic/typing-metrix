@@ -44,9 +44,6 @@ export const useTestEngine = () => {
 			resetScroll();
 			setWord(testContent![0], 0);
 			setChar(testContent![0][0], -1);
-			// (
-			// 	document.querySelector(`.parinline__content`) as HTMLDivElement
-			// ).scrollLeft = 0;
 		}
 	}, [testContent, activity]);
 
