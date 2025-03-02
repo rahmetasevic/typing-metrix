@@ -14,18 +14,24 @@ export const Layout = () => {
 	]);
 
 	useEffect(() => {
+		resetLayout();
+	}, []);
+
+	useEffect(() => {
+		resetLayout();
+	}, [displayLayout]);
+
+	function resetLayout(): void {
 		const contentClass =
 			document.querySelector(".typing-test")?.firstElementChild
 				?.classList[0];
 		addTransition(`.${contentClass}`);
 		addTransition(`.${contentClass}__content`);
-	}, [displayLayout]);
+	}
 
 	return (
 		<div
 			className={`typing-test`}
-			// figure out to reset scroll before display is set to none
-			// className={`typing-test ${activity === TestStatus.Finish ? "invisible" : ""}`}
 			style={{
 				display: activity !== TestStatus.Finish ? "block" : "none",
 				opacity: activity !== TestStatus.Finish ? 1 : 0,

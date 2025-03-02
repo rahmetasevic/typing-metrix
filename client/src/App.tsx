@@ -1,4 +1,4 @@
-import { lazy, useEffect } from "react";
+import { useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { Header } from "@components/Header";
@@ -24,9 +24,14 @@ import "./styles/App.scss";
 // );
 
 function App() {
-	const [setShowQuickbar] = useTestStore((state) => [state.setShowQuickbar]);
+	const [setShowQuickbar, resetTest] = useTestStore((state) => [
+		state.setShowQuickbar,
+		state.resetTest,
+	]);
 
 	useEffect(() => {
+		resetTest();
+
 		const handleKeyDown = (e: KeyboardEvent) => {
 			const key = e.key.toLowerCase();
 
