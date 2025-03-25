@@ -1,0 +1,45 @@
+@use "sass:map";
+$fonts: (
+	"Fira Mono": (
+		"src": "FiraMono-Medium",
+	),
+	"Roboto": (
+		"src": "roboto-regular",
+	),
+	"Courier New": (
+		"src": "Courier New",
+	),
+	"Droid Sans": (
+		"src": "droidsans",
+	),
+	"Hack": (
+		"src": "hack-regular",
+	),
+	"Lato": (
+		"src": "lato-regular",
+	),
+	"Montserrat": (
+		"src": "montserrat-regular",
+	),
+);
+
+$font-defauls: (
+	"style": normal,
+	"weight": 400,
+	"display": block,
+	"format": "woff2",
+	"ext": "woff2",
+);
+
+@each $font, $settings in $fonts {
+	$config: map-merge($font-defauls, $settings);
+	$src: "/fonts/" + map-get($config, "src") + "." + map-get($config, "ext");
+
+	@font-face {
+		font-family: $font;
+		font-style: map-get($config, "style");
+		font-weight: map-get($config, "weight");
+		font-display: map-get($config, "display");
+		src: url($src) format(map-get($config, "format"));
+	}
+}

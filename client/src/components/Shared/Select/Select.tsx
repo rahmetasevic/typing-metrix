@@ -1,7 +1,8 @@
-import React, { ReactNode } from "react";
+import React from "react";
+
+import { ConfigProperty } from "@store/TestConfigStore";
 
 import "./Select.scss";
-import { ConfigProperty } from "@store/TestConfigStore";
 
 export type SelectOption = {
 	value: string;
@@ -9,14 +10,18 @@ export type SelectOption = {
 };
 
 export type SelectProps = {
-	options: SelectOption[];
-	value?: string;
+	config: {
+		key: ConfigProperty;
+		currentValue: any;
+		values: string[];
+	};
 	onChange?: (property: ConfigProperty, value: string) => void;
-	label?: string;
-	placeholder?: string;
 };
 
 export const Select = (props: SelectProps) => {
+	const { key, currentValue, values } = props.config;
+	// console.log("props", props);
+
 	const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		props.onChange?.(
 			event.target.name as ConfigProperty,
@@ -25,11 +30,11 @@ export const Select = (props: SelectProps) => {
 	};
 
 	return (
-		<select onChange={handleChange} value={props.value} name={props.label}>
-			{props.options.map((option) => {
+		<select onChange={handleChange} value={currentValue} name={key}>
+			{values?.map((option) => {
 				return (
-					<option value={option.value} key={option.value}>
-						{option.value}
+					<option value={option} key={option}>
+						{option}
 					</option>
 				);
 			})}

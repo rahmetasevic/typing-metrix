@@ -5,6 +5,7 @@ import { TbHandClick } from "react-icons/tb";
 
 import "./ParagraphFlow.scss";
 import { TestStatus } from "@constants/index";
+import { useTestConfigStore } from "@store/TestConfigStore";
 
 export const ParagraphFlow = () => {
 	const {
@@ -12,10 +13,16 @@ export const ParagraphFlow = () => {
 		activity,
 		userInput,
 		getWordClass,
+		addCurrentCharClass,
 		detectKey,
 		setUserInput,
 	} = useTestEngine();
+	const config = useTestConfigStore((state) => state.config);
 	const inputRef = useRef<HTMLInputElement>(null);
+
+	useEffect(() => {
+		console.log("flow(cfg) -> ", config);
+	}, [config.caret]);
 
 	function focusContent(): void {
 		if (inputRef.current) {
@@ -41,15 +48,18 @@ export const ParagraphFlow = () => {
 			>
 				{testContent!.length > 0 &&
 					testContent?.map((word, ix) => (
-						<span className={getWordClass(ix)} key={ix}>
+						<span
+							className={`word-${ix} ${getWordClass(ix)}`}
+							key={ix}
+						>
 							{word.split("").map((char, iy) => (
 								<span
-									className={`word-${ix}-char-${iy}`}
+									className={`word-${ix}-char-${iy}${addCurrentCharClass(ix, iy)}`}
 									key={iy}
 								>
 									{char}
 								</span>
-							))}{" "}
+							))}
 						</span>
 					))}
 			</div>

@@ -8,7 +8,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	z-index: 1;
+	z-index: 2;
 	opacity: 0;
 	transition: all 0.2s ease;
 
@@ -19,7 +19,7 @@
 		top: 15%;
 		background-color: var(--bg-primary);
 		box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 1);
-		width: 40%;
+		width: 35%;
 	}
 
 	&__search {

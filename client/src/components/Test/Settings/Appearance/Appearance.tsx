@@ -1,33 +1,37 @@
-import { Suggestions } from "@constants/index";
-import { useGetThemes } from "@hooks/useGetThemes";
+import { useEffect } from "react";
+
+import { ConfigProperty, useTestConfigStore } from "@store/TestConfigStore";
+import { SuggestionProps } from "types";
 
 import "./Appearance.scss";
-import { Select } from "@components/Shared/Select";
-import { useEffect } from "react";
-import { filterThemeTitle } from "@utils/index";
-import { ConfigProperty, useTestConfigStore } from "@store/TestConfigStore";
 
-export const Appearance = () => {
-	const { themes } = useGetThemes();
-	const [setConfig] = useTestConfigStore((state) => [state.setConfig]);
+export const Appearance = ({ suggestions }) => {
+	const [config, setConfig] = useTestConfigStore((state) => [
+		state.config,
+		state.setConfig,
+	]);
 
-	// useEffect(() => {
-	// 	console.log(filterThemeTitle(themes));
-	// }, [themes]);
+	useEffect(() => {
+		// console.log("suggs", suggestions);
+		console.log("config", config);
+	}, [config]);
 
-	// slop
 	function handleChange(property: ConfigProperty, value: string): void {
-		// console.log(configProperty, value);
-		if (property === "theme") {
-			document.documentElement.setAttribute("data-theme", value);
-			localStorage.setItem("theme", value);
-		}
 		setConfig(property, value);
+	}
+
+	function handlePicker(e: React.MouseEvent<HTMLButtonElement>): void {
+		const [property, newValue] =
+			e.currentTarget.dataset.value?.split(";") || [];
+		// console.log("property, newVal", property, newValue);
+		setConfig(property as ConfigProperty, newValue);
 	}
 
 	return (
 		<div className="appearance">
-			{Suggestions.appearance?.map((category) => {
+			{suggestions.map((category: SuggestionProps) => {
+				const { element: Element, onlyQuickbar } = category;
+
 				return (
 					<div
 						className={`appearance__settings appearance__${category.title}`}
@@ -46,16 +50,18 @@ export const Appearance = () => {
 						<div
 							className={`appearance__handler appearance__${category.title}__handler`}
 						>
-							<Select
-								options={filterThemeTitle(themes)}
-								value={localStorage.getItem("theme") ?? "dark"}
-								label={category.title}
-								placeholder={
-									localStorage.getItem("theme") ?? "dark"
-								}
-								onChange={handleChange}
-								key={category.title}
-							/>
+							{!onlyQuickbar ? (
+								<Element
+									config={{
+										key: category.key,
+										currentValue: config[category.key!],
+										values: category.values,
+									}}
+									onChange={handleChange}
+									onClick={handlePicker}
+									key={category.title}
+								/>
+							) : null}
 						</div>
 					</div>
 				);

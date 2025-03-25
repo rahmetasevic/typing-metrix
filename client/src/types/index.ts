@@ -1,4 +1,5 @@
 import { SettingsCategories } from "@constants/index";
+import { ConfigProperty } from "@store/TestConfigStore";
 
 export type FilterProps = {
 	name: string;
@@ -14,11 +15,13 @@ export type ModalProps = {
 type SuggestionCategory =
 	(typeof SettingsCategories)[keyof typeof SettingsCategories];
 export type SuggestionProps = {
-	[key in SuggestionCategory]?: {
-		title?: string;
-		description: string;
-		values: ThemeProps[] | string[];
-	}[];
+	type: SuggestionCategory;
+	key?: ConfigProperty;
+	title: string;
+	description: string;
+	values: string[];
+	onlyQuickbar: boolean;
+	element?: any;
 };
 
 export type ThemeProps = {

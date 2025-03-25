@@ -7,6 +7,8 @@ import { BsBodyText } from "react-icons/bs";
 import { LuTextCursorInput } from "react-icons/lu";
 
 import { SuggestionProps } from "types";
+import { Select } from "@components/Shared/Select";
+import { Picker } from "@components/Shared/Picker";
 
 export type FilterOptionKey = "words" | "time" | "quotes";
 type FilterOptionProps = {
@@ -111,30 +113,103 @@ export const SettingsCategories = {
 	USER: "user",
 } as const;
 
-export const Suggestions: SuggestionProps = {
-	[SettingsCategories.APPEARANCE]: [
-		{
-			title: "theme",
-			description: "list of themes",
-			values: [], // initialized in component
-		},
-	],
-	[SettingsCategories.TYPING]: [
-		{
-			description: "type of test",
-			values: ["words", "time", "quotes"],
-		},
-		{
-			title: "punctuation",
-			description: "add punctuation marks",
-			values: ["on", "off"],
-		},
-		{
-			title: "numbers",
-			description: "include numbers in test content",
-			values: ["on", "off"],
-		},
-	],
-} as const;
+export const Suggestions: SuggestionProps[] = [
+	{
+		type: SettingsCategories.APPEARANCE,
+		key: "theme",
+		title: "theme",
+		description: "list of themes",
+		values: [
+			"dark",
+			"light",
+			"catppuccin",
+			"koopa beach",
+			"sonokai",
+			"arc",
+			"gruvbox dark",
+			"github dark",
+			"everforest dark",
+			"nightfox",
+			"dayfox",
+		],
+		onlyQuickbar: false,
+		element: Select,
+	},
+	{
+		type: SettingsCategories.APPEARANCE,
+		key: "fontFamily",
+		title: "font family",
+		description: "list of fonts",
+		values: [
+			"Fira Mono",
+			"Roboto",
+			"Courier New",
+			"Droid Sans",
+			"Hack",
+			"Lato",
+			"Montserrat",
+		],
+		onlyQuickbar: false,
+		element: Select,
+	},
+	{
+		type: SettingsCategories.APPEARANCE,
+		key: "caret",
+		title: "caret",
+		description: "current character indicator",
+		values: ["none", "default", "block", "bordered", "underscore"],
+		onlyQuickbar: false,
+		element: Picker,
+	},
+	{
+		type: SettingsCategories.APPEARANCE,
+		key: "highlightType",
+		title: "highlight type",
+		description: "highlight view of content",
+		values: ["none", "character", "word"],
+		onlyQuickbar: false,
+		element: Picker,
+	},
+	{
+		type: SettingsCategories.APPEARANCE,
+		key: "stopOnError",
+		title: "stop on error",
+		description:
+			"stopping on incorrect character or preventing from proceeding to the next word",
+		values: ["off", "character", "word"],
+		onlyQuickbar: false,
+		element: Picker,
+	},
+	{
+		type: SettingsCategories.APPEARANCE,
+		key: "backspaceOption",
+		title: "backspace",
+		description: "backspace availability",
+		values: ["off", "on", "limited"],
+		onlyQuickbar: false,
+		element: Picker,
+	},
+	{
+		type: SettingsCategories.TYPING,
+		title: "mode",
+		description: "type of test",
+		values: ["words", "time", "quotes"],
+		onlyQuickbar: true,
+	},
+	{
+		type: SettingsCategories.TYPING,
+		title: "punctuation",
+		description: "add punctuation marks",
+		values: ["on", "off"],
+		onlyQuickbar: true,
+	},
+	{
+		type: SettingsCategories.TYPING,
+		title: "numbers",
+		description: "include numbers in test content",
+		values: ["on", "off"],
+		onlyQuickbar: true,
+	},
+] as const;
 
 export const LANGUAGE_OPTIONS = ["english", "spanish"];

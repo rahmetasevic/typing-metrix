@@ -1,3 +1,9 @@
+@font-face {
+	font-family: "Bungee Shade";
+	src: url("/fonts/BungeeShade-Regular.woff2") format("woff2");
+	font-display: block;
+}
+
 #header {
 	.navigation {
 		display: grid;

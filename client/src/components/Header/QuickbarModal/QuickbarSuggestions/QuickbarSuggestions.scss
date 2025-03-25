@@ -1,5 +1,8 @@
 .quickbar {
 	&__suggestions {
+		overflow-y: auto;
+		max-height: 300px;
+
 		button {
 			display: inline-flex;
 			justify-content: center;
@@ -10,14 +13,13 @@
 			font-size: 17px;
 			border-radius: 10px;
 			border: 1px solid var(--primary);
-			width: 20%;
 		}
 	}
 
 	&__suggestion {
-		display: flex;
+		display: grid;
+		grid-template-columns: 2fr 1fr;
 		align-items: center;
-		justify-content: space-between;
 		padding: 0.5rem;
 		font-size: 17px;
 		color: var(--secondary);

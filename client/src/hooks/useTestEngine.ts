@@ -2,10 +2,12 @@ import { LayoutType, TestStatus } from "@constants/index";
 import { useTestStore } from "@store/TestStore";
 import { useEffect, useState } from "react";
 import { useTimeCount } from "./useTimeCount";
+import { useTestConfigStore } from "@store/TestConfigStore";
 
 export const useTestEngine = () => {
 	const [userInput, setUserInput] = useState<string>("");
 	const [charIndex, setCharIndex] = useState<number>(0);
+	const [countCorrectChars, setCountCorrectChars] = useState<number>(0);
 	const [startCountdown, startTimer] = useTimeCount();
 	const [
 		testContent,
@@ -36,6 +38,7 @@ export const useTestEngine = () => {
 		state.setActivity,
 		state.setResults,
 	]);
+	const config = useTestConfigStore((state) => state.config);
 
 	useEffect(() => {
 		// console.log("inputTest(activity, content)", activity, testContent);
@@ -69,7 +72,7 @@ export const useTestEngine = () => {
 				? (Number(activeFilter.value) / 60000) * 1000
 				: (timeCount / 60000) * 1000;
 		const accuracy = Math.round(
-			(charStats.correct / charStats.entered) * 100,
+			(charStats.correct / (charStats.entered + charStats.missed)) * 100,
 		);
 		const grossWPM = Math.round(charStats.entered / 5 / minutesTaken);
 		const netWPM = Math.round(
@@ -106,6 +109,15 @@ export const useTestEngine = () => {
 
 	function getWordClass(x: number): string {
 		return x === currWord.index ? "current-word" : "";
+	}
+
+	function addCurrentCharClass(
+		wordIndex: number,
+		currentCharIndex: number,
+	): string {
+		return wordIndex === currWord.index && currentCharIndex === charIndex
+			? " current-char"
+			: "".trim();
 	}
 
 	function scrollContent(): void {
@@ -209,13 +221,131 @@ export const useTestEngine = () => {
 		const nextWord = testContent![currWord.index + 1];
 		// console.log("key", key);
 		// console.log(nextWord, activity);
+		// console.log("currWord", currWord);
+		// console.log("charI", charIndex);
+
+		console.log("cc", countCorrectChars);
+		setTimeout(() => {
+			document
+				.querySelector(`.current-char`)
+				?.classList.add("stop-caret-animation");
+		}, 10);
 
 		if (key === "Tab" || key === "Enter") {
 			e.preventDefault();
 			// open command menu & pause the test
-			setActivity(TestStatus.Stop);
+			// setActivity(TestStatus.Stop);
 			alert("Test is paused!");
 			return;
+		} else if (key === "Backspace") {
+			if (config.backspaceOption === "limited") {
+				document
+					.querySelector(`.word-${currWord.index}-char-${charIndex}`)
+					?.classList.remove("active-char");
+				document
+					.querySelector(`.word-${currWord.index}-char-${charIndex}`)
+					?.classList.remove("entered-char");
+				setCharIndex(charIndex === 0 ? charIndex : charIndex - 1);
+			} else if (config.backspaceOption === "on") {
+				// remove style from input
+				document
+					.querySelector(`.word-${currWord.index}-char-${charIndex}`)
+					?.classList.remove("active-char");
+				document
+					.querySelector(`.word-${currWord.index}-char-${charIndex}`)
+					?.classList.remove("entered-char");
+
+				console.log("charIndex", charIndex);
+
+				if (charIndex === 0) {
+					if (config.stopOnError === "word") {
+						setCountCorrectChars(0);
+						return;
+					} else {
+						setWord(
+							testContent![currWord.index - 1],
+							currWord.index - 1,
+						);
+						setCharIndex(
+							testContent![currWord.index - 1].length - 1,
+						);
+						setCountCorrectChars(
+							testContent![currWord.index - 1].length - 1,
+						);
+					}
+				} else {
+					setCharIndex(charIndex - 1);
+					setCountCorrectChars(countCorrectChars - 1);
+				}
+				console.log("ci", charIndex);
+			} else {
+				return;
+			}
+		} else if (key.length === 1) {
+			if (activity !== TestStatus.Start) {
+				setActivity(TestStatus.Start);
+				activeFilter.name !== "time" ? startTimer() : startCountdown();
+			}
+
+			const currWordChar = currWord.text[charIndex];
+			if (!currWordChar) {
+				setCharStats({
+					...charStats,
+					entered: charStats.entered + 1,
+				});
+			} else if (currWordChar && key === currWordChar) {
+				setCountCorrectChars(countCorrectChars + 1);
+				setCharStats({
+					...charStats,
+					correct: charStats.correct + 1,
+					entered: charStats.entered + 1,
+				});
+				setTimeout(() => {
+					document
+						.querySelector(
+							`.current-word .word-${currWord.index}-char-${charIndex}`,
+						)
+						?.classList.add("active-char");
+				}, 10);
+
+				if (
+					currWord.index === testContent!.length - 1 &&
+					!currWord.text[charIndex + 1]
+				) {
+					setActivity(TestStatus.Finish);
+					return;
+				}
+
+				setCharIndex(charIndex + 1);
+				setChar(key, currChar.index + 1);
+
+				// ====> needs to be set after creating user preferences
+				// document.querySelector(`.word-${currWord.index}-char-${currChar.index}`)?.classList.add('correct-char');
+			} else {
+				setCharStats({
+					...charStats,
+					incorrect: charStats.incorrect + 1,
+					entered: charStats.entered + 1,
+				});
+
+				// check if stopOnError is on(character or word)
+				if (config.stopOnError === "character") {
+					return;
+				} else {
+					setCharIndex(charIndex + 1);
+					setChar(key, currChar.index + 1);
+				}
+
+				setTimeout(() => {
+					document
+						.querySelector(
+							`.current-word .word-${currWord.index}-char-${charIndex}`,
+						)
+						?.classList.add("active-char");
+				}, 10);
+				// ====> needs to be set after creating user preferences
+				// document.querySelector(`.word-${currWord.index}-char-${currChar.index}`)?.classList.add('incorrect-char');
+			}
 		} else if (key === "") {
 			// console.log("currWord", currWord, currWord.text.length);
 			// console.log("uinput", userInput, userInput.trim().length);
@@ -224,10 +354,40 @@ export const useTestEngine = () => {
 			// 	currWord.text.length - userInput.trim().length,
 			// );
 
+			// check for constraints "stopOnError" && "backspace"
 			if (
-				userInput.trim().length === 0 ||
-				userInput.length < currWord.text.length
+				(config.stopOnError === "word" ||
+					config.stopOnError === "character") &&
+				(countCorrectChars < currWord.text.length ||
+					currWord.text.length > charIndex)
 			) {
+				return;
+			}
+
+			// apply highlight type for type "word"
+			if (config.highlightType === "word") {
+				setTimeout(() => {
+					console.log("word index", currWord);
+					document
+						.querySelector(`.word-${currWord.index}`)
+						?.classList.add("entered");
+					document
+						.querySelectorAll(".active-char")
+						.forEach((element) => {
+							element.classList.add("entered-char");
+						});
+					document
+						.querySelectorAll(".active-char")
+						.forEach((e) => e.classList.remove("active-char"));
+				}, 10);
+			}
+
+			if (
+				userInput.trim().length > 0 ||
+				(userInput.length <= currWord.text.length &&
+					config.stopOnError === "off")
+			) {
+				// --- missed is wrongly calculated ---
 				setCharStats({
 					...charStats,
 					missed:
@@ -237,13 +397,15 @@ export const useTestEngine = () => {
 			} else {
 				// console.log(currWord, currChar);
 				// console.log("uinput", userInput);
-				setCharStats({
-					...charStats,
-					correct: charStats.correct + 1,
-					entered: charStats.entered + 1,
-				});
+				// space is not calculated
+				// setCharStats({
+				// 	...charStats,
+				// 	correct: charStats.correct + 1,
+				// 	entered: charStats.entered + 1,
+				// });
 			}
 
+			setCountCorrectChars(0);
 			setCharIndex(0);
 			setWord(nextWord, currWord.index + 1);
 			setChar(key, -1);
@@ -260,58 +422,16 @@ export const useTestEngine = () => {
 
 			scrollContent();
 			setUserInput("");
-		} else if (key.length === 1) {
-			if (activity !== TestStatus.Start) {
-				setActivity(TestStatus.Start);
-				activeFilter.name !== "time" ? startTimer() : startCountdown();
-			}
-
-			document
-				.querySelector(`.word-${currWord.index}-char-${charIndex}`)
-				?.classList.add("active-char");
-
-			const currWordChar = currWord.text[charIndex];
-			if (!currWordChar) {
-				setCharStats({
-					...charStats,
-					entered: charStats.entered + 1,
-				});
-			} else if (currWordChar && key === currWordChar) {
-				setCharStats({
-					...charStats,
-					correct: charStats.correct + 1,
-					entered: charStats.entered + 1,
-				});
-
-				if (
-					currWord.index === testContent!.length - 1 &&
-					!currWord.text[charIndex + 1]
-				) {
-					setActivity(TestStatus.Finish);
-					return;
-				}
-				// ====> needs to be set after creating user preferences
-				// document.querySelector(`.word-${currWord.index}-char-${currChar.index}`)?.classList.add('correct-char');
-			} else {
-				setCharStats({
-					...charStats,
-					incorrect: charStats.incorrect + 1,
-					entered: charStats.entered + 1,
-				});
-				// ====> needs to be set after creating user preferences
-				// document.querySelector(`.word-${currWord.index}-char-${currChar.index}`)?.classList.add('incorrect-char');
-			}
-
-			setChar(key, currChar.index + 1);
-			setCharIndex(charIndex + 1);
+		} else {
+			return;
 		}
 	}
-
 	return {
 		testContent,
 		activity,
 		userInput,
 		getWordClass,
+		addCurrentCharClass,
 		detectKey,
 		setUserInput,
 	};

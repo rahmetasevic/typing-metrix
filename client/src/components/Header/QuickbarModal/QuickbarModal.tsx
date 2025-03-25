@@ -5,15 +5,19 @@ import { Button } from "@components/Shared/Button";
 import { QuickbarSuggestions } from "./QuickbarSuggestions";
 import { QuickbarRecents } from "./QuickbarRecents";
 import { ModalProps, SuggestionProps } from "types";
-import { Suggestions } from "@constants/index";
+import { Suggestions, SettingsCategories } from "@constants/index";
 
 import "./QuickbarModal.scss";
 
 export const QuickbarModal = (props: ModalProps) => {
 	const { visible, close } = props;
-	const [selectedOption, setSelectedOption] = useState<string>("typing");
+	const [selectedOption, setSelectedOption] = useState<string>(
+		SettingsCategories.APPEARANCE,
+	);
 	const [searchResult, setSearchResult] = useState<string>("");
 	const [suggestions, setSuggestions] =
+		useState<SuggestionProps[]>(Suggestions);
+	const [filteredSuggestions, setfilteredSuggestions] =
 		useState<SuggestionProps[]>(Suggestions);
 
 	function handleSelectOption(e: React.MouseEvent<HTMLDivElement>): void {
@@ -29,19 +33,28 @@ export const QuickbarModal = (props: ModalProps) => {
 	}
 
 	function handleSearchResult(e: React.ChangeEvent<HTMLInputElement>): void {
-		setSearchResult(e.target.value);
+		const searchInput = e.target.value;
+		setSearchResult(searchInput);
 
-		const filteredSuggestions = Suggestions.filter((suggestion) => {
-			return (
-				suggestion.type.startsWith(e.target.value) ||
-				suggestion.title?.startsWith(e.target.value) ||
-				suggestion.values.some((value) =>
-					value.startsWith(e.target.value),
-				)
-			);
+		// const x = suggestions.flatMap((val) => Object.values(val.values));
+		// console.log("x", x);
+
+		const filteredSuggestions = suggestions.filter((suggestion) => {
+			// console.log("suggestion", suggestion);
+
+			return suggestion.title?.startsWith(searchInput);
+			// suggestion.values.filter((value) => {
+			// 	// value.startsWith(e.target.value),
+			// 	return value.startsWith(e.target.value);
+			// })
+			// 	||
+
+			// suggestion.values.map((val) => {
+			// 	return x.filter((z) => z.startsWith(e.target.value));
+			// })
 		});
 
-		setSuggestions(filteredSuggestions);
+		setfilteredSuggestions(filteredSuggestions);
 	}
 
 	function closeSearchModal(): void {
@@ -76,9 +89,9 @@ export const QuickbarModal = (props: ModalProps) => {
 						ESC
 					</Button>
 				</div>
-				{searchResult === "" && <QuickbarRecents />}
+				{/* {searchResult === "" && <QuickbarRecents />} */}
 				{searchResult !== "" && (
-					<QuickbarSuggestions suggestions={suggestions} />
+					<QuickbarSuggestions suggestions={filteredSuggestions} />
 				)}
 			</div>
 		</div>

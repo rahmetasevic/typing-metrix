@@ -1,11 +1,12 @@
 import { useState } from "react";
 
 import { Button } from "@components/Shared/Button";
-import { SettingsCategories } from "@constants/index";
+import { SettingsCategories, Suggestions } from "@constants/index";
 
 import { Appearance } from "./Appearance";
 
 import "./Settings.scss";
+import { SuggestionProps } from "types";
 
 type SettingsCategoryValue =
 	(typeof SettingsCategories)[keyof typeof SettingsCategories];
@@ -21,6 +22,11 @@ export const Settings = () => {
 		// [SettingsCategories.USER]: UserSettings,
 	};
 	const SelectedSettingsComponent = settingsComponents[selectedCategory];
+	const [suggestions, setSuggestions] = useState<SuggestionProps[]>(
+		Suggestions.filter(
+			(suggestion) => suggestion.type === selectedCategory,
+		),
+	);
 
 	function handleChangeCategory(
 		e: React.MouseEvent<HTMLButtonElement>,
@@ -28,7 +34,14 @@ export const Settings = () => {
 		const category = e.currentTarget.textContent as SettingsCategoryValue;
 		// console.log(category);
 
-		if (category !== selectedCategory) setSelectedCategory(category);
+		if (category !== selectedCategory) {
+			setSelectedCategory(category);
+
+			const filteredSuggestions = Suggestions.filter(
+				(suggestion) => suggestion.type === category,
+			);
+			setSuggestions(filteredSuggestions);
+		}
 	}
 
 	return (
@@ -56,7 +69,7 @@ export const Settings = () => {
 			</div>
 			<hr className="settings__splitter" />
 			<div className="settings__panel">
-				<SelectedSettingsComponent />
+				<SelectedSettingsComponent suggestions={suggestions} />
 			</div>
 		</div>
 	);

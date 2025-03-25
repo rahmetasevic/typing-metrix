@@ -5,7 +5,7 @@ import { FilterOption, LANGUAGE_OPTIONS, LayoutType } from "@constants/index";
 import { FilterProps } from "types";
 import { TestStatus } from "@constants/index";
 import { generateContent } from "@lib/contentGenerator";
-import { addTransition } from "@utils/index";
+import { addTransition, removeContentHighlights } from "@utils/index";
 
 type TextContent = {
 	text: string;
@@ -174,9 +174,7 @@ export const useTestStore = create<TestState & TestActions>()(
 				set({ charStats: chars });
 			},
 			redoTest: () => {
-				document
-					.querySelectorAll(".active-char")
-					.forEach((e) => e.classList.remove("active-char"));
+				removeContentHighlights();
 
 				set({
 					...initialState,
@@ -190,12 +188,16 @@ export const useTestStore = create<TestState & TestActions>()(
 				});
 			},
 			resetTest: () => {
-				document
-					.querySelectorAll(".active-char")
-					.forEach((e) => e.classList.remove("active-char"));
-				const contentClass =
-					document.querySelector(".typing-test")?.firstElementChild
-						?.classList[0];
+				const isTestVisible = document.querySelector(".typing-test");
+				if (isTestVisible) {
+					removeContentHighlights();
+					const contentClass =
+						document.querySelector(".typing-test")
+							?.firstElementChild?.classList[0];
+
+					addTransition(`.${contentClass}__content`);
+				}
+
 				const generatedText: string[] = generateContent(
 					get().dictionary,
 					{
@@ -203,8 +205,6 @@ export const useTestStore = create<TestState & TestActions>()(
 						value: Number(get().activeFilter.value),
 					},
 				);
-
-				addTransition(`.${contentClass}__content`);
 
 				set({
 					...initialState,

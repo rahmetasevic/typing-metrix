@@ -2,7 +2,6 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: var(--secondary);
 	transition: all 0.1s ease;
 	height: 230px;
 
@@ -18,6 +17,13 @@
 		line-height: 1.75;
 		scroll-behavior: smooth;
 		transition: opacity 0.15s ease;
+
+		& > span {
+			position: relative;
+			display: inline-block;
+			padding: 0 0.4rem;
+			color: var(--secondary);
+		}
 	}
 
 	&:focus-within &__content {
@@ -56,5 +62,72 @@
 }
 
 .active-char {
-	color: var(--font-primary);
+	color: var(--highlight-char-type) !important;
+}
+
+.current-word {
+	color: var(--highlight-word-type) !important;
+}
+
+.entered {
+	color: var(--secondary) !important;
+
+	&-char {
+		color: var(--secondary) !important;
+	}
+}
+
+.current-char {
+	animation: var(
+		--caret-animation,
+		verticalLineCaret 1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards
+			infinite
+	);
+	border-radius: 1px;
+}
+
+@keyframes verticalLineCaret {
+	0%,
+	100% {
+		box-shadow: -5px 0 0 0 transparent;
+	}
+	50% {
+		box-shadow: -5px 0 0 0 var(--primary);
+	}
+}
+
+@keyframes blockCaret {
+	0%,
+	100% {
+		background-color: transparent;
+	}
+	50% {
+		background-color: var(--primary);
+	}
+}
+
+@keyframes borderedCaret {
+	0%,
+	100% {
+		box-shadow: 0 0 0 0 transparent;
+	}
+	50% {
+		box-shadow: 0 0 0 2px var(--primary);
+	}
+}
+
+@keyframes underscoreCaret {
+	0%,
+	100% {
+		box-shadow: 0 2px 0 0 transparent;
+	}
+	50% {
+		box-shadow: 0 2px 0 0 var(--primary);
+	}
+}
+
+.stop-caret-animation {
+	animation: none;
+	background-color: var(--caret-bg);
+	box-shadow: var(--caret-bs);
 }
