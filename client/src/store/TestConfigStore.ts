@@ -37,7 +37,7 @@ const initialState: ConfigState = {
 		highlightType: "character",
 		movement: "off",
 		stopOnError: "off",
-		backspaceOption: "on",
+		backspaceOption: "limited",
 	},
 };
 
@@ -69,7 +69,6 @@ const propertyHandlers: PropertyHandlers = {
 		);
 		return newCaret;
 	},
-	movement: (isEnabled) => isEnabled,
 	highlightType: (newHighlightType) => {
 		const [charType, wordType] = getHighlightType(newHighlightType);
 		document.documentElement.style.setProperty(
@@ -82,17 +81,20 @@ const propertyHandlers: PropertyHandlers = {
 		);
 		return newHighlightType;
 	},
+	movement: (isEnabled, setConfig) => {
+		setConfig?.("backspaceOption", "on");
+		return isEnabled;
+	},
 	stopOnError: (type, setConfig) => {
 		toggleBackspace("stopOnError", type);
-		if (type !== "off") {
-			setConfig?.("backspaceOption", "on");
-		}
+		setConfig?.("backspaceOption", "on");
 		return type;
 	},
 	backspaceOption: (option, setConfig) => {
 		toggleBackspace("backspaceOption", option);
-		if (option !== "off") {
+		if (option !== "on") {
 			setConfig?.("stopOnError", "off");
+			setConfig?.("movement", "off");
 		}
 		return option;
 	},

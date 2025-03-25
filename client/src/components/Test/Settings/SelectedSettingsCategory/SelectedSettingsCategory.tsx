@@ -13,8 +13,8 @@ export const SelectedSettingsCategory = ({ suggestions, selectedCategory }) => {
 
 	useEffect(() => {
 		// console.log("suggs", suggestions);
-		console.log("config", config);
-		console.log("selected cat", selectedCategory);
+		// console.log("config", config);
+		// console.log("selected cat", selectedCategory);
 	}, [config, selectedCategory]);
 
 	function handleChange(property: ConfigProperty, value: string): void {

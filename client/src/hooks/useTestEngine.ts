@@ -238,15 +238,21 @@ export const useTestEngine = () => {
 			alert("Test is paused!");
 			return;
 		} else if (key === "Backspace") {
-			if (config.backspaceOption === "limited") {
+			if (
+				config.backspaceOption === "limited" ||
+				(config.backspaceOption === "on" && config.movement === "off")
+			) {
 				document
 					.querySelector(`.word-${currWord.index}-char-${charIndex}`)
 					?.classList.remove("active-char");
 				document
 					.querySelector(`.word-${currWord.index}-char-${charIndex}`)
 					?.classList.remove("entered-char");
-				setCharIndex(charIndex === 0 ? charIndex : charIndex - 1);
-			} else if (config.backspaceOption === "on") {
+				setCharIndex(charIndex === 0 ? 0 : charIndex - 1);
+			} else if (
+				config.backspaceOption === "on" &&
+				config.movement === "on"
+			) {
 				// remove style from input
 				document
 					.querySelector(`.word-${currWord.index}-char-${charIndex}`)

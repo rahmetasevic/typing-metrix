@@ -175,7 +175,7 @@ export const Suggestions: SuggestionProps[] = [
 	{
 		type: SettingsCategories.APPEARANCE,
 		key: "movement",
-		title: "movement",
+		title: "free movement",
 		description: "removal of all previously typed text is allowed",
 		values: ["off", "on"],
 		onlyQuickbar: false,
@@ -227,7 +227,7 @@ export const Suggestions: SuggestionProps[] = [
 	// 	description: "reset to the default state",
 	// 	values: ["reset"],
 	// 	onlyQuickbar: false,
-	// 	element: Picker,
+	// 	element: Button,
 	// },
 ] as const;
 
