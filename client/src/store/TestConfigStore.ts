@@ -10,6 +10,7 @@ type UserPreferences = {
 	fontFamily: string;
 	caret: string;
 	highlightType: string;
+	movement: string;
 	stopOnError: string;
 	backspaceOption: string;
 };
@@ -34,6 +35,7 @@ const initialState: ConfigState = {
 		fontFamily: "Fira Mono",
 		caret: "default",
 		highlightType: "character",
+		movement: "off",
 		stopOnError: "off",
 		backspaceOption: "on",
 	},
@@ -67,6 +69,7 @@ const propertyHandlers: PropertyHandlers = {
 		);
 		return newCaret;
 	},
+	movement: (isEnabled) => isEnabled,
 	highlightType: (newHighlightType) => {
 		const [charType, wordType] = getHighlightType(newHighlightType);
 		document.documentElement.style.setProperty(

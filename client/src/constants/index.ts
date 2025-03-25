@@ -9,6 +9,7 @@ import { LuTextCursorInput } from "react-icons/lu";
 import { SuggestionProps } from "types";
 import { Select } from "@components/Shared/Select";
 import { Picker } from "@components/Shared/Picker";
+import { Button } from "@components/Shared/Button";
 
 export type FilterOptionKey = "words" | "time" | "quotes";
 type FilterOptionProps = {
@@ -108,9 +109,10 @@ export const PUNCTUATION_CHARS = [
 export const SettingsCategories = {
 	APPEARANCE: "appearance",
 	TYPING: "typing",
-	LAYOUT: "layout",
-	METRICS: "metrics",
-	USER: "user",
+	GENERAL: "general",
+	// LAYOUT: "layout",
+	// METRICS: "metrics",
+	// USER: "user",
 } as const;
 
 export const Suggestions: SuggestionProps[] = [
@@ -172,6 +174,15 @@ export const Suggestions: SuggestionProps[] = [
 	},
 	{
 		type: SettingsCategories.APPEARANCE,
+		key: "movement",
+		title: "movement",
+		description: "removal of all previously typed text is allowed",
+		values: ["off", "on"],
+		onlyQuickbar: false,
+		element: Picker,
+	},
+	{
+		type: SettingsCategories.APPEARANCE,
 		key: "stopOnError",
 		title: "stop on error",
 		description:
@@ -210,6 +221,14 @@ export const Suggestions: SuggestionProps[] = [
 		values: ["on", "off"],
 		onlyQuickbar: true,
 	},
+	// {
+	// 	type: SettingsCategories.GENERAL,
+	// 	title: "reset",
+	// 	description: "reset to the default state",
+	// 	values: ["reset"],
+	// 	onlyQuickbar: false,
+	// 	element: Picker,
+	// },
 ] as const;
 
 export const LANGUAGE_OPTIONS = ["english", "spanish"];
