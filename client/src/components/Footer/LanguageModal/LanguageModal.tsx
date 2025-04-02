@@ -8,23 +8,24 @@ import { ModalProps } from "types";
 import { LANGUAGE_OPTIONS } from "@constants/index";
 
 import "./LanguageModal.scss";
+import { useTestConfigStore } from "@store/TestConfigStore";
 
 export const LanguageModal = (props: ModalProps) => {
 	const { visible, close } = props;
 	const [searchResult, setSearchResult] = useState<string>("");
 	const [filteredLanguages, setFilteredLanguages] =
 		useState<string[]>(LANGUAGE_OPTIONS);
-	const [language, setLanguage, setTestContent] = useTestStore((state) => [
-		state.language,
-		state.setLanguage,
-		state.setTestContent,
+	const [config, setConfig] = useTestConfigStore((state) => [
+		state.config,
+		state.setConfig,
 	]);
+	const [setTestContent] = useTestStore((state) => [state.setTestContent]);
 
 	function handleSelectLanguage(e: React.MouseEvent<HTMLDivElement>): void {
 		const languageName = (e.target as HTMLDivElement).dataset.value;
 
-		if (languageName && languageName !== language) {
-			setLanguage(languageName);
+		if (languageName && languageName !== config.language) {
+			setConfig("language", languageName);
 			setTestContent();
 		}
 	}
@@ -86,7 +87,7 @@ export const LanguageModal = (props: ModalProps) => {
 								<span className="language__option">
 									{option}
 								</span>
-								{option === language && (
+								{option === config.language && (
 									<MdCheck
 										style={{
 											color: "var(--primary)",

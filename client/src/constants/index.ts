@@ -10,6 +10,7 @@ import { SuggestionProps } from "types";
 import { Select } from "@components/Shared/Select";
 import { Picker } from "@components/Shared/Picker";
 import { Button } from "@components/Shared/Button";
+import { ResetConfigButton } from "@components/Shared/Button/ResetConfigButton";
 
 export type FilterOptionKey = "words" | "time" | "quotes";
 type FilterOptionProps = {
@@ -115,6 +116,8 @@ export const SettingsCategories = {
 	// USER: "user",
 } as const;
 
+export const LANGUAGE_OPTIONS = ["english", "spanish"];
+
 export const Suggestions: SuggestionProps[] = [
 	{
 		type: SettingsCategories.APPEARANCE,
@@ -165,15 +168,24 @@ export const Suggestions: SuggestionProps[] = [
 	},
 	{
 		type: SettingsCategories.APPEARANCE,
-		key: "highlightType",
-		title: "highlight type",
-		description: "highlight view of content",
+		key: "contentHighlightStyle",
+		title: "content highlight",
+		description: "content highlight styles",
 		values: ["none", "character", "word"],
 		onlyQuickbar: false,
 		element: Picker,
 	},
 	{
 		type: SettingsCategories.APPEARANCE,
+		key: "mistakeHighlightStyle",
+		title: "mistakes highlight",
+		description: "each mistake/error is higlighted",
+		values: ["off", "on"],
+		onlyQuickbar: false,
+		element: Picker,
+	},
+	{
+		type: SettingsCategories.TYPING,
 		key: "movement",
 		title: "free movement",
 		description: "removal of all previously typed text is allowed",
@@ -182,7 +194,7 @@ export const Suggestions: SuggestionProps[] = [
 		element: Picker,
 	},
 	{
-		type: SettingsCategories.APPEARANCE,
+		type: SettingsCategories.TYPING,
 		key: "stopOnError",
 		title: "stop on error",
 		description:
@@ -192,7 +204,7 @@ export const Suggestions: SuggestionProps[] = [
 		element: Picker,
 	},
 	{
-		type: SettingsCategories.APPEARANCE,
+		type: SettingsCategories.TYPING,
 		key: "backspaceOption",
 		title: "backspace",
 		description: "backspace availability",
@@ -221,14 +233,21 @@ export const Suggestions: SuggestionProps[] = [
 		values: ["on", "off"],
 		onlyQuickbar: true,
 	},
-	// {
-	// 	type: SettingsCategories.GENERAL,
-	// 	title: "reset",
-	// 	description: "reset to the default state",
-	// 	values: ["reset"],
-	// 	onlyQuickbar: false,
-	// 	element: Button,
-	// },
+	{
+		type: SettingsCategories.GENERAL,
+		key: "language",
+		title: "language",
+		description: "language of the test content",
+		values: LANGUAGE_OPTIONS,
+		onlyQuickbar: false,
+		element: Select,
+	},
+	{
+		type: SettingsCategories.GENERAL,
+		title: "reset configuration",
+		description: "reset configuration to the default state",
+		values: "reset configuration",
+		onlyQuickbar: false,
+		element: ResetConfigButton,
+	},
 ] as const;
-
-export const LANGUAGE_OPTIONS = ["english", "spanish"];

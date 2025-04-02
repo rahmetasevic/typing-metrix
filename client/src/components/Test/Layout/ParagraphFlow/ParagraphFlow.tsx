@@ -1,32 +1,51 @@
-import { useEffect, useRef } from "react";
-import { useTestStore } from "@store/TestStore";
-import { useTestEngine } from "@hooks/useTestEngine";
+import { useRef } from "react";
 import { TbHandClick } from "react-icons/tb";
 
+import { useTestStore } from "@store/TestStore";
+import { useTestEngine } from "@hooks/useTestEngine";
+
 import "./ParagraphFlow.scss";
-import { TestStatus } from "@constants/index";
-import { useTestConfigStore } from "@store/TestConfigStore";
 
 export const ParagraphFlow = () => {
 	const {
 		testContent,
 		activity,
+		caretRef,
+		hideCaret,
+		showCaret,
 		userInput,
 		getWordClass,
 		addCurrentCharClass,
 		detectKey,
 		setUserInput,
 	} = useTestEngine();
-	const config = useTestConfigStore((state) => state.config);
+	const [isContentFocused, setIsContentFocused] = useTestStore((state) => [
+		state.isContentFocused,
+		state.setIsContentFocused,
+	]);
+	const contentRef = useRef<HTMLDivElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 
-	useEffect(() => {
-		console.log("flow(cfg) -> ", config);
-	}, [config.caret]);
+	function handleDivFocus(e: React.FocusEvent<HTMLDivElement>): void {
+		e.stopPropagation();
+		if (!isContentFocused) {
+			setIsContentFocused(true);
+			if (inputRef.current) {
+				// console.log("focus");
+				inputRef.current.focus(); // Focus input only if not already focused
+				showCaret();
+			}
+		}
+	}
 
-	function focusContent(): void {
-		if (inputRef.current) {
-			inputRef.current.focus();
+	function handleDivBlur(e: React.FocusEvent<HTMLDivElement>): void {
+		const relatedTarget = e.relatedTarget as Node;
+		const container = contentRef.current;
+
+		if (container && !container.contains(relatedTarget)) {
+			// console.log("blur");
+			setIsContentFocused(false);
+			hideCaret();
 		}
 	}
 
@@ -40,10 +59,13 @@ export const ParagraphFlow = () => {
 				value={userInput}
 				onKeyDown={detectKey}
 				spellCheck="false"
+				onBlur={handleDivBlur}
 			/>
 			<div
 				className="parflow__content"
-				onClick={focusContent}
+				ref={contentRef}
+				onFocus={handleDivFocus}
+				onBlur={handleDivBlur}
 				tabIndex={0}
 			>
 				{testContent!.length > 0 &&
@@ -63,6 +85,7 @@ export const ParagraphFlow = () => {
 						</span>
 					))}
 			</div>
+			<div ref={caretRef} className="parflow__caret"></div>
 			<div className="parflow__blurred">
 				<TbHandClick /> click to focus on the test
 			</div>

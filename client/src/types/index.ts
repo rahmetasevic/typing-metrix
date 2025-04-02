@@ -19,7 +19,7 @@ export type SuggestionProps = {
 	key?: ConfigProperty;
 	title: string;
 	description: string;
-	values: string[];
+	values: string[] | string;
 	onlyQuickbar: boolean;
 	element?: any;
 };

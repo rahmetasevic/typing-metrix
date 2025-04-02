@@ -6,6 +6,7 @@ import { FilterProps } from "types";
 import { TestStatus } from "@constants/index";
 import { generateContent } from "@lib/contentGenerator";
 import { addTransition, removeContentHighlights } from "@utils/index";
+import { useTestConfigStore } from "./TestConfigStore";
 
 type TextContent = {
 	text: string;
@@ -42,7 +43,7 @@ type TestState = {
 	dictionary: string[];
 	displayLayout: (typeof LayoutType)[keyof typeof LayoutType];
 	showQuickbar: boolean;
-	language: (typeof LANGUAGE_OPTIONS)[number];
+	isContentFocused: boolean;
 };
 
 type TestActions = {
@@ -59,8 +60,8 @@ type TestActions = {
 		layout: (typeof LayoutType)[keyof typeof LayoutType],
 	) => void;
 	setShowQuickbar: (isVisible: boolean) => void;
-	setLanguage: (language: (typeof LANGUAGE_OPTIONS)[number]) => void;
 	setCharStats: (chars: CharactersProps) => void;
+	setIsContentFocused: (flag: boolean) => void;
 	redoTest: () => void;
 	resetTest: () => void;
 };
@@ -94,7 +95,7 @@ const initialState: TestState = {
 	dictionary: [],
 	displayLayout: LayoutType.FLOW,
 	showQuickbar: false,
-	language: LANGUAGE_OPTIONS[0],
+	isContentFocused: false,
 };
 
 export const useTestStore = create<TestState & TestActions>()(
@@ -107,6 +108,8 @@ export const useTestStore = create<TestState & TestActions>()(
 			setTestContent: async (content?: string[] | null) => {
 				// content as a parameter => for custom content that user inputs
 				// console.log("cst content", content);
+				const selectedLanguage =
+					useTestConfigStore.getState().config.language;
 				try {
 					// same content for words & time filters
 					const currentFilterName = get().activeFilter.name;
@@ -114,7 +117,7 @@ export const useTestStore = create<TestState & TestActions>()(
 						currentFilterName !== "quotes" ? "words" : "quotes";
 					const url =
 						dataKey === "words"
-							? `/dictionaries/${get().language}.json`
+							? `/dictionaries/${selectedLanguage}.json`
 							: "/quotes/quotes.json";
 					const response = await fetch(url);
 					if (response.ok) {
@@ -167,8 +170,8 @@ export const useTestStore = create<TestState & TestActions>()(
 			setShowQuickbar(isVisible: boolean) {
 				set({ showQuickbar: isVisible });
 			},
-			setLanguage(language: (typeof LANGUAGE_OPTIONS)[number]) {
-				set({ language: language });
+			setIsContentFocused(flag: boolean) {
+				set({ isContentFocused: flag });
 			},
 			setCharStats(chars: CharactersProps) {
 				set({ charStats: chars });

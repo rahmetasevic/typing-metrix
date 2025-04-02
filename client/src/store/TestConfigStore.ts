@@ -1,7 +1,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import { getCaretType, getHighlightType, toggleBackspace } from "@utils/index";
+import {
+	getHighlightType,
+	getMistakeHighlightStyle,
+	setCaretAtts,
+} from "@utils/index";
+import { LANGUAGE_OPTIONS } from "@constants/index";
 
 type UserPreferences = {
 	punctuation: boolean;
@@ -9,10 +14,12 @@ type UserPreferences = {
 	theme: string;
 	fontFamily: string;
 	caret: string;
-	highlightType: string;
+	contentHighlightStyle: string;
+	mistakeHighlightStyle: string;
 	movement: string;
 	stopOnError: string;
 	backspaceOption: string;
+	language: (typeof LANGUAGE_OPTIONS)[number];
 };
 
 type ConfigState = {
@@ -25,6 +32,7 @@ type ConfigActions = {
 		property: T,
 		value: UserPreferences[T],
 	) => void;
+	resetConfig: () => void;
 };
 
 const initialState: ConfigState = {
@@ -34,10 +42,12 @@ const initialState: ConfigState = {
 		theme: "dark",
 		fontFamily: "Fira Mono",
 		caret: "default",
-		highlightType: "character",
+		contentHighlightStyle: "character",
+		mistakeHighlightStyle: "off",
 		movement: "off",
 		stopOnError: "off",
 		backspaceOption: "limited",
+		language: LANGUAGE_OPTIONS[0],
 	},
 };
 
@@ -63,14 +73,11 @@ const propertyHandlers: PropertyHandlers = {
 		return newFont;
 	},
 	caret: (newCaret) => {
-		document.documentElement.style.setProperty(
-			"--caret-animation",
-			getCaretType(newCaret),
-		);
+		setCaretAtts(newCaret);
 		return newCaret;
 	},
-	highlightType: (newHighlightType) => {
-		const [charType, wordType] = getHighlightType(newHighlightType);
+	contentHighlightStyle: (style) => {
+		const [charType, wordType] = getHighlightType(style);
 		document.documentElement.style.setProperty(
 			"--highlight-char-type",
 			charType,
@@ -79,19 +86,21 @@ const propertyHandlers: PropertyHandlers = {
 			"--highlight-word-type",
 			wordType,
 		);
-		return newHighlightType;
+		return style;
+	},
+	mistakeHighlightStyle: (flag) => {
+		getMistakeHighlightStyle(flag);
+		return flag;
 	},
 	movement: (isEnabled, setConfig) => {
 		setConfig?.("backspaceOption", "on");
 		return isEnabled;
 	},
 	stopOnError: (type, setConfig) => {
-		toggleBackspace("stopOnError", type);
 		setConfig?.("backspaceOption", "on");
 		return type;
 	},
 	backspaceOption: (option, setConfig) => {
-		toggleBackspace("backspaceOption", option);
 		if (option !== "on") {
 			setConfig?.("stopOnError", "off");
 			setConfig?.("movement", "off");
@@ -134,9 +143,25 @@ export const useTestConfigStore = create<ConfigState & ConfigActions>()(
 					return { config: updatedConfig };
 				});
 			},
+			resetConfig: () => {
+				document.documentElement.setAttribute(
+					"data-theme",
+					initialState.config.theme,
+				);
+
+				set({ ...initialState });
+			},
 		}),
 		{
 			name: "config-store",
 		},
 	),
 );
+
+export const isConfigStateChanged = (
+	currentState: UserPreferences,
+): boolean => {
+	return Object.keys(initialState.config).some((key) => {
+		return currentState[key] !== initialState.config[key];
+	});
+};

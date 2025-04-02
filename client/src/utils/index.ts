@@ -33,58 +33,99 @@ export function transformPropertyValue(
 	propertyValue: any,
 ): string | string[] {
 	if (property === "caret") {
-		const caretType = getCaretType(propertyValue);
+		const caretType = setCaretAtts(propertyValue);
 		return caretType;
-	} else if (property === "highlightType") {
+	} else if (property === "contentHighlightStyle") {
 		const highlightType = getHighlightType(propertyValue);
 		return highlightType;
+	} else if (property === "mistakeHighlightStyle") {
+		const style = getMistakeHighlightStyle(propertyValue);
+		return style;
 	} else {
 		return propertyValue;
 	}
 }
 
-export function toggleBackspace(property: ConfigProperty, type: string): void {
-	const state = useTestConfigStore.getState();
-
-	if (property === "stopOnError") {
-	} else {
-	}
-}
-
-export function getCaretType(caret: string): string {
+export function setCaretAtts(caret: string): string[] {
 	// caret animations on start & pending test state
 	if (caret === "default") {
-		document.documentElement.style.setProperty("--caret-bg", "none");
+		document.documentElement.style.setProperty("--caret-width", "3px");
+		document.documentElement.style.setProperty("--caret-height", "33px");
 		document.documentElement.style.setProperty(
-			"--caret-bs",
-			"-5px 0 0 0 var(--primary)",
-		);
-		return "verticalLineCaret 1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards infinite";
-	} else if (caret === "block") {
-		document.documentElement.style.setProperty(
-			"--caret-bg",
+			"--caret-bgc",
 			"var(--primary)",
 		);
-		document.documentElement.style.setProperty("--caret-bs", "none");
-		return "blockCaret 1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards infinite";
+		document.documentElement.style.setProperty("--caret-bradius", "5px");
+		document.documentElement.style.setProperty("--caret-border", "none");
+		document.documentElement.style.setProperty("--caret-borderbtm", "none");
+		return ["3px", "33px", "var(--primary)", "5px", "none", "none"];
+	} else if (caret === "block") {
+		document.documentElement.style.setProperty("--caret-width", "17px");
+		document.documentElement.style.setProperty("--caret-height", "33px");
+		document.documentElement.style.setProperty(
+			"--caret-bgc",
+			"var(--primary)",
+		);
+		document.documentElement.style.setProperty("--caret-bradius", "5px");
+		document.documentElement.style.setProperty("--caret-border", "none");
+		document.documentElement.style.setProperty("--caret-borderbtm", "none");
+		return ["17px", "33px", "var(--primary)", "5px", "none", "none"];
 	} else if (caret === "bordered") {
-		document.documentElement.style.setProperty("--caret-bg", "none");
+		document.documentElement.style.setProperty("--caret-width", "17px");
+		document.documentElement.style.setProperty("--caret-height", "36px");
 		document.documentElement.style.setProperty(
-			"--caret-bs",
-			"0 0 0 2px var(--primary)",
+			"--caret-bgc",
+			"transparent",
 		);
-		return "borderedCaret 1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards infinite";
+		document.documentElement.style.setProperty("--caret-bradius", "5px");
+		document.documentElement.style.setProperty(
+			"--caret-border",
+			"2px solid var(--primary)",
+		);
+		document.documentElement.style.setProperty(
+			"--caret-borderbtm",
+			"2px solid var(--primary)",
+		);
+		return [
+			"17px",
+			"36px",
+			"transparent",
+			"5px",
+			"2px solid var(--primary)",
+			"2px solid var(--primary)",
+		];
 	} else if (caret === "underscore") {
-		document.documentElement.style.setProperty("--caret-bg", "none");
+		document.documentElement.style.setProperty("--caret-width", "17px");
+		document.documentElement.style.setProperty("--caret-height", "36px");
 		document.documentElement.style.setProperty(
-			"--caret-bs",
-			"0 2px 0 0 var(--primary)",
+			"--caret-bgc",
+			"transparent",
 		);
-		return "underscoreCaret 1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards infinite";
+		document.documentElement.style.setProperty("--caret-bradius", "0");
+		document.documentElement.style.setProperty("--caret-border", "none");
+		document.documentElement.style.setProperty(
+			"--caret-borderbtm",
+			"2px solid var(--primary)",
+		);
+		return [
+			"17px",
+			"36px",
+			"transparent",
+			"0",
+			"none",
+			"2px solid var(--primary)",
+		];
 	} else {
-		document.documentElement.style.setProperty("--caret-bg", "none");
-		document.documentElement.style.setProperty("--caret-bs", "none");
-		return "none";
+		document.documentElement.style.setProperty("--caret-width", "0");
+		document.documentElement.style.setProperty("--caret-height", "0");
+		document.documentElement.style.setProperty(
+			"--caret-bgc",
+			"transparent",
+		);
+		document.documentElement.style.setProperty("--caret-bradius", "0");
+		document.documentElement.style.setProperty("--caret-border", "none");
+		document.documentElement.style.setProperty("--caret-borderbtm", "none");
+		return ["0", "0", "transparent", "0", "none", "none"];
 	}
 }
 
@@ -123,14 +164,32 @@ export function getHighlightType(type: string): string[] {
 	}
 }
 
+export function getMistakeHighlightStyle(flag: string): string {
+	if (flag === "on") {
+		document.documentElement.style.setProperty(
+			"--incorrect-color",
+			"var(--error-primary)",
+		);
+
+		return "var(--error-primary)";
+	} else {
+		document.documentElement.style.setProperty(
+			"--incorrect-color",
+			"var(--font-primary)",
+		);
+		return "var(--font-primary)";
+	}
+}
+
 export function removeContentHighlights(): void {
 	document
 		.querySelectorAll(".entered")
 		.forEach((e) => e.classList.remove("entered"));
-
 	document
 		.querySelectorAll(".active-char")
-		.forEach((e) => e.classList.remove("active-char"));
+		.forEach((e) =>
+			e.classList.remove("active-char", "incorrect", "correct"),
+		);
 	document
 		.querySelectorAll(".entered-char")
 		.forEach((e) => e.classList.remove("entered-char"));
@@ -138,12 +197,22 @@ export function removeContentHighlights(): void {
 
 export function syncState() {
 	const state = useTestConfigStore.getState();
-
 	const stateMap = {
 		theme: "data-theme",
 		fontFamily: "--font",
-		caret: "--caret-animation",
-		highlightType: ["--highlight-char-type", "--highlight-word-type"],
+		caret: [
+			"--caret-width",
+			"--caret-height",
+			"--caret-bgc",
+			"--caret-bradius",
+			"--caret-border",
+			"--caret-borderbtm",
+		],
+		contentHighlightStyle: [
+			"--highlight-char-type",
+			"--highlight-word-type",
+		],
+		mistakeHighlightStyle: "--incorrect-color",
 	};
 
 	Object.entries(stateMap).forEach(([stateKey, styleVar]) => {

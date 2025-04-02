@@ -4,7 +4,7 @@
 	justify-items: center;
 	align-items: center;
 	background-color: var(--alternate);
-	color: var(--secondary);
+	// color: var(--secondary);
 	padding: 0.5rem;
 	border-radius: 15px;
 	transition: all 0.1s ease;
@@ -21,6 +21,16 @@
 		line-height: 1.75;
 		scroll-behavior: smooth;
 		transition: opacity 0.15s ease;
+		outline: none;
+		cursor: default;
+
+		& > span {
+			position: relative;
+			display: inline-block;
+			padding: 0 0.4rem;
+			color: var(--secondary);
+			z-index: 2;
+		}
 	}
 
 	&:focus-within &__content {
@@ -68,21 +78,47 @@
 			box-shadow: 0 0 0 2px var(--secondary);
 		}
 	}
+
+	&__caret {
+		position: absolute;
+		width: var(--caret-width);
+		height: var(--caret-height);
+		background-color: var(--caret-bgc);
+		animation: blink 1s cubic-bezier(0.215, 0.61, 0.355, 1) forwards
+			infinite;
+		border-radius: var(--caret-bradius);
+		border: var(--caret-border);
+		border-bottom: var(--caret-borderbtm);
+		// z-index: -1;
+	}
 }
 
 .active-char {
-	color: var(--font-primary);
+	color: var(--highlight-char-type) !important;
 }
 
-// ====> needs to be set after creating user preferences
-// .current-word {
-// 	// background-color: #ccc;
-// }
+.current-word {
+	color: var(--highlight-word-type) !important;
+}
 
-// .correct-char {
-// 	color: green;
-// }
+.entered {
+	color: var(--secondary) !important;
 
-// .incorrect-char {
-// 	color: red;
-// }
+	&-char {
+		color: var(--secondary) !important;
+	}
+}
+
+.incorrect {
+	color: var(--incorrect-color) !important;
+}
+
+@keyframes blink {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+}

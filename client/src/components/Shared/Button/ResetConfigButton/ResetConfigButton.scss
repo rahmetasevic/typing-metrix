@@ -1,0 +1,26 @@
+.reset__button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.3rem;
+	padding: 0.5rem 0.75rem;
+	color: var(--font-primary);
+	border-radius: 10px;
+	cursor: pointer;
+	background-color: var(--alternate);
+	border: none;
+	outline: none;
+	transition: color 0.1s linear;
+	font-size: 18px;
+	width: 100%;
+
+	&:hover:enabled {
+		background-color: var(--secondary);
+		color: var(--bg-primary);
+	}
+
+	&:disabled {
+		background-color: var(--alternate);
+		color: var(--secondary);
+	}
+}
