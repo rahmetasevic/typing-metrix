@@ -1,4 +1,4 @@
-import { PUNCTUATION_CHARS } from "@constants/index";
+import { SYMBOL_CHARS } from "@constants/index";
 import { useTestConfigStore } from "@store/TestConfigStore";
 import { shuffleArray } from "@utils/index";
 
@@ -26,13 +26,18 @@ export function generateWords(dictionary: string[], amount: number): string[] {
 	const [start, end] = [Math.min(x, y), Math.max(x, y)];
 	let wordContent = dictionary.slice(start, end);
 
-	if (config.punctuation) {
+	if (config.symbols) {
 		const punctAmount = Math.floor(Math.random() * (amount / 2) + 1);
 		randChars = Array.from(
 			{ length: punctAmount },
-			() => PUNCTUATION_CHARS[Math.floor(Math.random() * PUNCTUATION_CHARS.length) + 1],
+			() =>
+				SYMBOL_CHARS[
+					Math.floor(Math.random() * SYMBOL_CHARS.length) + 1
+				],
 		);
-		wordContent = wordContent.map((word, i) => word.concat(randChars[i] || ""))
+		wordContent = wordContent.map((word, i) =>
+			word.concat(randChars[i] || ""),
+		);
 	}
 
 	return shuffleArray([...randNums, ...wordContent]);

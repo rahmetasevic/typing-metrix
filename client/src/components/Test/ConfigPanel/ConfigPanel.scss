@@ -1,52 +1,113 @@
 .panel {
-	display: flex;
-	gap: 0.5rem;
+	// display: flex;
+	// gap: 0.5rem;
 
-	&__filters,
-	&__rules {
-		display: flex;
-		align-items: center;
+	&__container {
+		// display: flex;
+		// align-items: center;
+		display: grid;
+		grid-template-columns: repeat(4, auto);
+		justify-content: center;
 		color: var(--font-primary);
-		padding: 0.5rem;
+		// padding: 0.5rem;
 		border-radius: 10px;
-		gap: 0.2rem;
+		// gap: 0.2rem;
 		background-color: var(--alternate);
 		transition: all 0.1s ease;
 		pointer-events: none;
 
 		> * {
-			display: flex;
+			// display: flex;
 			opacity: 1;
 			visibility: visible;
-			transition:
-				background 0.1 ease,
-				color 0.1s ease,
-				opacity 0.1s ease;
+			transition: all 0.1s ease;
 			pointer-events: auto;
 		}
 	}
 
+	&__rules {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		border-right: 1px solid var(--secondary);
+	}
+
+	&__rule > * {
+		pointer-events: none;
+	}
+
+	&__filters {
+		display: grid;
+		grid-template-columns: auto auto auto;
+		align-items: center;
+		border-right: 1px solid var(--secondary);
+
+		> * {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+		}
+
+		// &__title:first-child {
+		// 	margin-left: 1em;
+		// }
+
+		// &__values button:first-child {
+		// 	margin-left: 1em;
+		// }
+
+		&__values button:last-child {
+			margin-right: 1em;
+		}
+	}
+
+	&__layouts {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		border-right: 1px solid var(--secondary);
+
+		// :last-child {
+		// 	margin-right: 1em;
+		// }
+	}
+
+	&__layout:first-child,
+	&__rule:first-child {
+		margin-left: 1em;
+	}
+
+	// &__layout:last-child {
+	//   margin-right: 1em;
+	// }
+
+	&__action {
+		margin-left: 1em;
+		margin-right: 1em;
+	}
+
 	.filter__value--highlighted,
-	.filter--highlighted {
+	.filter--highlighted,
+	.layout--highlighted {
 		color: var(--primary);
 	}
 
-	.splitter {
-		height: 100%;
-		width: 0.3em;
-		background: var(--bg-primary);
+	&__splitter {
+		display: block;
+		opacity: 1;
+		visibility: visible;
 		transition: 0.1s;
-		border: none;
-		border-radius: 10px;
 	}
 
 	button {
 		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.3rem;
 		background-color: transparent;
 		border: none;
 		outline: none;
 		color: var(--secondary);
-		font-size: 18px;
+		// font-size: 18px;
+		padding: 0.6em 0.75em;
+		// width: 100%;
 	}
 
 	button:hover {

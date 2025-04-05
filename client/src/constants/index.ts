@@ -3,7 +3,7 @@ import { PiTextAa } from "react-icons/pi";
 import { MdOutlineTimer } from "react-icons/md";
 import { GrBlockQuote } from "react-icons/gr";
 import { VscWholeWord } from "react-icons/vsc";
-import { BsBodyText } from "react-icons/bs";
+import { VscSymbolKeyword } from "react-icons/vsc";
 import { LuTextCursorInput } from "react-icons/lu";
 
 import { SuggestionProps } from "types";
@@ -61,7 +61,7 @@ type DisplayLayoutProps = {
 export const DisplayLayout: DisplayLayoutProps[] = [
 	{
 		name: LayoutType.FLOW,
-		icon: BsBodyText,
+		icon: VscSymbolKeyword,
 	},
 	{
 		name: LayoutType.BOX,
@@ -73,7 +73,7 @@ export const DisplayLayout: DisplayLayoutProps[] = [
 	},
 ] as const;
 
-export const PUNCTUATION_CHARS = [
+export const SYMBOL_CHARS = [
 	"!",
 	'"',
 	"#",
@@ -221,8 +221,8 @@ export const Suggestions: SuggestionProps[] = [
 	},
 	{
 		type: SettingsCategories.TYPING,
-		title: "punctuation",
-		description: "add punctuation marks",
+		title: "symbols",
+		description: "add symbol marks",
 		values: ["on", "off"],
 		onlyQuickbar: true,
 	},

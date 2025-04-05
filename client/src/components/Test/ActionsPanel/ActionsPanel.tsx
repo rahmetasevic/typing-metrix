@@ -29,7 +29,7 @@ export const ActionsPanel = () => {
 	// 	addTransition(`.${contentClass}`);
 	// 	addTransition(`.${contentClass}__content`);
 	// }, [displayLayout]);
-	//
+
 	function handleContentLayout(e: React.MouseEvent<HTMLButtonElement>): void {
 		const layout = (e.currentTarget as HTMLButtonElement).dataset
 			.value as LayoutTypeName;
@@ -40,26 +40,26 @@ export const ActionsPanel = () => {
 		<div
 			className={`actions ${activity === TestStatus.Finish || activity === TestStatus.Start ? "invisible" : ""}`}
 		>
-			<div className="actions__layouts">
-				{DisplayLayout.map((layout) => {
-					const Icon = layout.icon;
-					return (
-						<Button
-							className={`actions__layout ${displayLayout === layout.name ? "layout--highlighted" : ""}`}
-							key={layout.name}
-							onClick={handleContentLayout}
-							dataValue={layout.name}
-						>
-							<Icon />
-						</Button>
-					);
-				})}
-			</div>
-			<div className="actions__control">
-				<Button onClick={resetTest}>
-					<MdRestartAlt />
-				</Button>
-			</div>
+			{/* <div className="actions__layouts"> */}
+			{/* 	{DisplayLayout.map((layout) => { */}
+			{/* 		const Icon = layout.icon; */}
+			{/* 		return ( */}
+			{/* 			<Button */}
+			{/* 				className={`actions__layout ${displayLayout === layout.name ? "layout--highlighted" : ""}`} */}
+			{/* 				key={layout.name} */}
+			{/* 				onClick={handleContentLayout} */}
+			{/* 				dataValue={layout.name} */}
+			{/* 			> */}
+			{/* 				<Icon /> */}
+			{/* 			</Button> */}
+			{/* 		); */}
+			{/* 	})} */}
+			{/* </div> */}
+			{/* <div className="actions__control"> */}
+			{/* 	<Button onClick={resetTest}> */}
+			{/* 		<MdRestartAlt /> */}
+			{/* 	</Button> */}
+			{/* </div> */}
 		</div>
 	);
 };

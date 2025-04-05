@@ -9,7 +9,7 @@ import {
 import { LANGUAGE_OPTIONS } from "@constants/index";
 
 type UserPreferences = {
-	punctuation: boolean;
+	symbols: boolean;
 	numbers: boolean;
 	theme: string;
 	fontFamily: string;
@@ -37,7 +37,7 @@ type ConfigActions = {
 
 const initialState: ConfigState = {
 	config: {
-		punctuation: false,
+		symbols: false,
 		numbers: false,
 		theme: "dark",
 		fontFamily: "Fira Mono",
@@ -62,7 +62,7 @@ export type PropertyHandlers = {
 };
 
 const propertyHandlers: PropertyHandlers = {
-	punctuation: (flag) => flag,
+	symbols: (flag) => flag,
 	numbers: (flag) => flag,
 	theme: (newTheme) => {
 		document.documentElement.setAttribute("data-theme", newTheme);
@@ -107,6 +107,7 @@ const propertyHandlers: PropertyHandlers = {
 		}
 		return option;
 	},
+	language: (newLanguage) => newLanguage,
 };
 
 export const useTestConfigStore = create<ConfigState & ConfigActions>()(
