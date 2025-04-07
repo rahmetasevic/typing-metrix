@@ -39,7 +39,7 @@ export const Layout = () => {
 		>
 			{displayLayout === LayoutType.FLOW && <ParagraphFlow />}
 			{displayLayout === LayoutType.BOX && <ParagraphBox />}
-			{displayLayout === LayoutType.INLINE && <ParagraphInline />}
+			{/* {displayLayout === LayoutType.INLINE && <ParagraphInline />} */}
 		</div>
 	);
 };

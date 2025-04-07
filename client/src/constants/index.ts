@@ -67,10 +67,10 @@ export const DisplayLayout: DisplayLayoutProps[] = [
 		name: LayoutType.BOX,
 		icon: VscWholeWord,
 	},
-	{
-		name: LayoutType.INLINE,
-		icon: LuTextCursorInput,
-	},
+	// {
+	// 	name: LayoutType.INLINE,
+	// 	icon: LuTextCursorInput,
+	// },
 ] as const;
 
 export const SYMBOL_CHARS = [

@@ -61,7 +61,7 @@
 
 	&__layouts {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(2, 1fr);
 		border-right: 1px solid var(--secondary);
 
 		// :last-child {
