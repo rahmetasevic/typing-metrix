@@ -46,9 +46,17 @@ export const ConfigPanel = () => {
 			setTimeCount(Number(activeFilter.value));
 		} else {
 			setTimeCount(0);
+			if (activeFilter.name === "quotes") {
+				document
+					.querySelector(".panel__splitter")
+					?.classList.add("invisible");
+			} else {
+				document
+					.querySelector(".panel__splitter")
+					?.classList.remove("invisible");
+			}
 		}
 
-		// console.log("activeFilter", activeFilter);
 		setTestContent();
 	}, [activeFilter, config]);
 

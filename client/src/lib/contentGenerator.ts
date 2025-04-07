@@ -44,6 +44,10 @@ export function generateWords(dictionary: string[], amount: number): string[] {
 }
 
 export function generateQuote(quotes: string[]): string[] {
+	if (quotes.length < 1) {
+		return [];
+	}
+
 	return quotes[Math.floor(Math.random() * quotes.length)]["quote"].split(
 		" ",
 	);
